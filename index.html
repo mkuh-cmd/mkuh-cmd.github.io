@@ -12,6 +12,17 @@
 }
 body{font-family:'Segoe UI',system-ui,sans-serif;background:#f8fafc;color:var(--text);min-height:100vh}
 
+/* PASSWORD OVERLAY */
+#pw-overlay{position:fixed;inset:0;z-index:9999;background:var(--navy-dk);display:flex;align-items:center;justify-content:center}
+#pw-box{background:#fff;border-radius:16px;padding:40px 36px;text-align:center;max-width:340px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,.35)}
+#pw-box h2{color:var(--navy-dk);font-size:1.15rem;margin-bottom:6px}
+#pw-box .pw-sub{color:var(--muted);font-size:.85rem;margin-bottom:22px;line-height:1.4}
+#pw-input{width:100%;padding:10px 14px;border:2px solid #dde1e7;border-radius:8px;font-size:1rem;margin-bottom:10px;outline:none;transition:border .15s}
+#pw-input:focus{border-color:var(--navy)}
+#pw-btn{width:100%;padding:11px;background:var(--navy-dk);color:#fff;border:none;border-radius:8px;font-size:.95rem;font-weight:700;cursor:pointer;letter-spacing:.01em}
+#pw-btn:hover{background:var(--navy)}
+#pw-error{color:#dc2626;font-size:.82rem;margin-top:8px;display:none}
+
 /* NAV */
 nav{background:var(--navy-dk);border-bottom:3px solid var(--amber);padding:14px 24px;display:flex;align-items:center;gap:12px}
 .nav-sub{font-size:.58rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);line-height:1}
@@ -48,6 +59,17 @@ footer{text-align:center;padding:32px 20px;color:var(--muted);font-size:.8rem;bo
 </head>
 <body>
 
+<!-- PASSWORD GATE -->
+<div id="pw-overlay">
+  <div id="pw-box">
+    <h2>The Calculated Classroom</h2>
+    <p class="pw-sub">Enter the password to access the site hub</p>
+    <input id="pw-input" type="password" placeholder="Password" autofocus>
+    <button id="pw-btn" onclick="checkPw()">Enter</button>
+    <div id="pw-error">Incorrect password. Please try again.</div>
+  </div>
+</div>
+
 <nav>
   <div class="nav-brand">
     <span class="nav-sub">The Calculated Classroom</span>
@@ -61,23 +83,6 @@ footer{text-align:center;padding:32px 20px;color:var(--muted);font-size:.8rem;bo
 </div>
 
 <div class="grid">
-
-  <!-- MYP Weekly Lesson Planner -->
-  <div class="site-card">
-    <div class="card-header">
-      <div class="card-icon" style="background:#eff6ff">🗓️</div>
-      <div>
-        <div class="card-title">MYP Weekly Lesson Planner</div>
-        <div class="card-desc">IB MYP weekly plans · quarters, classes &amp; one-click submission</div>
-      </div>
-    </div>
-    <div class="card-links">
-      <a class="link-row" href="https://mkuh-cmd.github.io/myp-lesson-planner.html" target="_blank">
-        <div><div class="link-label">Planner App</div><div class="link-url">myp-lesson-planner.html</div></div>
-        <span class="link-arrow">↗</span>
-      </a>
-    </div>
-  </div>
 
   <!-- Field Trip Roster -->
   <div class="site-card">
@@ -129,9 +134,73 @@ footer{text-align:center;padding:32px 20px;color:var(--muted);font-size:.8rem;bo
     </div>
   </div>
 
+  <!-- SSA Math Hub -->
+  <div class="site-card">
+    <div class="card-header">
+      <div class="card-icon" style="background:#fef3c7">🧮</div>
+      <div>
+        <div class="card-title">SSA Math Hub</div>
+        <div class="card-desc">South Seminole Academy · Math Department 26–27</div>
+      </div>
+    </div>
+    <div class="card-links">
+      <a class="link-row" href="https://mkuh-cmd.github.io/ssa-math-resources/" target="_blank">
+        <div><div class="link-label">Math Department Hub</div><div class="link-url">ssa-math-resources/</div></div>
+        <span class="link-arrow">↗</span>
+      </a>
+      <a class="link-row" href="https://mkuh-cmd.github.io/ssa-math-resources/textbook-7th-standard.html" target="_blank">
+        <div><div class="link-label">7th Grade Textbook</div><div class="link-url">textbook-7th-standard.html</div></div>
+        <span class="link-arrow">↗</span>
+      </a>
+      <a class="link-row" href="https://mkuh-cmd.github.io/ssa-math-resources/textbook-ramp6.html" target="_blank">
+        <div><div class="link-label">RAMP 6 Textbook</div><div class="link-url">textbook-ramp6.html</div></div>
+        <span class="link-arrow">↗</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- MYP Weekly Lesson Planner -->
+  <div class="site-card">
+    <div class="card-header">
+      <div class="card-icon" style="background:#dbeafe">🗓️</div>
+      <div>
+        <div class="card-title">MYP Weekly Lesson Planner</div>
+        <div class="card-desc">IB MYP weekly plans · quarters, classes &amp; one-click submission</div>
+      </div>
+    </div>
+    <div class="card-links">
+      <a class="link-row" href="https://mkuh-cmd.github.io/myp-lesson-planner.html" target="_blank">
+        <div><div class="link-label">Planner App</div><div class="link-url">myp-lesson-planner.html</div></div>
+        <span class="link-arrow">↗</span>
+      </a>
+    </div>
+  </div>
+
 </div>
 
 <footer>The Calculated Classroom · <a href="https://github.com/mkuh-cmd" style="color:var(--muted)">github.com/mkuh-cmd</a></footer>
+
+<script>
+(function(){
+  if(sessionStorage.getItem('cc-auth')==='ok'){
+    document.getElementById('pw-overlay').style.display='none';
+  }
+})();
+function checkPw(){
+  var v=document.getElementById('pw-input').value;
+  if(v==='469Prpof!'){
+    sessionStorage.setItem('cc-auth','ok');
+    document.getElementById('pw-overlay').style.display='none';
+  } else {
+    document.getElementById('pw-error').style.display='block';
+    document.getElementById('pw-input').value='';
+    document.getElementById('pw-input').focus();
+  }
+}
+document.getElementById('pw-input').addEventListener('keydown',function(e){
+  if(e.key==='Enter') checkPw();
+});
+</script>
 
 </body>
 </html>
