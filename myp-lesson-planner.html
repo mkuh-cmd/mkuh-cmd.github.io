@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MYP Weekly Lesson Planner · SSA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lexend:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --accent: #2563eb;
+  --accent-soft: #eff6ff;
+  --ink: #0f172a;
+  --slate: #64748b;
+  --slate-light: #94a3b8;
+  --line: #e2e8f0;
+  --bg: #f8fafc;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app { max-width: 900px; margin: 0 auto; padding: 40px 20px 60px; }
+
+.site-label {
+  font-size: 0.68rem; letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--slate-light); font-weight: 700; margin-bottom: 8px; text-align: center;
+}
+h1.site-title {
+  font-family: 'Lexend', sans-serif;
+  font-size: clamp(1.4rem, 4.5vw, 2rem); font-weight: 800;
+  letter-spacing: -0.6px; text-align: center; margin-bottom: 4px;
+}
+.site-sub { font-size: 0.85rem; color: var(--slate-light); text-align: center; margin-bottom: 32px; }
+
+.card {
+  background: #fff; border: 1.5px solid var(--line); border-radius: 16px;
+  padding: 22px 24px; margin-bottom: 18px;
+  transition: border-color .2s var(--ease);
+}
+.card:focus-within { border-color: var(--accent); }
+.card h2 {
+  font-family: 'Lexend', sans-serif; font-size: 0.95rem; font-weight: 700;
+  margin-bottom: 4px; display: flex; align-items: center; gap: 8px;
+}
+.card .hint { font-size: 0.78rem; color: var(--slate-light); margin-bottom: 14px; }
+
+label.fld { display: block; font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--slate); margin: 12px 0 5px; }
+input[type=text], input[type=date], input[type=number], select, textarea {
+  width: 100%; padding: 10px 13px; border: 1.5px solid var(--line); border-radius: 10px;
+  font: 400 0.9rem/1.5 'Inter', sans-serif; color: var(--ink); background: #fff;
+  transition: border-color .15s var(--ease);
+}
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); }
+textarea { resize: vertical; min-height: 70px; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
+.grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0 16px; }
+@media (max-width: 640px){ .grid2, .grid3 { grid-template-columns: 1fr; } }
+
+/* chips — refined tag style */
+.chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 6px; }
+.chip { position: relative; }
+.chip input { position: absolute; opacity: 0; pointer-events: none; }
+.chip span {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 13px; border: 1px solid #cbd5e1; border-radius: 7px;
+  font-size: 0.78rem; font-weight: 500; letter-spacing: 0.1px; color: #475569;
+  cursor: pointer; user-select: none; background: #fff; line-height: 1.25;
+  transition: background .13s var(--ease), border-color .13s var(--ease), color .13s var(--ease), box-shadow .13s var(--ease);
+}
+.chip span::before {
+  content: "✓"; font-size: 0.6rem; font-weight: 700; line-height: 1;
+  width: 0; overflow: hidden; opacity: 0;
+  transition: width .13s var(--ease), opacity .13s var(--ease);
+}
+.chip span:hover { border-color: #94a3b8; background: #f8fafc; }
+.chip input:checked + span {
+  background: var(--accent-soft); border-color: var(--accent);
+  color: #1d4ed8; font-weight: 600;
+  box-shadow: inset 0 0 0 0.5px var(--accent);
+}
+.chip input:checked + span::before { width: 0.65em; opacity: 1; }
+.chip input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+/* component picker */
+#picker { padding: 4px 0 10px; margin-bottom: 14px; border-bottom: 1.5px solid var(--line); }
+#picker .picker-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+#picker .picker-head strong { font-family:'Lexend',sans-serif; font-size:0.82rem; }
+#picker .mini-btn { font: 600 0.72rem 'Inter',sans-serif; color: var(--accent); background:none;
+  border:none; cursor:pointer; padding:4px 8px; }
+#picker .chips { gap: 6px; }
+#picker .chip span { padding: 5px 11px; font-size: 0.72rem; }
+
+/* criteria rows */
+.crit-row { display:flex; align-items:flex-start; gap:10px; padding:10px 0; border-bottom:1px solid var(--line); }
+.crit-row:last-child { border-bottom:none; }
+.crit-row input[type=checkbox]{ width:17px; height:17px; margin-top:2px; accent-color: var(--accent); flex:none; }
+.crit-row .crit-label { font-size:0.86rem; font-weight:600; }
+.crit-row .crit-label small { display:block; font-weight:400; color:var(--slate-light); font-size:0.74rem; }
+
+/* day tabs */
+.day-tabs { display:flex; gap:6px; flex-wrap:wrap; margin:4px 0 14px; }
+.day-tabs button {
+  flex:1; min-width:90px; padding:10px 8px; border:1.5px solid var(--line); border-radius:10px;
+  background:#fff; font:600 0.78rem 'Inter',sans-serif; color:var(--slate); cursor:pointer;
+  transition:all .15s var(--ease);
+}
+.day-tabs button small { display:block; font-weight:500; font-size:0.66rem; color:var(--slate-light); margin-top:2px; }
+.day-tabs button.active { background:var(--accent); border-color:var(--accent); color:#fff; }
+.day-tabs button.active small { color:#dbeafe; }
+.day-tabs button.has-content:not(.active) { border-color:var(--accent); color:var(--accent); }
+.day-panel { display:none; }
+.day-panel.active { display:block; }
+.copy-prev { margin-top:12px; font:600 0.76rem 'Inter',sans-serif; color:var(--accent);
+  background:var(--accent-soft); border:none; border-radius:8px; padding:7px 12px; cursor:pointer; }
+
+/* toolbar (document-style, top) */
+#actionbar {
+  position: sticky; top: 8px; z-index: 60;
+  display: flex; align-items: center; gap: 1px;
+  background: #fff; border: 1px solid var(--line); border-radius: 10px;
+  padding: 4px 8px; margin-bottom: 20px;
+  box-shadow: 0 1px 3px rgba(15,23,42,.06), 0 1px 2px rgba(15,23,42,.04);
+  overflow-x: auto; scrollbar-width: none;
+}
+#actionbar::-webkit-scrollbar { display: none; }
+#actionbar button, #actionbar .btn-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  font: 500 0.78rem 'Inter',sans-serif; color: #334155;
+  background: none; border: none; border-radius: 6px;
+  padding: 6px 10px; cursor: pointer; white-space: nowrap; text-decoration: none;
+  transition: background .12s var(--ease), color .12s var(--ease);
+}
+#actionbar button:hover, #actionbar .btn-link:hover { background: #f1f5f9; color: var(--ink); }
+#actionbar button:active, #actionbar .btn-link:active { background: #e2e8f0; }
+#actionbar svg { width: 15px; height: 15px; flex: none; opacity: .75; }
+#actionbar button:hover svg, #actionbar .btn-link:hover svg { opacity: 1; }
+#actionbar .primary { color: var(--accent); font-weight: 600; }
+#actionbar .primary svg { opacity: 1; }
+#actionbar .primary:hover { background: var(--accent-soft); color: var(--accent); }
+.tb-sep { flex: none; width: 1px; height: 18px; background: var(--line); margin: 0 5px; }
+.tb-status { margin-left: auto; padding-left: 12px; font: 500 0.7rem 'Inter',sans-serif; color: var(--slate-light); white-space: nowrap; }
+
+#toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+  background: var(--ink); color:#fff; font-size:0.8rem; font-weight:600;
+  padding:10px 18px; border-radius:999px; opacity:0; pointer-events:none;
+  transition: opacity .3s var(--ease); z-index:200; }
+#toast.show { opacity:1; }
+
+.hidden { display: none !important; }
+
+.wk-note { font-size: 0.72rem; font-weight: 700; color: var(--accent); margin-top: 5px; }
+
+/* home / my plans */
+#home { display: none; max-width: 780px; margin: 0 auto; padding: 48px 20px 80px; }
+body.homeview #home { display: block; }
+body.homeview .app { display: none; }
+.home-actions { display: flex; gap: 10px; justify-content: center; margin: 6px 0 26px; flex-wrap: wrap; }
+.home-actions button { font: 600 0.82rem 'Inter',sans-serif; padding: 10px 18px; border-radius: 10px; cursor: pointer;
+  border: 1px solid var(--line); background: #fff; color: var(--ink); transition: all .15s var(--ease); }
+.home-actions button:hover { border-color: var(--accent); color: var(--accent); }
+.home-actions .home-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.home-actions .home-primary:hover { background: #1d4ed8; color: #fff; }
+.plan-row { display: flex; align-items: center; gap: 14px; background: #fff; border: 1.5px solid var(--line);
+  border-radius: 14px; padding: 16px 18px; margin-bottom: 10px; transition: border-color .15s var(--ease); flex-wrap: wrap; }
+.plan-row:hover { border-color: var(--accent); }
+.plan-info { flex: 1; min-width: 200px; }
+.plan-info .pl-week { font: 700 0.92rem 'Lexend',sans-serif; }
+.plan-info .pl-week small { font: 600 0.7rem 'Inter',sans-serif; color: var(--accent); margin-left: 8px; }
+.plan-info .pl-meta { font-size: 0.76rem; color: var(--slate-light); margin-top: 3px; }
+.plan-pct { flex: none; font: 700 0.72rem 'Inter',sans-serif; color: var(--slate); background: var(--bg);
+  border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px; }
+.plan-pct.full { color: #16a34a; border-color: #86efac; background: #f0fdf4; }
+.plan-acts { display: flex; gap: 6px; flex: none; }
+.plan-acts button { font: 600 0.74rem 'Inter',sans-serif; padding: 7px 12px; border-radius: 8px; cursor: pointer;
+  border: 1px solid var(--line); background: #fff; color: #334155; transition: all .13s var(--ease); }
+.plan-acts button:hover { border-color: var(--accent); color: var(--accent); }
+.plan-acts .del:hover { border-color: #dc2626; color: #dc2626; }
+.home-empty { text-align: center; color: var(--slate-light); font-size: 0.86rem; padding: 30px 0; }
+.home-note { text-align: center; font-size: 0.72rem; color: var(--slate-light); margin-top: 18px; }
+#classTabs { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; margin-bottom: 8px; }
+#classTabs button { font: 600 0.76rem 'Inter',sans-serif; color: var(--slate); background: #fff;
+  border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px; cursor: pointer; transition: all .13s var(--ease); }
+#classTabs button:hover { border-color: var(--accent); color: var(--accent); }
+#classTabs button.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.q-head { display: flex; align-items: center; gap: 10px; margin: 24px 0 10px;
+  font: 700 0.74rem 'Lexend',sans-serif; text-transform: uppercase; letter-spacing: 1.5px; color: var(--slate); }
+.q-head small { font: 500 0.7rem 'Inter',sans-serif; text-transform: none; letter-spacing: 0; color: var(--slate-light); }
+.q-head::after { content: ""; flex: 1; height: 1.5px; background: var(--line); }
+.pl-class { display: inline-block; font: 600 0.64rem 'Inter',sans-serif; color: var(--slate);
+  background: var(--bg); border: 1px solid var(--line); border-radius: 5px; padding: 2px 7px; margin-left: 8px; vertical-align: 1px; }
+
+/* submission checklist */
+.chk-bar { height: 8px; background: var(--line); border-radius: 999px; overflow: hidden; margin: 6px 0 4px; }
+.chk-fill { height: 100%; width: 0%; background: var(--accent); border-radius: 999px; transition: width .35s var(--ease); }
+.chk-fill.complete { background: #16a34a; }
+.chk-count { font-size: 0.72rem; font-weight: 700; color: var(--slate-light); margin-bottom: 10px; }
+.chk-item { display: flex; align-items: flex-start; gap: 9px; padding: 5px 0; font-size: 0.85rem; color: var(--slate); }
+.chk-item .ic { flex: none; width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--line);
+  display: inline-flex; align-items: center; justify-content: center; font-size: 0.62rem; color: #fff; margin-top: 1px; }
+.chk-item.done { color: var(--ink); }
+.chk-item.done .ic { background: #16a34a; border-color: #16a34a; }
+.chk-steps { padding-left: 20px; margin-top: 6px; }
+.chk-steps li { font-size: 0.84rem; color: var(--slate); padding: 3px 0; line-height: 1.5; }
+
+/* schedule wizard */
+#wizard { display: none; position: fixed; inset: 0; z-index: 300; background: rgba(15,23,42,.45);
+  backdrop-filter: blur(3px); align-items: center; justify-content: center; padding: 20px; overflow: auto; }
+#wizard.open { display: flex; }
+.wz-card { background: #fff; border-radius: 18px; padding: 28px 30px 24px; max-width: 480px; width: 100%;
+  box-shadow: 0 20px 50px rgba(15,23,42,.25); }
+.wz-title { font-family: 'Lexend',sans-serif; font-size: 1.15rem; font-weight: 700; margin-bottom: 4px; }
+.wz-sub { font-size: 0.8rem; color: var(--slate); margin-bottom: 6px; line-height: 1.5; }
+.wz-periods { display: grid; grid-template-columns: repeat(5,1fr); gap: 8px; margin-top: 6px; }
+.wz-periods label { display: block; font: 700 0.62rem 'Inter',sans-serif; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--slate); margin-bottom: 4px; text-align: center; }
+.wz-periods input { text-align: center; padding: 8px 6px; }
+.wz-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; }
+.wz-skip { background: none; border: none; color: var(--slate-light); font: 600 0.78rem 'Inter',sans-serif; cursor: pointer; }
+.wz-skip:hover { color: var(--slate); }
+.wz-save { background: var(--accent); color: #fff; border: none; border-radius: 10px;
+  font: 600 0.82rem 'Inter',sans-serif; padding: 10px 22px; cursor: pointer; }
+.wz-save:hover { background: #1d4ed8; }
+.day-sched { font-size: 0.7rem; font-weight: 600; color: var(--slate-light); margin: 2px 0 8px; }
+.day-sched .blk { color: var(--accent); }
+
+/* ─── PREVIEW / PRINT ─── */
+#preview { display: none; }
+body.previewing .app { display: none; }
+body.previewing #preview { display: block; max-width: 800px; margin: 0 auto; padding: 40px 30px; }
+#preview .pv-doc { background:#fff; border:1.5px solid var(--line); border-radius:12px; padding:36px 40px; }
+#preview .pv-back { margin: 0 0 16px; font:600 0.8rem 'Inter',sans-serif; color:var(--accent);
+  background:none; border:none; cursor:pointer; }
+
+.pv-doc h1 { font-family:'Lexend',sans-serif; font-size:1.25rem; margin-bottom:2px; }
+.pv-doc .pv-school { font-size:0.72rem; text-transform:uppercase; letter-spacing:2px; color:var(--slate-light); font-weight:700; margin-bottom:14px; }
+.pv-doc table.pv-meta { width:100%; border-collapse:collapse; margin-bottom:18px; }
+.pv-doc table.pv-meta td { border:1px solid var(--line); padding:6px 10px; font-size:0.8rem; }
+.pv-doc table.pv-meta td b { font-size:0.66rem; text-transform:uppercase; letter-spacing:1px; color:var(--slate); display:block; }
+.pv-doc h3 { font-family:'Lexend',sans-serif; font-size:0.8rem; text-transform:uppercase; letter-spacing:1.2px;
+  color:var(--accent); margin:18px 0 6px; border-bottom:1.5px solid var(--line); padding-bottom:4px; }
+.pv-doc p, .pv-doc li { font-size:0.86rem; line-height:1.55; white-space:pre-wrap; }
+.pv-doc ul { padding-left:20px; }
+.pv-doc table.pv-seq { width:100%; border-collapse:collapse; margin-top:6px; }
+.pv-doc table.pv-seq th, .pv-doc table.pv-seq td { border:1px solid var(--line); padding:6px 9px; font-size:0.8rem; text-align:left; vertical-align:top; }
+.pv-doc table.pv-seq th { background:var(--bg); font-size:0.68rem; text-transform:uppercase; letter-spacing:1px; color:var(--slate); }
+
+@media print {
+  body .app, #actionbar, #toast, #home, #preview .pv-back { display: none !important; }
+  body #preview { display: block !important; padding: 0; max-width: none; }
+  #preview .pv-doc { border: none; border-radius: 0; padding: 0; }
+  body { background: #fff; }
+  .pv-doc h3 { break-after: avoid; }
+  .pv-doc table { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+
+<!-- HOME / MY PLANS -->
+<div id="home">
+  <div class="site-label">South Seminole Academy · Math Department</div>
+  <h1 class="site-title">MYP Weekly Lesson Planner</h1>
+  <p class="site-sub">Your previous plans, organized by quarter and class. Open one, copy it forward, or start fresh.</p>
+  <div class="home-actions">
+    <button class="home-primary" id="newPlanBtn" type="button">＋ New Weekly Plan</button>
+    <button id="homeOpenFile" type="button">Open draft file…</button>
+    <button id="homeSchedBtn" type="button" title="Period length, block days, and periods per day">⚙ Schedule Settings</button>
+  </div>
+  <div id="classTabs"></div>
+  <div id="planList"></div>
+  <p class="home-note">Plans are saved automatically in this browser as you type. Use Save in the toolbar for a backup file you can move between computers.</p>
+</div>
+
+<div class="app">
+  <div class="site-label">South Seminole Academy · Math Department</div>
+  <h1 class="site-title">MYP Weekly Lesson Planner</h1>
+  <p class="site-sub">Build your IB MYP-aligned plan for the week, then submit it by Monday morning.</p>
+
+  <!-- TOOLBAR -->
+  <div id="actionbar" role="toolbar" aria-label="Document actions">
+    <button id="homeBtn" type="button" title="View all my saved lesson plans">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      My Plans</button>
+    <span class="tb-sep"></span>
+    <button id="draftBtn" type="button" title="Save an editable draft file (.json)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+      Save</button>
+    <button id="loadBtn" type="button" title="Open a saved draft file">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+      Open</button>
+    <input type="file" id="loadInput" accept=".json" class="hidden">
+    <span class="tb-sep"></span>
+    <button id="previewBtn" type="button" title="Preview the formatted plan">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+      Preview</button>
+    <button id="printBtn" class="primary" type="button" title="Print, or choose 'Save as PDF' in the print dialog">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Print / PDF</button>
+    <button id="wordBtn" type="button" title="Download as a Word document">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      Word</button>
+    <span class="tb-sep"></span>
+    <button id="copyWeekBtn" type="button" title="Teaching it the same way? Copy this plan into next week and keep going">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      Copy to Next Week</button>
+    <span class="tb-sep"></span>
+    <a class="btn-link" id="driveBtn" href="https://drive.google.com/drive/folders/1ru470fhbj4xjfjWGsKqJNLjRd0nFQdN9" target="_blank" rel="noopener" title="Open the department Google Drive folder">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.9A7 7 0 1 1 15.7 8h1.8a4.5 4.5 0 0 1 2.5 8.2"/><path d="M12 12v9"/><path d="m16 16-4-4-4 4"/></svg>
+      Drive</a>
+    <button id="emailBtn" type="button" title="Email your plan to the department chair">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
+      Email</button>
+    <span class="tb-sep"></span>
+    <button id="schedBtn" type="button" title="My schedule — period length, block days, periods per day">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+      Schedule</button>
+    <span class="tb-status" id="saveState"></span>
+  </div>
+
+  <!-- COMPONENT PICKER -->
+  <div id="picker">
+    <div class="picker-head">
+      <strong>Plan components</strong>
+      <span>
+        <button class="mini-btn" id="selAll" type="button">Select all</button>
+        <button class="mini-btn" id="selCore" type="button">Core only</button>
+      </span>
+    </div>
+    <div class="chips" id="pickerChips"></div>
+  </div>
+
+  <!-- UNIT INFO (always on) -->
+  <div class="card" data-sec="info">
+    <h2>📋 Lesson Information</h2>
+    <div class="grid2">
+      <div><label class="fld" for="teacher">Teacher</label><input type="text" id="teacher" placeholder="Name"></div>
+      <div><label class="fld" for="subject">MYP Subject Group</label>
+        <select id="subject">
+          <option>Mathematics</option><option>Language and Literature</option>
+          <option>Language Acquisition</option><option>Individuals and Societies</option>
+          <option>Sciences</option><option>Arts</option>
+          <option>Physical and Health Education</option><option>Design</option>
+        </select></div>
+      <div><label class="fld" for="course">Class / Course</label><input type="text" id="course" list="classList" placeholder="e.g., 7th Grade Math"><datalist id="classList"></datalist></div>
+      <div><label class="fld" for="mypYear">MYP Year</label>
+        <select id="mypYear"><option>Year 1 (Grade 6)</option><option selected>Year 2 (Grade 7)</option><option>Year 3 (Grade 8)</option></select></div>
+      <div><label class="fld" for="unitTitle">Unit Title</label><input type="text" id="unitTitle" placeholder="Unit name"></div>
+      <div><label class="fld" for="mathNation">Math Nation Unit</label><input type="text" id="mathNation" placeholder="e.g., Unit 4: Proportional Reasoning"></div>
+      <div><label class="fld" for="district">School District</label><select id="district"></select></div>
+      <div><label class="fld" for="firstDay">First Day of School <span style="text-transform:none;font-weight:500">(auto)</span></label><input type="date" id="firstDay"></div>
+      <div><label class="fld" for="weekOf">Week Of (Monday)</label><input type="date" id="weekOf"><div class="wk-note" id="wkNote"></div></div>
+      <div><label class="fld" for="duration">Class Period Length</label><input type="text" id="duration" placeholder="e.g., 50 minutes"></div>
+      <div><label class="fld" for="periods">Period(s) / Sections</label><input type="text" id="periods" placeholder="e.g., Periods 1, 3, 5"></div>
+    </div>
+  </div>
+
+  <!-- KEY CONCEPT -->
+  <div class="card" data-sec="keyConcept">
+    <h2>🔑 Key Concept</h2>
+    <p class="hint">The big, transferable idea (choose one).</p>
+    <div class="chips" id="keyChips"></div>
+  </div>
+
+  <!-- RELATED CONCEPTS -->
+  <div class="card" data-sec="relatedConcepts">
+    <h2>🧩 Related Concepts</h2>
+    <p class="hint">Subject-specific concepts — list updates with the subject group you chose above.</p>
+    <div class="chips" id="relChips"></div>
+  </div>
+
+  <!-- GLOBAL CONTEXT -->
+  <div class="card" data-sec="globalContext">
+    <h2>🌍 Global Context</h2>
+    <p class="hint">Choose one context and describe the exploration.</p>
+    <div class="chips" id="gcChips"></div>
+    <label class="fld" for="gcExploration">Exploration</label>
+    <textarea id="gcExploration" placeholder="How will students explore this context in the lesson?"></textarea>
+  </div>
+
+  <!-- STATEMENT OF INQUIRY -->
+  <div class="card" data-sec="soi">
+    <h2>💡 Statement of Inquiry</h2>
+    <p class="hint">Key concept + related concept(s) + global context in one meaningful sentence.</p>
+    <textarea id="soiText" placeholder="e.g., Representing patterns with equivalent forms helps us model change in real-world systems."></textarea>
+  </div>
+
+  <!-- INQUIRY QUESTIONS -->
+  <div class="card" data-sec="inquiryQuestions">
+    <h2>❓ Inquiry Questions</h2>
+    <label class="fld" for="qFactual">Factual</label><textarea id="qFactual" placeholder="What...?"></textarea>
+    <label class="fld" for="qConceptual">Conceptual</label><textarea id="qConceptual" placeholder="How / why...?"></textarea>
+    <label class="fld" for="qDebatable">Debatable</label><textarea id="qDebatable" placeholder="To what extent...?"></textarea>
+  </div>
+
+  <!-- OBJECTIVES / CRITERIA -->
+  <div class="card" data-sec="criteria">
+    <h2>🎯 MYP Objectives &amp; Assessment Criteria</h2>
+    <p class="hint">Criterion titles update with the subject group. Check those addressed in this lesson.</p>
+    <div id="critRows"></div>
+    <label class="fld" for="critNotes">Strands / task alignment notes</label>
+    <textarea id="critNotes" placeholder="e.g., Criterion B (i, ii): students describe patterns as general rules..."></textarea>
+  </div>
+
+  <!-- CONTENT & STANDARDS -->
+  <div class="card" data-sec="standards">
+    <h2>📚 Content &amp; State Standards</h2>
+    <label class="fld" for="standardsText">Florida B.E.S.T. benchmarks / content</label>
+    <textarea id="standardsText" placeholder="e.g., MA.7.AR.1.1 — Apply properties of operations to add and subtract linear expressions..."></textarea>
+    <label class="fld" for="objectivesText">Learning objective(s) — students will be able to...</label>
+    <textarea id="objectivesText" placeholder="SWBAT..."></textarea>
+  </div>
+
+  <!-- ATL SKILLS -->
+  <div class="card" data-sec="atl">
+    <h2>🛠️ Approaches to Learning (ATL)</h2>
+    <p class="hint">Select the skill clusters targeted in this lesson.</p>
+    <div class="chips" id="atlChips"></div>
+    <label class="fld" for="atlHow">How the skill(s) will be explicitly taught / practiced</label>
+    <textarea id="atlHow"></textarea>
+  </div>
+
+  <!-- LEARNER PROFILE -->
+  <div class="card" data-sec="learnerProfile">
+    <h2>🌱 IB Learner Profile</h2>
+    <p class="hint">Attributes emphasized in this lesson.</p>
+    <div class="chips" id="lpChips"></div>
+  </div>
+
+  <!-- PRIOR KNOWLEDGE -->
+  <div class="card" data-sec="priorKnowledge">
+    <h2>⏮️ Prior Knowledge</h2>
+    <textarea id="priorText" placeholder="What students should already know or be able to do."></textarea>
+  </div>
+
+  <!-- DAILY PLANS -->
+  <div class="card" data-sec="daily">
+    <h2>🗓️ Daily Plans (Monday – Friday)</h2>
+    <p class="hint">Fill in each day. Weekly MYP elements above apply to the whole week.</p>
+    <div class="day-tabs" id="dayTabs"></div>
+    <div id="dayPanels"></div>
+  </div>
+
+  <!-- SUMMATIVE ASSESSMENT -->
+  <div class="card" data-sec="summative">
+    <h2>🏁 Summative Assessment (unit connection)</h2>
+    <textarea id="summativeText" placeholder="How this lesson builds toward the summative task, and its relationship to the SOI."></textarea>
+  </div>
+
+  <!-- DIFFERENTIATION -->
+  <div class="card" data-sec="differentiation">
+    <h2>🧭 Differentiation</h2>
+    <label class="fld" for="diffSupport">Support / scaffolds</label><textarea id="diffSupport"></textarea>
+    <label class="fld" for="diffExtend">Extension / enrichment</label><textarea id="diffExtend"></textarea>
+    <label class="fld" for="diffEll">ELL / ESE accommodations</label><textarea id="diffEll"></textarea>
+  </div>
+
+  <!-- RESOURCES -->
+  <div class="card" data-sec="resources">
+    <h2>📦 Resources &amp; Materials</h2>
+    <textarea id="resourcesText" placeholder="Handouts, manipulatives, IXL skills, textbook pages, links..."></textarea>
+  </div>
+
+  <!-- SERVICE AS ACTION -->
+  <div class="card" data-sec="service">
+    <h2>🤝 Service as Action</h2>
+    <textarea id="serviceText" placeholder="Opportunities for student action or community connection (if applicable)."></textarea>
+  </div>
+
+  <!-- REFLECTION -->
+  <div class="card" data-sec="reflection">
+    <h2>🪞 Teacher Reflection</h2>
+    <label class="fld" for="refPrior">Before the lesson</label><textarea id="refPrior"></textarea>
+    <label class="fld" for="refAfter">After the lesson</label><textarea id="refAfter"></textarea>
+  </div>
+
+  <!-- SUBMISSION CHECKLIST (always visible) -->
+  <div class="card" id="checklistCard">
+    <h2>✅ Submission Checklist</h2>
+    <p class="hint">Items check off automatically as you complete your plan.</p>
+    <div class="chk-bar"><div class="chk-fill" id="chkFill"></div></div>
+    <div class="chk-count" id="chkCount"></div>
+    <div id="chkList"></div>
+    <h2 style="margin-top:18px">📬 How to submit</h2>
+    <ol class="chk-steps">
+      <li><b>Preview</b> your plan and confirm the checklist above is complete.</li>
+      <li>Export with <b>Print / PDF</b> or <b>Word</b> in the toolbar at the top.</li>
+      <li>Submit via <b>Drive</b> — drop the file in the department folder — or <b>Email</b> it to the chair.</li>
+      <li>Due by <b>Monday, 8:00 AM</b> each week. Save a draft file so you can revise later.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- PREVIEW -->
+<div id="preview">
+  <button class="pv-back" id="backBtn" type="button">← Back to editing</button>
+  <button class="pv-back" id="pvPrintBtn" type="button">🖨 Print / Save as PDF</button>
+  <div class="pv-doc" id="pvDoc"></div>
+</div>
+
+<!-- SCHEDULE WIZARD -->
+<div id="wizard">
+  <div class="wz-card">
+    <div class="site-label">Welcome · One-time setup</div>
+    <h2 class="wz-title">Set up your teaching schedule</h2>
+    <p class="wz-sub">Three quick questions so the planner matches your real week. You can change these anytime from <b>Schedule</b> in the toolbar.</p>
+    <label class="fld" for="wzMin">1 · Minutes per regular period</label>
+    <input type="number" id="wzMin" min="20" max="180" value="50">
+    <label class="fld">2 · Which day(s) have block periods?</label>
+    <div class="chips" id="wzDays"></div>
+    <label class="fld" for="wzBlockMin">Minutes per block period</label>
+    <input type="number" id="wzBlockMin" min="40" max="240" value="90">
+    <label class="fld">3 · How many periods do you teach each day?</label>
+    <div class="wz-periods" id="wzPeriods"></div>
+    <div class="wz-actions">
+      <button class="wz-skip" id="wzSkip" type="button">Skip for now</button>
+      <button class="wz-save" id="wzSave" type="button">Save my schedule</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+/* ═══════════ DATA ═══════════ */
+const SUBJECTS = {
+  "Mathematics": { criteria: ["Knowing and understanding","Investigating patterns","Communicating","Applying mathematics in real-life contexts"],
+    related: ["Change","Equivalence","Generalization","Justification","Measurement","Models","Patterns","Quantity","Representation","Simplification","Space","Systems"] },
+  "Language and Literature": { criteria: ["Analysing","Organizing","Producing text","Using language"],
+    related: ["Audience imperatives","Character","Context","Genre","Intertextuality","Point of view","Purpose","Self-expression","Setting","Structure","Style","Theme"] },
+  "Language Acquisition": { criteria: ["Listening","Reading","Speaking","Writing"],
+    related: ["Accent","Audience","Context","Conventions","Form","Function","Idiom","Meaning","Message","Patterns","Purpose","Structure"] },
+  "Individuals and Societies": { criteria: ["Knowing and understanding","Investigating","Communicating","Thinking critically"],
+    related: ["Causality","Choice","Culture","Equity","Globalization","Identity","Innovation","Perspective","Power","Processes","Resources","Sustainability"] },
+  "Sciences": { criteria: ["Knowing and understanding","Inquiring and designing","Processing and evaluating","Reflecting on the impacts of science"],
+    related: ["Balance","Consequences","Energy","Environment","Evidence","Form","Function","Interaction","Models","Movement","Patterns","Transformation"] },
+  "Arts": { criteria: ["Investigating","Developing","Creating / Performing","Evaluating"],
+    related: ["Audience","Boundaries","Composition","Expression","Genre","Innovation","Interpretation","Narrative","Play","Presentation","Representation","Style"] },
+  "Physical and Health Education": { criteria: ["Knowing and understanding","Planning for performance","Applying and performing","Reflecting and improving performance"],
+    related: ["Adaptation","Balance","Choice","Energy","Environment","Function","Interaction","Movement","Perspectives","Refinement","Space","Systems"] },
+  "Design": { criteria: ["Inquiring and analysing","Developing ideas","Creating the solution","Evaluating"],
+    related: ["Adaptation","Collaboration","Ergonomics","Evaluation","Form","Function","Innovation","Invention","Markets and trends","Perspective","Resources","Sustainability"] }
+};
+const KEY_CONCEPTS = ["Aesthetics","Change","Communication","Communities","Connections","Creativity","Culture","Development","Form","Global interactions","Identity","Logic","Perspective","Relationships","Systems","Time, place and space"];
+const GLOBAL_CONTEXTS = ["Identities and relationships","Orientation in space and time","Personal and cultural expression","Scientific and technical innovation","Globalization and sustainability","Fairness and development"];
+const ATL = ["Communication","Collaboration (Social)","Organization (Self-management)","Affective (Self-management)","Reflection (Self-management)","Information literacy (Research)","Media literacy (Research)","Critical thinking","Creative thinking","Transfer"];
+const LEARNER_PROFILE = ["Inquirers","Knowledgeable","Thinkers","Communicators","Principled","Open-minded","Caring","Risk-takers","Balanced","Reflective"];
+
+/* 2026-27 first day of school by district (verified July 2026) */
+const DISTRICTS = {
+  "Seminole County (SCPS)": "2026-08-10",
+  "Orange County (OCPS)": "2026-08-11",
+  "Osceola County": "2026-08-10",
+  "Lake County": "2026-08-10",
+  "Volusia County": "2026-08-10",
+  "Brevard County": "2026-08-10",
+  "Other / enter manually": ""
+};
+
+/* SCPS 2026-27 grading quarters (bound = first date counted in the quarter; s/e = student dates). Update yearly. */
+const QUARTERS = [
+  { n:1, bound:"2026-08-03", s:"2026-08-10", e:"2026-10-09" },
+  { n:2, bound:"2026-10-12", s:"2026-10-13", e:"2026-12-18" },
+  { n:3, bound:"2027-01-04", s:"2027-01-06", e:"2027-03-12" },
+  { n:4, bound:"2027-03-22", s:"2027-03-23", e:"2027-05-25" }
+];
+
+const COMPONENTS = [
+  { id:"keyConcept", label:"Key Concept", core:true },
+  { id:"relatedConcepts", label:"Related Concepts", core:true },
+  { id:"globalContext", label:"Global Context", core:true },
+  { id:"soi", label:"Statement of Inquiry", core:true },
+  { id:"inquiryQuestions", label:"Inquiry Questions", core:true },
+  { id:"criteria", label:"Objectives & Criteria", core:true },
+  { id:"standards", label:"Content & Standards", core:true },
+  { id:"atl", label:"ATL Skills", core:true },
+  { id:"learnerProfile", label:"Learner Profile", core:false },
+  { id:"priorKnowledge", label:"Prior Knowledge", core:false },
+  { id:"daily", label:"Daily Plans", core:true },
+  { id:"summative", label:"Summative Connection", core:false },
+  { id:"differentiation", label:"Differentiation", core:true },
+  { id:"resources", label:"Resources", core:true },
+  { id:"service", label:"Service as Action", core:false },
+  { id:"reflection", label:"Reflection", core:false }
+];
+</script>
+<script>
+/* ═══════════ HELPERS ═══════════ */
+const $ = id => document.getElementById(id);
+const esc = s => String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+function toast(msg){ const t=$("toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove("show"),2200); }
+
+function chip(name, value, type){ // type: radio | checkbox
+  const l=document.createElement("label"); l.className="chip";
+  l.innerHTML=`<input type="${type}" name="${name}" value="${esc(value)}"><span>${esc(value)}</span>`;
+  return l;
+}
+function notWizard(e){ return !(e.target&&e.target.closest&&e.target.closest("#wizard")); }
+
+/* ═══════════ BUILD UI ═══════════ */
+KEY_CONCEPTS.forEach(k=>$("keyChips").appendChild(chip("keyConcept",k,"checkbox")));
+GLOBAL_CONTEXTS.forEach(g=>$("gcChips").appendChild(chip("globalContext",g,"checkbox")));
+/* single-select but re-clickable: checking one unchecks the others; clicking again clears it */
+function makeExclusive(container,name){
+  container.addEventListener("change",e=>{
+    if(e.target.name===name && e.target.checked){
+      container.querySelectorAll(`input[name=${name}]`).forEach(i=>{ if(i!==e.target) i.checked=false; });
+    }
+  });
+}
+makeExclusive($("keyChips"),"keyConcept");
+makeExclusive($("gcChips"),"globalContext");
+ATL.forEach(a=>$("atlChips").appendChild(chip("atl",a,"checkbox")));
+LEARNER_PROFILE.forEach(p=>$("lpChips").appendChild(chip("lp",p,"checkbox")));
+
+function buildSubjectDependent(keepRel){
+  const sub = SUBJECTS[$("subject").value];
+  const prevRel = keepRel || [...document.querySelectorAll('input[name=rel]:checked')].map(i=>i.value);
+  $("relChips").innerHTML="";
+  sub.related.forEach(r=>$("relChips").appendChild(chip("rel",r,"checkbox")));
+  prevRel.forEach(v=>{ const i=[...document.querySelectorAll('input[name=rel]')].find(x=>x.value===v); if(i) i.checked=true; });
+  const prevCrit = {}; ["A","B","C","D"].forEach(L=>{ const c=$("crit"+L); if(c) prevCrit[L]=c.checked; });
+  $("critRows").innerHTML="";
+  ["A","B","C","D"].forEach((L,i)=>{
+    const d=document.createElement("div"); d.className="crit-row";
+    d.innerHTML=`<input type="checkbox" id="crit${L}"><div class="crit-label">Criterion ${L}: ${esc(sub.criteria[i])}<small>Max 8 points</small></div>`;
+    $("critRows").appendChild(d);
+    if(prevCrit[L]) $("crit"+L).checked=true;
+  });
+}
+buildSubjectDependent();
+$("subject").addEventListener("change", ()=>buildSubjectDependent());
+
+/* component picker */
+COMPONENTS.forEach(c=>{
+  const l=chip("comp",c.label,"checkbox");
+  l.querySelector("input").dataset.sec=c.id;
+  l.querySelector("input").checked=c.core;
+  $("pickerChips").appendChild(l);
+});
+function applyPicker(){
+  document.querySelectorAll('input[name=comp]').forEach(i=>{
+    const sec=document.querySelector(`[data-sec="${i.dataset.sec}"].card`);
+    if(sec) sec.classList.toggle("hidden", !i.checked);
+  });
+}
+$("pickerChips").addEventListener("change", applyPicker);
+$("selAll").onclick=()=>{ document.querySelectorAll('input[name=comp]').forEach(i=>i.checked=true); applyPicker(); };
+$("selCore").onclick=()=>{ document.querySelectorAll('input[name=comp]').forEach(i=>{ i.checked=COMPONENTS.find(c=>c.id===i.dataset.sec).core; }); applyPicker(); };
+applyPicker();
+
+/* ═══════════ WEEK / DAY TABS ═══════════ */
+const DAYS=["Monday","Tuesday","Wednesday","Thursday","Friday"];
+const DAY_FIELDS=[
+  ["topic","Lesson Topic / Title","text","e.g., Solving two-step equations"],
+  ["standards","Standard(s) / Benchmark(s)","text","e.g., MA.7.AR.2.2"],
+  ["agenda","Agenda / Learning Activities","area","Warm-up, instruction, practice, closure..."],
+  ["formative","Formative Check","area","Exit ticket, CFU questions, IXL score..."],
+  ["homework","Homework / Follow-up","area","Assignment or none"]
+];
+DAYS.forEach((day,i)=>{
+  const b=document.createElement("button");
+  b.type="button"; b.dataset.day=i;
+  b.innerHTML=`${day}<small data-date></small>`;
+  b.onclick=()=>selectDay(i);
+  $("dayTabs").appendChild(b);
+  const p=document.createElement("div");
+  p.className="day-panel"; p.dataset.day=i;
+  p.innerHTML=`<div class="day-sched" id="ds${i}"></div>`+DAY_FIELDS.map(([k,label,kind,ph])=>
+    `<label class="fld" for="d${i}_${k}">${label}</label>`+
+    (kind==="text"
+      ? `<input type="text" id="d${i}_${k}" placeholder="${ph}">`
+      : `<textarea id="d${i}_${k}" placeholder="${ph}"></textarea>`)
+  ).join("")+(i>0?`<button class="copy-prev" type="button" data-day="${i}">⧉ Copy from ${DAYS[i-1]}</button>`:"");
+  $("dayPanels").appendChild(p);
+});
+document.querySelectorAll(".copy-prev").forEach(b=>b.onclick=()=>{
+  const i=+b.dataset.day;
+  DAY_FIELDS.forEach(([k])=>{ $(`d${i}_${k}`).value=$(`d${i-1}_${k}`).value; });
+  markDayTabs(); scheduleAutosave(); toast(`Copied ${DAYS[i-1]}'s plan to ${DAYS[i]}`);
+});
+function selectDay(i){
+  document.querySelectorAll("#dayTabs button").forEach(b=>b.classList.toggle("active",+b.dataset.day===i));
+  document.querySelectorAll(".day-panel").forEach(p=>p.classList.toggle("active",+p.dataset.day===i));
+}
+function markDayTabs(){
+  DAYS.forEach((_,i)=>{
+    const has=DAY_FIELDS.some(([k])=>$(`d${i}_${k}`).value.trim());
+    document.querySelector(`#dayTabs button[data-day="${i}"]`).classList.toggle("has-content",has);
+  });
+}
+document.getElementById("dayPanels").addEventListener("input",markDayTabs);
+selectDay(0);
+
+/* week-of: snap to Monday, show dates on tabs */
+function parseLocalDate(v){ const [y,m,d]=v.split("-").map(Number); return new Date(y,m-1,d); }
+function fmtISO(dt){ return dt.getFullYear()+"-"+String(dt.getMonth()+1).padStart(2,"0")+"-"+String(dt.getDate()).padStart(2,"0"); }
+function dayDate(i){
+  const v=$("weekOf").value; if(!v) return null;
+  const dt=parseLocalDate(v); dt.setDate(dt.getDate()+i); return dt;
+}
+function fmtShort(dt){ return (dt.getMonth()+1)+"/"+dt.getDate(); }
+function fmtLong(dt){ return dt.toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"}); }
+function updateWeekDates(){
+  const v=$("weekOf").value;
+  if(v){
+    const dt=parseLocalDate(v);
+    const dow=dt.getDay(); // snap to Monday
+    if(dow!==1){ dt.setDate(dt.getDate()+((dow===0)?1:(1-dow))); $("weekOf").value=fmtISO(dt); }
+  }
+  document.querySelectorAll("#dayTabs [data-date]").forEach((s,i)=>{
+    const dt=dayDate(i); s.textContent=dt?fmtShort(dt):"";
+  });
+  updateWeekNote();
+}
+$("weekOf").addEventListener("change",updateWeekDates);
+
+/* ─── school district / first day ─── */
+Object.keys(DISTRICTS).forEach(k=>{
+  const o=document.createElement("option"); o.textContent=k; $("district").appendChild(o);
+});
+function mondayOf(dt){ const d2=new Date(dt); const dow=d2.getDay(); d2.setDate(d2.getDate()+((dow===0)?-6:1-dow)); return d2; }
+function schoolWeek(weekOfVal, firstDayVal){
+  if(!weekOfVal||!firstDayVal) return null;
+  const n=Math.floor((mondayOf(parseLocalDate(weekOfVal))-mondayOf(parseLocalDate(firstDayVal)))/604800000)+1;
+  return n;
+}
+function updateWeekNote(){
+  const n=schoolWeek($("weekOf").value,$("firstDay").value);
+  $("wkNote").textContent = n===null ? "" : (n<1 ? "Before the first day of school" : `School Week ${n} of the year`);
+}
+$("district").addEventListener("change",()=>{
+  const v=DISTRICTS[$("district").value];
+  if(v){ $("firstDay").value=v; }
+  updateWeekNote();
+});
+$("firstDay").addEventListener("change",updateWeekNote);
+$("district").value="Seminole County (SCPS)";
+$("firstDay").value=DISTRICTS["Seminole County (SCPS)"];
+
+/* ═══════════ SERIALIZE / LOAD ═══════════ */
+const TEXT_IDS = ["teacher","course","unitTitle","mathNation","district","firstDay","weekOf","duration","periods","gcExploration","soiText","qFactual","qConceptual","qDebatable","critNotes","standardsText","objectivesText","atlHow","priorText","summativeText","diffSupport","diffExtend","diffEll","resourcesText","serviceText","refPrior","refAfter"];
+
+function getData(){
+  const d={ _app:"SSA-MYP-Lesson-Planner", _v:2 };
+  d.subject=$("subject").value; d.mypYear=$("mypYear").value;
+  TEXT_IDS.forEach(id=>d[id]=$(id).value);
+  d.keyConcept=(document.querySelector('input[name=keyConcept]:checked')||{}).value||"";
+  d.globalContext=(document.querySelector('input[name=globalContext]:checked')||{}).value||"";
+  d.related=[...document.querySelectorAll('input[name=rel]:checked')].map(i=>i.value);
+  d.atl=[...document.querySelectorAll('input[name=atl]:checked')].map(i=>i.value);
+  d.lp=[...document.querySelectorAll('input[name=lp]:checked')].map(i=>i.value);
+  d.criteria=["A","B","C","D"].filter(L=>$("crit"+L).checked);
+  d.components=[...document.querySelectorAll('input[name=comp]:checked')].map(i=>i.dataset.sec);
+  d.days=DAYS.map((_,i)=>{
+    const o={}; DAY_FIELDS.forEach(([k])=>o[k]=$(`d${i}_${k}`).value); return o;
+  });
+  return d;
+}
+
+function setRadio(name,val){ const i=[...document.querySelectorAll(`input[name=${name}]`)].find(x=>x.value===val); if(i) i.checked=true; }
+
+function loadData(d){
+  if(!d || d._app!=="SSA-MYP-Lesson-Planner"){ toast("Not a valid lesson plan draft"); return; }
+  $("subject").value=d.subject||"Mathematics"; $("mypYear").value=d.mypYear||"Year 2 (Grade 7)";
+  buildSubjectDependent(d.related||[]);
+  TEXT_IDS.forEach(id=>{ $(id).value=d[id]||""; });
+  if(!$("district").value) $("district").value="Seminole County (SCPS)";
+  if(!$("firstDay").value) $("firstDay").value=DISTRICTS[$("district").value]||"";
+  document.querySelectorAll('input[name=keyConcept],input[name=globalContext],input[name=atl],input[name=lp]').forEach(i=>i.checked=false);
+  setRadio("keyConcept",d.keyConcept); setRadio("globalContext",d.globalContext);
+  (d.atl||[]).forEach(v=>setCheck("atl",v)); (d.lp||[]).forEach(v=>setCheck("lp",v));
+  (d.criteria||[]).forEach(L=>{ if($("crit"+L)) $("crit"+L).checked=true; });
+  document.querySelectorAll('input[name=comp]').forEach(i=>i.checked=(d.components||[]).includes(i.dataset.sec)||(i.dataset.sec==="daily"&&(d._v||1)<2));
+  applyPicker();
+  DAYS.forEach((_,i)=>DAY_FIELDS.forEach(([k])=>{ $(`d${i}_${k}`).value=(d.days&&d.days[i]&&d.days[i][k])||""; }));
+  markDayTabs(); updateWeekDates();
+}
+function setCheck(name,val){ const i=[...document.querySelectorAll(`input[name=${name}]`)].find(x=>x.value===val); if(i) i.checked=true; }
+
+/* autosave — archives the plan in the My Plans library, keyed by week */
+let _as, curKey=null;
+function libEntry(d){
+  const s=checklistStats(d);
+  return { savedAt:Date.now(), pct:s.total?Math.round(s.done/s.total*100):0,
+    unit:d.unitTitle, subject:d.subject, teacher:d.teacher, firstDay:d.firstDay,
+    course:(d.course||"").trim()||"General", data:d };
+}
+function planKey(d){ return (d.weekOf||"unsaved")+"|"+(((d.course||"").trim())||"General"); }
+function scheduleAutosave(){
+  clearTimeout(_as);
+  $("saveState").textContent="Saving…";
+  _as=setTimeout(()=>{
+    try{
+      const d=getData();
+      const k=planKey(d);
+      const lib=loadLib();
+      lib[k]=libEntry(d);
+      saveLib(lib);
+      curKey=k;
+      const t=new Date().toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit"});
+      $("saveState").textContent="Autosaved "+t;
+    }catch(e){ $("saveState").textContent=""; }
+  }, 800);
+}
+document.body.addEventListener("input", e=>{ if(notWizard(e)) scheduleAutosave(); });
+document.body.addEventListener("change", e=>{ if(notWizard(e)) scheduleAutosave(); });
+
+/* ═══════════ PREVIEW HTML ═══════════ */
+function sec(title, inner){ return inner && inner.trim() ? `<h3>${title}</h3>${inner}` : ""; }
+function para(t){ return t && t.trim() ? `<p>${esc(t)}</p>` : ""; }
+
+function buildDoc(d){
+  const on=id=>d.components.includes(id);
+  const subCrit=SUBJECTS[d.subject].criteria;
+  let weekLabel="—";
+  if(d.weekOf){
+    const mon=parseLocalDate(d.weekOf), fri=parseLocalDate(d.weekOf); fri.setDate(fri.getDate()+4);
+    weekLabel=mon.toLocaleDateString("en-US",{month:"short",day:"numeric"})+" – "+fri.toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"});
+  }
+  const wkN=schoolWeek(d.weekOf,d.firstDay);
+  let h=`<div class="pv-school">South Seminole Academy · IB MYP Weekly Lesson Plan</div>
+  <h1>Week of ${weekLabel}${wkN&&wkN>0?` · School Week ${wkN}`:""}</h1>
+  <table class="pv-meta"><tr>
+    <td><b>Teacher</b>${esc(d.teacher)||"—"}</td><td><b>Subject Group</b>${esc(d.subject)}</td>
+    <td><b>Course</b>${esc(d.course)||"—"}</td><td><b>MYP Year</b>${esc(d.mypYear)}</td></tr>
+    <tr><td><b>Unit</b>${esc(d.unitTitle)||"—"}</td><td><b>Period(s)</b>${esc(d.periods)||"—"}</td>
+    <td><b>Class Length</b>${esc(d.duration)||"—"}</td><td><b>Submitted</b>${new Date().toLocaleDateString("en-US")}</td></tr>
+    ${d.mathNation&&d.mathNation.trim()?`<tr><td colspan="4"><b>Math Nation Textbook Unit</b>${esc(d.mathNation)}</td></tr>`:""}</table>`;
+
+  if(on("keyConcept")||on("relatedConcepts")||on("globalContext")){
+    let rows="";
+    if(on("keyConcept")) rows+=`<td><b>Key Concept</b>${esc(d.keyConcept)||"—"}</td>`;
+    if(on("relatedConcepts")) rows+=`<td><b>Related Concepts</b>${d.related.map(esc).join(", ")||"—"}</td>`;
+    if(on("globalContext")) rows+=`<td><b>Global Context</b>${esc(d.globalContext)||"—"}</td>`;
+    h+=`<h3>Conceptual Understanding</h3><table class="pv-meta"><tr>${rows}</tr></table>`;
+    if(on("globalContext")) h+=para(d.gcExploration);
+  }
+  if(on("soi")) h+=sec("Statement of Inquiry", para(d.soiText));
+  if(on("inquiryQuestions")){
+    let q="";
+    if(d.qFactual.trim()) q+=`<li><b>Factual:</b> ${esc(d.qFactual)}</li>`;
+    if(d.qConceptual.trim()) q+=`<li><b>Conceptual:</b> ${esc(d.qConceptual)}</li>`;
+    if(d.qDebatable.trim()) q+=`<li><b>Debatable:</b> ${esc(d.qDebatable)}</li>`;
+    h+=sec("Inquiry Questions", q?`<ul>${q}</ul>`:"");
+  }
+  if(on("criteria")){
+    let c=d.criteria.map(L=>`<li><b>Criterion ${L}:</b> ${esc(subCrit["ABCD".indexOf(L)])}</li>`).join("");
+    h+=sec("MYP Objectives & Assessment Criteria",(c?`<ul>${c}</ul>`:"")+para(d.critNotes));
+  }
+  if(on("standards")) h+=sec("Content & State Standards", para(d.standardsText)+para(d.objectivesText?("Objectives: "+d.objectivesText):""));
+  if(on("atl")) h+=sec("Approaches to Learning (ATL)",(d.atl.length?`<p><b>Skills:</b> ${d.atl.map(esc).join("; ")}</p>`:"")+para(d.atlHow));
+  if(on("learnerProfile")&&d.lp.length) h+=sec("IB Learner Profile",`<p>${d.lp.map(esc).join(", ")}</p>`);
+  if(on("priorKnowledge")) h+=sec("Prior Knowledge", para(d.priorText));
+  if(on("daily")){
+    h+=`<h3>Daily Plans</h3>`;
+    let any=false;
+    DAYS.forEach((day,i)=>{
+      const dd=(d.days&&d.days[i])||{};
+      const has=["topic","standards","agenda","formative","homework"].some(k=>(dd[k]||"").trim());
+      if(!has) return;
+      any=true;
+      let dateStr="";
+      if(d.weekOf){ const dt=parseLocalDate(d.weekOf); dt.setDate(dt.getDate()+i); dateStr=" · "+fmtLong(dt); }
+      h+=`<table class="pv-seq" style="margin-bottom:10px"><tr><th colspan="2" style="font-size:0.74rem">${day}${esc(dateStr)}${dd.topic?(" — "+esc(dd.topic)):""}</th></tr>`;
+      if((dd.standards||"").trim()) h+=`<tr><td style="width:20%"><b>Standard(s)</b></td><td>${esc(dd.standards)}</td></tr>`;
+      if((dd.agenda||"").trim()) h+=`<tr><td><b>Agenda / Activities</b></td><td>${esc(dd.agenda)}</td></tr>`;
+      if((dd.formative||"").trim()) h+=`<tr><td><b>Formative Check</b></td><td>${esc(dd.formative)}</td></tr>`;
+      if((dd.homework||"").trim()) h+=`<tr><td><b>Homework</b></td><td>${esc(dd.homework)}</td></tr>`;
+      h+=`</table>`;
+    });
+    if(!any) h+=`<p>—</p>`;
+  }
+  if(on("summative")) h+=sec("Summative Assessment Connection", para(d.summativeText));
+  if(on("differentiation")){
+    let dd="";
+    if(d.diffSupport.trim()) dd+=`<li><b>Support:</b> ${esc(d.diffSupport)}</li>`;
+    if(d.diffExtend.trim()) dd+=`<li><b>Extension:</b> ${esc(d.diffExtend)}</li>`;
+    if(d.diffEll.trim()) dd+=`<li><b>ELL / ESE:</b> ${esc(d.diffEll)}</li>`;
+    h+=sec("Differentiation", dd?`<ul>${dd}</ul>`:"");
+  }
+  if(on("resources")) h+=sec("Resources & Materials", para(d.resourcesText));
+  if(on("service")) h+=sec("Service as Action", para(d.serviceText));
+  if(on("reflection")) h+=sec("Teacher Reflection", para(d.refPrior?("Before: "+d.refPrior):"")+para(d.refAfter?("After: "+d.refAfter):""));
+  return h;
+}
+
+function fileBase(d){
+  const t=(d.teacher||"MYP-Weekly-Plan").replace(/[^\w\- ]+/g,"").trim().replace(/\s+/g,"-");
+  return t+"_Week-of-"+(d.weekOf||new Date().toISOString().slice(0,10));
+}
+function download(blob, name){
+  const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=name;
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(a.href),3000);
+}
+
+/* ═══════════ ACTIONS ═══════════ */
+$("previewBtn").onclick=()=>{ $("pvDoc").innerHTML=buildDoc(getData()); document.body.classList.add("previewing"); window.scrollTo(0,0); };
+$("backBtn").onclick=()=>document.body.classList.remove("previewing");
+$("printBtn").onclick=()=>{ $("pvDoc").innerHTML=buildDoc(getData()); window.print(); };
+$("pvPrintBtn").onclick=()=>window.print();
+
+$("draftBtn").onclick=()=>{
+  const d=getData();
+  download(new Blob([JSON.stringify(d,null,2)],{type:"application/json"}), fileBase(d)+".json");
+  toast("Draft saved — keep this file to re-open your plan later");
+};
+$("loadBtn").onclick=()=>$("loadInput").click();
+$("loadInput").addEventListener("change", e=>{
+  const f=e.target.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=()=>{ try{ loadData(JSON.parse(r.result)); curKey=null; showEditor(); toast("Draft loaded"); }catch(err){ toast("Could not read that file"); } };
+  r.readAsText(f);
+  e.target.value="";
+});
+
+$("wordBtn").onclick=()=>{
+  const d=getData();
+  const doc=`<html xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"><title>MYP Weekly Lesson Plan — Week of ${esc(d.weekOf||"")}</title>
+  <style>
+    body{font-family:Calibri,Arial,sans-serif;font-size:11pt;color:#111;}
+    h1{font-size:16pt;margin:0 0 2pt;} h3{font-size:10pt;color:#2563eb;text-transform:uppercase;letter-spacing:1pt;border-bottom:1pt solid #ccc;margin:14pt 0 4pt;padding-bottom:2pt;}
+    .pv-school{font-size:8pt;text-transform:uppercase;letter-spacing:2pt;color:#888;font-weight:bold;margin-bottom:10pt;}
+    table{border-collapse:collapse;width:100%;margin-bottom:10pt;} td,th{border:1pt solid #ccc;padding:4pt 7pt;font-size:9.5pt;vertical-align:top;text-align:left;}
+    td b{font-size:7.5pt;text-transform:uppercase;letter-spacing:.5pt;color:#666;display:block;}
+    th{background:#f2f6fc;font-size:8pt;text-transform:uppercase;}
+    p,li{font-size:10pt;line-height:1.4;white-space:pre-wrap;}
+  </style></head><body>${buildDoc(d)}</body></html>`;
+  download(new Blob(["﻿"+doc],{type:"application/msword"}), fileBase(d)+".doc");
+  toast("Word document downloaded");
+};
+
+/* ═══════════ SUBMISSION ═══════════ */
+const CHAIR_EMAIL="myungkuh@gmail.com"; // ← department chair email
+
+$("driveBtn").addEventListener("click", ()=>toast("Drop your downloaded PDF/Word file into the department folder. Tip: the print dialog also offers “Save to Google Drive.”"));
+
+$("emailBtn").onclick=()=>{
+  const d=getData();
+  $("wordBtn").click(); // download the Word doc so it's ready to attach
+  const subj=encodeURIComponent(`Weekly Lesson Plan — ${d.teacher||"Teacher"} — Week of ${d.weekOf||""}`);
+  const body=encodeURIComponent(`Hi,\n\nAttached is my weekly lesson plan for the week of ${d.weekOf||""}.\n\nCourse: ${d.course||""}\nUnit: ${d.unitTitle||""}\n\nThanks!\n${d.teacher||""}`);
+  setTimeout(()=>{ window.location.href=`mailto:${CHAIR_EMAIL}?subject=${subj}&body=${body}`; }, 400);
+  toast("Word file downloaded — attach it to the email that opens");
+};
+
+/* ═══════════ SUBMISSION CHECKLIST ═══════════ */
+const CHK_RULES=[
+  { label:"Teacher name entered", test:d=>!!d.teacher.trim() },
+  { label:"Week Of date set", test:d=>!!d.weekOf },
+  { label:"Unit title entered", test:d=>!!d.unitTitle.trim() },
+  { label:"Key concept selected", comp:"keyConcept", test:d=>!!d.keyConcept },
+  { label:"Related concept(s) selected", comp:"relatedConcepts", test:d=>d.related.length>0 },
+  { label:"Global context selected", comp:"globalContext", test:d=>!!d.globalContext },
+  { label:"Statement of inquiry written", comp:"soi", test:d=>!!d.soiText.trim() },
+  { label:"At least one inquiry question", comp:"inquiryQuestions", test:d=>!!(d.qFactual.trim()||d.qConceptual.trim()||d.qDebatable.trim()) },
+  { label:"MYP criterion(s) checked", comp:"criteria", test:d=>d.criteria.length>0 },
+  { label:"Standards / benchmarks listed", comp:"standards", test:d=>!!d.standardsText.trim()||d.days.some(x=>x.standards.trim()) },
+  { label:"ATL skill(s) selected", comp:"atl", test:d=>d.atl.length>0 },
+  { label:"All 5 days have a topic", comp:"daily", test:d=>d.days.every(x=>x.topic.trim()) },
+  { label:"All 5 days have an agenda", comp:"daily", test:d=>d.days.every(x=>x.agenda.trim()) },
+  { label:"Formative checks planned", comp:"daily", test:d=>d.days.some(x=>x.formative.trim()) },
+  { label:"Differentiation noted", comp:"differentiation", test:d=>!!(d.diffSupport.trim()||d.diffExtend.trim()||d.diffEll.trim()) },
+  { label:"Resources listed", comp:"resources", test:d=>!!d.resourcesText.trim() }
+];
+function updateChecklist(){
+  const d=getData();
+  const active=CHK_RULES.filter(r=>!r.comp||d.components.includes(r.comp));
+  let done=0, html="";
+  active.forEach(r=>{
+    const ok=r.test(d); if(ok) done++;
+    html+=`<div class="chk-item${ok?" done":""}"><span class="ic">${ok?"✓":""}</span>${r.label}</div>`;
+  });
+  $("chkList").innerHTML=html;
+  const pct=active.length?Math.round(done/active.length*100):0;
+  $("chkFill").style.width=pct+"%";
+  $("chkFill").classList.toggle("complete",done===active.length);
+  $("chkCount").textContent=done===active.length?"All set — ready to submit! 🎉":`${done} of ${active.length} complete`;
+}
+document.body.addEventListener("input",e=>{ if(!notWizard(e)) return; clearTimeout(updateChecklist._h); updateChecklist._h=setTimeout(updateChecklist,300); });
+document.body.addEventListener("change",e=>{ if(notWizard(e)) updateChecklist(); });
+
+/* ═══════════ MY PLANS LIBRARY ═══════════ */
+const LIB_KEY="ssa-myp-plans";
+function loadLib(){ try{ return JSON.parse(localStorage.getItem(LIB_KEY))||{}; }catch(e){ return {}; } }
+function saveLib(lib){ try{ localStorage.setItem(LIB_KEY, JSON.stringify(lib)); }catch(e){} }
+function checklistStats(d){
+  const active=CHK_RULES.filter(r=>!r.comp||d.components.includes(r.comp));
+  return { done: active.filter(r=>r.test(d)).length, total: active.length };
+}
+function keyDate(k){ return k.split("|")[0]; }
+function keyClass(k){ return k.split("|")[1]||"General"; }
+function weekTitle(k){
+  const dtp=keyDate(k);
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(dtp)) return "Unsaved plan";
+  const mon=parseLocalDate(dtp), fri=parseLocalDate(dtp); fri.setDate(fri.getDate()+4);
+  return "Week of "+mon.toLocaleDateString("en-US",{month:"short",day:"numeric"})+" – "+fri.toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"});
+}
+function quarterOf(iso){
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(iso)) return 0;
+  for(let i=QUARTERS.length-1;i>=0;i--){ if(iso>=QUARTERS[i].bound) return QUARTERS[i].n; }
+  return 0;
+}
+function qRange(q){
+  const fmt=iso=>parseLocalDate(iso).toLocaleDateString("en-US",{month:"short",day:"numeric"});
+  return fmt(q.s)+" – "+fmt(q.e);
+}
+function updateClassList(){
+  const classes=[...new Set(Object.values(loadLib()).map(e=>e.course||"General"))].filter(c=>c!=="General").sort();
+  $("classList").innerHTML=classes.map(c=>`<option value="${esc(c)}">`).join("");
+}
+function showEditor(){ updateClassList(); document.body.classList.remove("homeview"); window.scrollTo(0,0); }
+function showHome(){ renderHome(); document.body.classList.add("homeview"); window.scrollTo(0,0); }
+
+let homeClass="__all";
+function renderHome(){
+  const lib=loadLib();
+  updateClassList();
+  const all=Object.keys(lib).sort((a,b)=>keyDate(b).localeCompare(keyDate(a))||keyClass(a).localeCompare(keyClass(b)));
+  /* class filter tabs (shown only when teaching more than one class) */
+  const classes=[...new Set(all.map(keyClass))].sort();
+  const tabs=$("classTabs");
+  if(classes.length>1){
+    if(homeClass!=="__all"&&!classes.includes(homeClass)) homeClass="__all";
+    tabs.innerHTML="";
+    [["__all","All Classes"],...classes.map(c=>[c,c])].forEach(([v,label])=>{
+      const b=document.createElement("button"); b.type="button";
+      if(v===homeClass) b.className="active";
+      b.textContent=label;
+      b.onclick=()=>{ homeClass=v; renderHome(); };
+      tabs.appendChild(b);
+    });
+    tabs.style.display="";
+  }else{ tabs.style.display="none"; homeClass="__all"; }
+
+  const keys=all.filter(k=>homeClass==="__all"||keyClass(k)===homeClass);
+  const list=$("planList"); list.innerHTML="";
+  if(!keys.length){
+    list.innerHTML=`<div class="home-empty">No saved plans yet — your work will appear here automatically as you type.</div>`;
+    return;
+  }
+  /* group by grading quarter, most recent first */
+  const groups={};
+  keys.forEach(k=>{ const q=quarterOf(keyDate(k)); (groups[q]=groups[q]||[]).push(k); });
+  Object.keys(groups).map(Number).sort((a,b)=>b-a).forEach(qn=>{
+    const head=document.createElement("div"); head.className="q-head";
+    const q=QUARTERS.find(x=>x.n===qn);
+    head.innerHTML=qn>0?`Quarter ${qn} <small>${qRange(q)}</small>`:`Other weeks`;
+    list.appendChild(head);
+    groups[qn].forEach(k=>list.appendChild(planRow(k,lib[k])));
+  });
+}
+function planRow(k,e){
+  const wk=schoolWeek(/^\d{4}/.test(keyDate(k))?keyDate(k):"", e.firstDay||"");
+  const row=document.createElement("div"); row.className="plan-row";
+  row.innerHTML=`<div class="plan-info">
+      <div class="pl-week">${esc(weekTitle(k))}<span class="pl-class">${esc(keyClass(k))}</span>${wk&&wk>0?`<small>School Week ${wk}</small>`:""}</div>
+      <div class="pl-meta">${esc(e.unit||"Untitled unit")} · ${esc(e.subject||"")} · edited ${new Date(e.savedAt).toLocaleDateString("en-US",{month:"short",day:"numeric"})}</div>
+    </div>
+    <span class="plan-pct${e.pct===100?" full":""}" title="Submission checklist completion">${e.pct||0}%</span>
+    <div class="plan-acts">
+      <button class="op" type="button">Open</button>
+      <button class="cp" type="button" title="Start next week's plan for this class from this one">Copy to new week</button>
+      <button class="del" type="button">Delete</button>
+    </div>`;
+  row.querySelector(".op").onclick=()=>{ loadData(e.data); curKey=k; showEditor(); };
+  row.querySelector(".cp").onclick=()=>{
+    const nd=JSON.parse(JSON.stringify(e.data));
+    const cls=keyClass(k);
+    const dt=/^\d{4}/.test(keyDate(k))?parseLocalDate(keyDate(k)):new Date();
+    dt.setDate(dt.getDate()+7);
+    const lib2=loadLib();
+    while(lib2[fmtISO(mondayOf(dt))+"|"+cls]) dt.setDate(dt.getDate()+7); // first free week for this class
+    nd.weekOf=fmtISO(mondayOf(dt));
+    nd.refAfter="";
+    loadData(nd); curKey=null; scheduleAutosave(); showEditor();
+    toast("Copied — now planning "+cls+", "+weekTitle(nd.weekOf).toLowerCase());
+  };
+  row.querySelector(".del").onclick=()=>{
+    if(!confirm("Delete the "+keyClass(k)+" plan for "+weekTitle(k)+"? This cannot be undone.")) return;
+    const lib2=loadLib(); delete lib2[k]; saveLib(lib2); renderHome();
+  };
+  return row;
+}
+
+function blankData(){
+  return { _app:"SSA-MYP-Lesson-Planner", _v:2, subject:"Mathematics", mypYear:"Year 2 (Grade 7)",
+    components:COMPONENTS.filter(c=>c.core).map(c=>c.id), days:[],
+    district:"Seminole County (SCPS)", firstDay:DISTRICTS["Seminole County (SCPS)"] };
+}
+$("homeBtn").onclick=showHome;
+$("newPlanBtn").onclick=()=>{ loadData(blankData()); curKey=null; defaultWeek(); updateWeekDates(); updateChecklist(); showEditor(); };
+$("homeOpenFile").onclick=()=>$("loadInput").click();
+
+/* migrate old single-draft storage into the library */
+try{
+  const old=localStorage.getItem("ssa-myp-draft");
+  if(old){
+    const d=JSON.parse(old);
+    const lib=loadLib(); const k=planKey(d);
+    if(!lib[k]) { lib[k]=libEntry(d); saveLib(lib); }
+    localStorage.removeItem("ssa-myp-draft");
+  }
+}catch(e){}
+/* upgrade week-only keys to week|class keys */
+try{
+  const lib=loadLib(); let changed=false;
+  Object.keys(lib).forEach(k=>{
+    if(!k.includes("|")){
+      const e=lib[k]; const c=(((e.data&&e.data.course)||"").trim())||"General";
+      e.course=c;
+      if(!lib[k+"|"+c]) lib[k+"|"+c]=e;
+      delete lib[k]; changed=true;
+    }
+  });
+  if(changed) saveLib(lib);
+}catch(e){}
+
+/* ═══════════ SCHEDULE WIZARD ═══════════ */
+const SET_KEY="ssa-myp-settings";
+function loadSettings(){ try{ return JSON.parse(localStorage.getItem(SET_KEY)); }catch(e){ return null; } }
+function saveSettings(s){ try{ localStorage.setItem(SET_KEY, JSON.stringify(s)); }catch(e){} }
+DAYS.forEach((day,i)=>{
+  $("wzDays").appendChild(chip("wzBd",day,"checkbox"));
+  const wrap=document.createElement("div");
+  wrap.innerHTML=`<label for="wzP${i}">${day.slice(0,3)}</label><input type="number" id="wzP${i}" min="0" max="12" value="6">`;
+  $("wzPeriods").appendChild(wrap);
+});
+function openWizard(){
+  const s=loadSettings();
+  if(s&&!s.skipped){
+    $("wzMin").value=s.min||50;
+    $("wzBlockMin").value=s.blockMin||90;
+    [...document.querySelectorAll('input[name=wzBd]')].forEach((inp,idx)=>inp.checked=(s.blockDays||[]).includes(idx));
+    DAYS.forEach((_,i)=>{ $("wzP"+i).value=(s.periods&&s.periods[i]!=null)?s.periods[i]:6; });
+  }
+  $("wizard").classList.add("open");
+}
+function applySchedule(){
+  const s=loadSettings();
+  DAYS.forEach((_,i)=>{
+    const el=$("ds"+i); if(!el) return;
+    if(!s||s.skipped){ el.textContent=""; return; }
+    const block=(s.blockDays||[]).includes(i);
+    const p=(s.periods&&s.periods[i]!=null)?s.periods[i]:"";
+    el.innerHTML=(block?`<span class="blk">Block day · ${s.blockMin} min</span>`:`${s.min} min`)+(p!==""?` · ${p} period${p===1?"":"s"}`:"");
+  });
+}
+$("schedBtn").onclick=openWizard;
+$("homeSchedBtn").onclick=openWizard;
+$("wzSkip").onclick=()=>{ if(!loadSettings()) saveSettings({skipped:true}); $("wizard").classList.remove("open"); };
+$("wzSave").onclick=()=>{
+  const s={
+    min:Math.max(1,parseInt($("wzMin").value,10)||50),
+    blockMin:Math.max(1,parseInt($("wzBlockMin").value,10)||90),
+    blockDays:[...document.querySelectorAll('input[name=wzBd]')].map((inp,idx)=>inp.checked?idx:-1).filter(x=>x>=0),
+    periods:DAYS.map((_,i)=>Math.max(0,parseInt($("wzP"+i).value,10)||0))
+  };
+  saveSettings(s);
+  applySchedule();
+  if(!$("duration").value.trim()) $("duration").value=s.min+" minutes";
+  $("wizard").classList.remove("open");
+  toast("Schedule saved — each day tab now shows your periods");
+};
+
+/* copy the open plan straight into next week (for lessons taught the same way) */
+$("copyWeekBtn").onclick=()=>{
+  const d=getData();
+  if(!d.weekOf){ toast("Set the Week Of date first"); return; }
+  const cls=((d.course||"").trim())||"General";
+  const lib=loadLib();
+  lib[planKey(d)]=libEntry(d); // archive the current week as-is
+  const dt=parseLocalDate(d.weekOf); dt.setDate(dt.getDate()+7);
+  while(lib[fmtISO(mondayOf(dt))+"|"+cls]) dt.setDate(dt.getDate()+7); // next free week for this class
+  const nd=JSON.parse(JSON.stringify(d));
+  nd.weekOf=fmtISO(mondayOf(dt)); nd.refAfter="";
+  loadData(nd); curKey=null;
+  lib[planKey(nd)]=libEntry(nd); saveLib(lib);
+  updateChecklist();
+  toast("Copied — you're now editing the "+weekTitle(nd.weekOf).toLowerCase());
+};
+
+/* default week: first week of school (if upcoming), else upcoming Monday */
+function defaultWeek(){
+  if(!$("weekOf").value){
+    const today=new Date(); today.setHours(0,0,0,0);
+    const fd=$("firstDay").value?parseLocalDate($("firstDay").value):null;
+    if(fd&&fd>today){
+      $("weekOf").value=fmtISO(mondayOf(fd));
+    }else{
+      const dt=new Date(); const dow=dt.getDay();
+      dt.setDate(dt.getDate()+(dow===1?0:((8-dow)%7||7))); // this Monday if today is Monday, else next Monday
+      $("weekOf").value=fmtISO(dt);
+    }
+  }
+}
+(function(){
+  defaultWeek();
+  updateWeekDates();
+  updateChecklist();
+  applySchedule();
+  if(Object.keys(loadLib()).length) showHome();
+  if(!localStorage.getItem(SET_KEY)) openWizard(); // first-time setup
+})();
+</script>
+</body>
+</html>
