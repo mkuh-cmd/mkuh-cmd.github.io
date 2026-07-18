@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Accommodation Tracker | SSA Math Hub</title>
+<style>
+  :root{
+    --navy:#1F3864;
+    --blue:#2E5496;
+    --gray:#444444;
+    --lightgray:#6b7280;
+    --rowfill:#EEF2F8;
+    --border:#B9C4D6;
+    --green:#1e7e34;
+    --red:#b02a37;
+    --amber:#a8710a;
+  }
+  *{box-sizing:border-box;}
+  body{
+    font-family:Arial, Helvetica, sans-serif;
+    margin:0;
+    background:#f4f6fa;
+    color:var(--gray);
+  }
+  header.app-header{
+    background:var(--navy);
+    color:#fff;
+    padding:18px 28px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  header.app-header .titles h1{
+    margin:0;
+    font-size:20px;
+    letter-spacing:.3px;
+  }
+  header.app-header .titles p{
+    margin:2px 0 0;
+    font-size:12.5px;
+    color:#c9d4e8;
+    font-style:italic;
+  }
+  .header-actions{display:flex;gap:8px;flex-wrap:wrap;}
+  button, .btn{
+    font-family:inherit;
+    cursor:pointer;
+    border:none;
+    border-radius:6px;
+    padding:8px 14px;
+    font-size:13px;
+    font-weight:600;
+  }
+  .btn-primary{background:var(--blue);color:#fff;}
+  .btn-primary:hover{background:var(--navy);}
+  .btn-ghost{background:#fff;color:var(--navy);border:1px solid var(--border);}
+  .btn-ghost:hover{background:var(--rowfill);}
+  .btn-danger{background:#fff;color:var(--red);border:1px solid var(--red);}
+  .btn-danger:hover{background:#fdeaec;}
+  .btn-small{padding:5px 9px;font-size:12px;}
+
+  main{max-width:1180px;margin:22px auto;padding:0 20px 60px;}
+
+  .toolbar{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    align-items:center;
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:14px 16px;
+    margin-bottom:18px;
+  }
+  .toolbar input[type="search"], .toolbar select{
+    font-family:inherit;
+    padding:8px 10px;
+    border:1px solid var(--border);
+    border-radius:6px;
+    font-size:13px;
+  }
+  .toolbar input[type="search"]{flex:1;min-width:180px;}
+  .toolbar .spacer{flex:1;}
+  .stat-pill{
+    font-size:12px;
+    color:var(--navy);
+    background:var(--rowfill);
+    border-radius:20px;
+    padding:5px 12px;
+    font-weight:600;
+    white-space:nowrap;
+  }
+
+  #emptyState{
+    text-align:center;
+    padding:60px 20px;
+    color:var(--lightgray);
+    background:#fff;
+    border:1px dashed var(--border);
+    border-radius:10px;
+  }
+  #emptyState h3{color:var(--navy);margin-bottom:6px;}
+
+  .card-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+    gap:14px;
+  }
+  .student-card{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:16px;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    border-top:4px solid var(--blue);
+  }
+  .student-card h3{margin:0;font-size:16px;color:var(--navy);}
+  .student-card .meta{font-size:12.5px;color:var(--lightgray);}
+  .badge-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;}
+  .badge{
+    font-size:11px;
+    font-weight:700;
+    padding:3px 8px;
+    border-radius:12px;
+    background:var(--rowfill);
+    color:var(--navy);
+    text-transform:uppercase;
+    letter-spacing:.3px;
+  }
+  .badge.iep{background:#e5f0ff;color:#1a4fa0;}
+  .badge.plan504{background:#fff0da;color:var(--amber);}
+  .badge.ell{background:#e6f7ee;color:var(--green);}
+  .badge.mtss{background:#f3e8ff;color:#6b21a8;}
+  .badge.other{background:#eee;color:#444;}
+  .card-footer{
+    margin-top:auto;
+    display:flex;
+    gap:6px;
+    flex-wrap:wrap;
+    padding-top:8px;
+    border-top:1px solid #eee;
+  }
+  .log-count{font-size:12px;color:var(--lightgray);}
+
+  /* Modal */
+  .modal-overlay{
+    position:fixed;inset:0;background:rgba(15,25,45,.55);
+    display:none;align-items:flex-start;justify-content:center;
+    padding:30px 16px;overflow-y:auto;z-index:50;
+  }
+  .modal-overlay.open{display:flex;}
+  .modal{
+    background:#fff;
+    width:100%;
+    max-width:880px;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 20px 60px rgba(0,0,0,.3);
+    margin-bottom:40px;
+  }
+  .modal-header{
+    background:var(--navy);
+    color:#fff;
+    padding:16px 22px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .modal-header h2{margin:0;font-size:17px;}
+  .modal-header .close-x{
+    background:transparent;color:#fff;font-size:18px;
+    border:none;cursor:pointer;padding:2px 8px;
+  }
+  .modal-body{padding:20px 22px;max-height:75vh;overflow-y:auto;}
+  .modal-footer{
+    padding:14px 22px;border-top:1px solid #eee;
+    display:flex;justify-content:flex-end;gap:10px;background:#fafbfd;
+  }
+
+  .form-section{margin-bottom:22px;}
+  .form-section h4{
+    color:var(--navy);
+    border-bottom:2px solid var(--navy);
+    padding-bottom:6px;
+    margin:0 0 12px;
+    font-size:14.5px;
+  }
+  .form-section .hint{font-size:12px;color:var(--lightgray);font-style:italic;margin:-6px 0 12px;}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .field{display:flex;flex-direction:column;gap:4px;margin-bottom:12px;}
+  .field label{font-size:12.5px;font-weight:700;color:var(--navy);}
+  .field input[type="text"], .field input[type="date"], .field select, .field textarea{
+    font-family:inherit;font-size:13.5px;
+    padding:8px 10px;border:1px solid var(--border);border-radius:6px;
+  }
+  .field textarea{resize:vertical;min-height:60px;}
+  .plan-type-row{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:6px;}
+  .plan-type-row label{font-size:13px;display:flex;align-items:center;gap:5px;font-weight:600;color:var(--gray);}
+  .other-plan-input{flex:1;min-width:160px;}
+
+  table.cat-table{width:100%;border-collapse:collapse;margin-bottom:16px;font-size:13px;}
+  table.cat-table th{
+    background:var(--navy);color:#fff;text-align:left;
+    padding:8px 10px;font-size:12.5px;
+  }
+  table.cat-table td{
+    padding:7px 10px;border-bottom:1px solid #eee;vertical-align:top;
+  }
+  table.cat-table tr:nth-child(even) td{background:var(--rowfill);}
+  table.cat-table td.chk{width:34px;text-align:center;}
+  table.cat-table td.item{width:46%;}
+  table.cat-table input[type="text"].note-input{
+    width:100%;border:1px solid var(--border);border-radius:5px;padding:5px 7px;font-size:12.5px;font-family:inherit;
+  }
+  table.cat-table input[type="checkbox"]{width:16px;height:16px;}
+
+  .log-table{width:100%;border-collapse:collapse;font-size:12.5px;}
+  .log-table th{background:var(--navy);color:#fff;padding:6px 8px;text-align:left;}
+  .log-table td{padding:6px 8px;border-bottom:1px solid #eee;}
+  .log-table input, .log-table textarea{
+    width:100%;border:1px solid var(--border);border-radius:5px;padding:5px 6px;font-family:inherit;font-size:12.5px;
+  }
+  .log-table textarea{min-height:32px;resize:vertical;}
+  .add-log-row{margin-top:8px;}
+  .rm-log{color:var(--red);background:none;border:none;cursor:pointer;font-weight:700;font-size:14px;}
+
+  .quarter-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+
+  /* Print view */
+  #printArea{display:none;}
+  @media print{
+    body *{visibility:hidden;}
+    #printArea, #printArea *{visibility:visible;}
+    #printArea{
+      display:block;position:absolute;top:0;left:0;width:100%;
+      padding:20px;font-family:Arial, sans-serif;color:#222;
+    }
+    .print-title{color:#1F3864;text-align:center;}
+    .print-sub{color:#1F3864;text-align:center;font-weight:bold;font-size:20px;margin-top:2px;}
+    .print-meta{color:#555;text-align:center;font-style:italic;font-size:11px;margin-bottom:14px;}
+    .print-section h4{color:#1F3864;border-bottom:2px solid #1F3864;padding-bottom:4px;}
+    table{width:100%;border-collapse:collapse;margin-bottom:12px;font-size:11px;}
+    th{background:#1F3864 !important;color:#fff !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;padding:5px 7px;text-align:left;}
+    td{padding:5px 7px;border-bottom:1px solid #ccc;}
+    .print-footer{text-align:center;color:#777;font-size:10px;margin-top:16px;}
+  }
+
+  footer.app-footer{
+    text-align:center;color:var(--lightgray);font-size:11.5px;
+    padding:20px 0 40px;
+  }
+  #toast{
+    position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+    background:var(--navy);color:#fff;padding:10px 18px;border-radius:8px;
+    font-size:13px;opacity:0;pointer-events:none;transition:opacity .25s;z-index:100;
+  }
+  #toast.show{opacity:1;}
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="titles">
+    <a href="index.html" style="color:#c9d4e8;font-size:12px;font-weight:600;text-decoration:none;">&#8592; SSA Math Hub</a>
+    <h1>SOUTH SEMINOLE ACADEMY — Student Accommodation Tracker</h1>
+    <p>Math Department · 2026–2027 · Saved automatically in this browser</p>
+  </div>
+  <div class="header-actions">
+    <button class="btn-ghost" id="importBtn">Import Backup</button>
+    <input type="file" id="importFile" accept="application/json" style="display:none;">
+    <button class="btn-ghost" id="exportBtn">Export Backup (JSON)</button>
+    <button class="btn-ghost" id="exportCsvBtn">Export Summary (CSV)</button>
+    <button class="btn-primary" id="newBtn">+ New Student Form</button>
+  </div>
+</header>
+
+<main>
+  <div class="toolbar">
+    <input type="search" id="searchInput" placeholder="Search by student, teacher, or course...">
+    <select id="filterPlan">
+      <option value="">All Plan Types</option>
+      <option value="IEP">IEP</option>
+      <option value="504">504 Plan</option>
+      <option value="ELL">ELL Plan</option>
+      <option value="MTSS">MTSS / RTI</option>
+      <option value="Other">Other</option>
+    </select>
+    <select id="sortBy">
+      <option value="updated">Sort: Recently Updated</option>
+      <option value="name">Sort: Student Name (A–Z)</option>
+      <option value="grade">Sort: Grade Level</option>
+    </select>
+    <div class="spacer"></div>
+    <span class="stat-pill" id="countPill">0 students</span>
+  </div>
+
+  <div id="emptyState" style="display:none;">
+    <h3>No student records yet</h3>
+    <p>Click "New Student Form" to add your first accommodation record.</p>
+  </div>
+
+  <div class="card-grid" id="cardGrid"></div>
+</main>
+
+<footer class="app-footer">
+  SSA Math Department · Department Chair resource · Data stays in this browser only — use Export Backup regularly and after major edits.
+</footer>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="modalTitle">New Student Accommodation Form</h2>
+      <button class="close-x" id="closeModalX">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-footer">
+      <button class="btn-ghost" id="printFromModal">Print / Save PDF</button>
+      <button class="btn-danger" id="deleteBtn" style="display:none;">Delete Record</button>
+      <button class="btn-ghost" id="cancelBtn">Cancel</button>
+      <button class="btn-primary" id="saveBtn">Save Record</button>
+    </div>
+  </div>
+</div>
+
+<div id="printArea"></div>
+<div id="toast"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  const STORAGE_KEY = "ssa_accommodation_records_v1";
+
+  const CATEGORY_DEFS = [
+    { key:"presentation", title:"Presentation of Content", items:[
+      "Read-aloud / text-to-speech for instructions and problems",
+      "Provide notes, guided notes, or a copy of the board work",
+      "Visual aids, manipulatives, or graphic organizers",
+      "Simplified or chunked instructions",
+      "Enlarged print / high-contrast materials"
+    ]},
+    { key:"response", title:"Response / Task Completion", items:[
+      "Calculator or reference sheet permitted",
+      "Scribe or speech-to-text for written responses",
+      "Reduced number of problems (same skill, less volume)",
+      "Alternative response format (oral, typed, etc.)",
+      "Extra space or graph paper provided"
+    ]},
+    { key:"timing", title:"Timing & Scheduling", items:[
+      "Extended time on classwork, quizzes, or tests (specify %)",
+      "Frequent breaks during extended tasks",
+      "Preferential test/quiz scheduling (e.g., morning, split over days)",
+      "Extended deadline for assignments"
+    ]},
+    { key:"setting", title:"Setting", items:[
+      "Preferential seating (specify location)",
+      "Small-group or separate testing location",
+      "Reduced-distraction environment",
+      "Access to movement breaks / alternative seating"
+    ]},
+    { key:"organization", title:"Organization & Behavior Support", items:[
+      "Checklist or planner for assignments",
+      "Visual or verbal schedule/transition cues",
+      "Behavior plan / check-in-check-out support",
+      "Assistive technology (specify device/software)"
+    ]}
+  ];
+
+  const PLAN_TYPES = ["IEP","504","ELL","MTSS","Other"];
+  const PLAN_LABELS = { IEP:"IEP", "504":"504 Plan", ELL:"ELL Plan", MTSS:"MTSS / RTI", Other:"Other" };
+
+  let records = [];
+  let editingId = null;
+
+  function loadRecords(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      records = raw ? JSON.parse(raw) : [];
+    }catch(e){
+      console.error("Failed to load records", e);
+      records = [];
+    }
+  }
+  function saveRecords(){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+  }
+
+  function uid(){
+    return "s_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2,8);
+  }
+
+  function blankCategories(){
+    const cats = {};
+    CATEGORY_DEFS.forEach(cd=>{
+      cats[cd.key] = cd.items.map(it => ({ item: it, checked:false, notes:"" }));
+    });
+    return cats;
+  }
+
+  function blankRecord(){
+    return {
+      id: uid(),
+      studentName:"", grade:"", coursePeriod:"", teacher:"", schoolYear:"2026-2027",
+      planTypes:[], planOther:"", planReviewDate:"", caseManager:"",
+      categories: blankCategories(),
+      additionalAccommodations:"",
+      implementationLog:[],
+      quarterlyNotes:{q1:"",q2:"",q3:"",q4:""},
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+  }
+
+  function toast(msg){
+    const t = document.getElementById("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    setTimeout(()=>t.classList.remove("show"), 1800);
+  }
+
+  // ---------- Rendering the card list ----------
+  function planBadgeClass(p){
+    if(p==="IEP") return "iep";
+    if(p==="504") return "plan504";
+    if(p==="ELL") return "ell";
+    if(p==="MTSS") return "mtss";
+    return "other";
+  }
+
+  function renderList(){
+    const search = document.getElementById("searchInput").value.trim().toLowerCase();
+    const filterPlan = document.getElementById("filterPlan").value;
+    const sortBy = document.getElementById("sortBy").value;
+
+    let list = records.filter(r=>{
+      const hay = (r.studentName + " " + r.teacher + " " + r.coursePeriod).toLowerCase();
+      const matchesSearch = !search || hay.includes(search);
+      const matchesPlan = !filterPlan || r.planTypes.includes(filterPlan);
+      return matchesSearch && matchesPlan;
+    });
+
+    list.sort((a,b)=>{
+      if(sortBy==="name") return a.studentName.localeCompare(b.studentName);
+      if(sortBy==="grade") return (a.grade||"").localeCompare(b.grade||"");
+      return new Date(b.updatedAt) - new Date(a.updatedAt);
+    });
+
+    const grid = document.getElementById("cardGrid");
+    grid.innerHTML = "";
+    document.getElementById("countPill").textContent = records.length + (records.length===1 ? " student" : " students");
+    document.getElementById("emptyState").style.display = records.length===0 ? "block" : "none";
+
+    list.forEach(r=>{
+      const card = document.createElement("div");
+      card.className = "student-card";
+      const badges = (r.planTypes.length ? r.planTypes : []).map(p=>`<span class="badge ${planBadgeClass(p)}">${PLAN_LABELS[p]||p}</span>`).join("");
+      card.innerHTML = `
+        <h3>${escapeHtml(r.studentName || "(Unnamed student)")}</h3>
+        <div class="meta">${escapeHtml(r.grade || "—")} &middot; ${escapeHtml(r.coursePeriod || "—")} &middot; ${escapeHtml(r.teacher || "—")}</div>
+        <div class="badge-row">${badges}</div>
+        <div class="log-count">${r.implementationLog.length} log ${r.implementationLog.length===1?"entry":"entries"} · updated ${formatDate(r.updatedAt)}</div>
+        <div class="card-footer">
+          <button class="btn-ghost btn-small" data-action="edit" data-id="${r.id}">Edit</button>
+          <button class="btn-ghost btn-small" data-action="print" data-id="${r.id}">Print</button>
+          <button class="btn-danger btn-small" data-action="delete" data-id="${r.id}">Delete</button>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+  function formatDate(iso){
+    if(!iso) return "";
+    const d = new Date(iso);
+    return d.toLocaleDateString(undefined,{ month:"short", day:"numeric", year:"numeric" });
+  }
+  function escapeHtml(str){
+    return String(str||"").replace(/[&<>"']/g, m=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[m]));
+  }
+
+  // ---------- Modal form ----------
+  function openModal(record){
+    editingId = record.id;
+    const isNew = !records.find(r=>r.id===record.id);
+    document.getElementById("modalTitle").textContent = isNew ? "New Student Accommodation Form" : "Edit Accommodation Form — " + (record.studentName || "");
+    document.getElementById("deleteBtn").style.display = isNew ? "none" : "inline-block";
+    document.getElementById("modalBody").innerHTML = buildFormHtml(record);
+    attachFormLogic(record);
+    document.getElementById("modalOverlay").classList.add("open");
+  }
+
+  function closeModal(){
+    document.getElementById("modalOverlay").classList.remove("open");
+    editingId = null;
+  }
+
+  function buildFormHtml(r){
+    const planCheckboxes = PLAN_TYPES.map(p=>{
+      const checked = r.planTypes.includes(p) ? "checked" : "";
+      return `<label><input type="checkbox" class="plan-type-cb" value="${p}" ${checked}> ${PLAN_LABELS[p]}</label>`;
+    }).join("");
+
+    const catTables = CATEGORY_DEFS.map(cd=>{
+      const rows = cd.items.map((item, idx)=>{
+        const rec = (r.categories[cd.key] && r.categories[cd.key][idx]) || { checked:false, notes:"" };
+        return `
+          <tr>
+            <td class="chk"><input type="checkbox" class="cat-chk" data-cat="${cd.key}" data-idx="${idx}" ${rec.checked?"checked":""}></td>
+            <td class="item">${escapeHtml(item)}</td>
+            <td><input type="text" class="note-input cat-note" data-cat="${cd.key}" data-idx="${idx}" placeholder="Notes / frequency" value="${escapeHtml(rec.notes)}"></td>
+          </tr>`;
+      }).join("");
+      return `
+        <table class="cat-table">
+          <thead><tr><th style="width:34px;">✓</th><th>${cd.title}</th><th>Notes / Frequency</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>`;
+    }).join("");
+
+    const logRows = r.implementationLog.map((entry, i)=>`
+      <tr data-log-idx="${i}">
+        <td><input type="date" class="log-date" value="${escapeHtml(entry.date||"")}"></td>
+        <td><input type="text" class="log-lesson" value="${escapeHtml(entry.lesson||"")}" placeholder="Lesson / unit"></td>
+        <td><input type="text" class="log-accom" value="${escapeHtml(entry.accommodation||"")}" placeholder="Accommodation used"></td>
+        <td><textarea class="log-notes" placeholder="Evidence / notes">${escapeHtml(entry.notes||"")}</textarea></td>
+        <td><input type="text" class="log-initials" value="${escapeHtml(entry.initials||"")}" style="width:50px;"></td>
+        <td><button type="button" class="rm-log" data-i="${i}" title="Remove entry">✕</button></td>
+      </tr>`).join("");
+
+    return `
+      <div class="form-section">
+        <h4>Student &amp; Class Information</h4>
+        <div class="grid-2">
+          <div class="field"><label>Student Name</label><input type="text" id="f_studentName" value="${escapeHtml(r.studentName)}"></div>
+          <div class="field"><label>Grade Level</label>
+            <select id="f_grade">
+              <option value="">Select grade</option>
+              <option value="6th" ${r.grade==="6th"?"selected":""}>6th</option>
+              <option value="7th" ${r.grade==="7th"?"selected":""}>7th</option>
+              <option value="8th" ${r.grade==="8th"?"selected":""}>8th</option>
+            </select>
+          </div>
+          <div class="field"><label>Course / Period</label><input type="text" id="f_coursePeriod" value="${escapeHtml(r.coursePeriod)}" placeholder="e.g., 7th Standard, Period 3"></div>
+          <div class="field"><label>Teacher of Record</label><input type="text" id="f_teacher" value="${escapeHtml(r.teacher)}"></div>
+          <div class="field"><label>School Year</label><input type="text" id="f_schoolYear" value="${escapeHtml(r.schoolYear)}"></div>
+          <div class="field"><label>Plan Review / Renewal Date</label><input type="date" id="f_planReviewDate" value="${escapeHtml(r.planReviewDate)}"></div>
+          <div class="field" style="grid-column:1/-1;"><label>Case Manager / ESE Contact</label><input type="text" id="f_caseManager" value="${escapeHtml(r.caseManager)}"></div>
+        </div>
+        <div class="field">
+          <label>Plan Type</label>
+          <div class="plan-type-row">${planCheckboxes}</div>
+          <input type="text" id="f_planOther" class="other-plan-input" placeholder="If 'Other', describe" value="${escapeHtml(r.planOther)}">
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h4>Accommodation Categories</h4>
+        <p class="hint">Check all that apply and add specifics in the Notes column.</p>
+        ${catTables}
+      </div>
+
+      <div class="form-section">
+        <h4>Additional Accommodations Specific to This Student</h4>
+        <div class="field"><textarea id="f_additional" placeholder="List anything not covered above...">${escapeHtml(r.additionalAccommodations)}</textarea></div>
+      </div>
+
+      <div class="form-section">
+        <h4>Implementation Log</h4>
+        <p class="hint">Add an entry each time an accommodation is used — this is the running record for lesson plan documentation.</p>
+        <table class="log-table" id="logTable">
+          <thead><tr><th style="width:120px;">Date</th><th>Lesson / Unit</th><th>Accommodation Used</th><th>Evidence / Notes</th><th style="width:60px;">Initials</th><th style="width:30px;"></th></tr></thead>
+          <tbody id="logTbody">${logRows}</tbody>
+        </table>
+        <button type="button" class="btn-ghost btn-small add-log-row" id="addLogRow">+ Add Log Entry</button>
+      </div>
+
+      <div class="form-section">
+        <h4>Quarterly Review Notes</h4>
+        <div class="quarter-grid">
+          <div class="field"><label>Quarter 1</label><textarea id="f_q1">${escapeHtml(r.quarterlyNotes.q1)}</textarea></div>
+          <div class="field"><label>Quarter 2</label><textarea id="f_q2">${escapeHtml(r.quarterlyNotes.q2)}</textarea></div>
+          <div class="field"><label>Quarter 3</label><textarea id="f_q3">${escapeHtml(r.quarterlyNotes.q3)}</textarea></div>
+          <div class="field"><label>Quarter 4</label><textarea id="f_q4">${escapeHtml(r.quarterlyNotes.q4)}</textarea></div>
+        </div>
+      </div>
+    `;
+  }
+
+  function attachFormLogic(r){
+    document.getElementById("addLogRow").addEventListener("click", ()=>{
+      const tbody = document.getElementById("logTbody");
+      const i = tbody.querySelectorAll("tr").length;
+      const tr = document.createElement("tr");
+      tr.setAttribute("data-log-idx", i);
+      tr.innerHTML = `
+        <td><input type="date" class="log-date" value=""></td>
+        <td><input type="text" class="log-lesson" placeholder="Lesson / unit"></td>
+        <td><input type="text" class="log-accom" placeholder="Accommodation used"></td>
+        <td><textarea class="log-notes" placeholder="Evidence / notes"></textarea></td>
+        <td><input type="text" class="log-initials" style="width:50px;"></td>
+        <td><button type="button" class="rm-log" title="Remove entry">✕</button></td>
+      `;
+      tbody.appendChild(tr);
+      attachRemoveHandlers();
+    });
+    attachRemoveHandlers();
+  }
+
+  function attachRemoveHandlers(){
+    document.querySelectorAll(".rm-log").forEach(btn=>{
+      btn.onclick = ()=> btn.closest("tr").remove();
+    });
+  }
+
+  function readFormIntoRecord(base){
+    const r = JSON.parse(JSON.stringify(base));
+    r.studentName = val("f_studentName");
+    r.grade = val("f_grade");
+    r.coursePeriod = val("f_coursePeriod");
+    r.teacher = val("f_teacher");
+    r.schoolYear = val("f_schoolYear");
+    r.planReviewDate = val("f_planReviewDate");
+    r.caseManager = val("f_caseManager");
+    r.planOther = val("f_planOther");
+    r.additionalAccommodations = val("f_additional");
+    r.quarterlyNotes = { q1: val("f_q1"), q2: val("f_q2"), q3: val("f_q3"), q4: val("f_q4") };
+
+    r.planTypes = Array.from(document.querySelectorAll(".plan-type-cb:checked")).map(cb=>cb.value);
+
+    CATEGORY_DEFS.forEach(cd=>{
+      document.querySelectorAll(`.cat-chk[data-cat="${cd.key}"]`).forEach(cb=>{
+        const idx = Number(cb.getAttribute("data-idx"));
+        r.categories[cd.key][idx].checked = cb.checked;
+      });
+      document.querySelectorAll(`.cat-note[data-cat="${cd.key}"]`).forEach(inp=>{
+        const idx = Number(inp.getAttribute("data-idx"));
+        r.categories[cd.key][idx].notes = inp.value;
+      });
+    });
+
+    const log = [];
+    document.querySelectorAll("#logTbody tr").forEach(tr=>{
+      const date = tr.querySelector(".log-date").value;
+      const lesson = tr.querySelector(".log-lesson").value;
+      const accommodation = tr.querySelector(".log-accom").value;
+      const notes = tr.querySelector(".log-notes").value;
+      const initials = tr.querySelector(".log-initials").value;
+      if(date || lesson || accommodation || notes || initials){
+        log.push({ date, lesson, accommodation, notes, initials });
+      }
+    });
+    r.implementationLog = log;
+    r.updatedAt = new Date().toISOString();
+    return r;
+  }
+
+  function val(id){
+    const el = document.getElementById(id);
+    return el ? el.value : "";
+  }
+
+  // ---------- Print ----------
+  function buildPrintHtml(r){
+    const planLine = (r.planTypes.length ? r.planTypes.map(p=>PLAN_LABELS[p]).join(", ") : "—") + (r.planOther ? " — " + escapeHtml(r.planOther) : "");
+    const catHtml = CATEGORY_DEFS.map(cd=>{
+      const rows = cd.items.map((item, idx)=>{
+        const rec = r.categories[cd.key][idx];
+        return `<tr><td style="width:26px;text-align:center;">${rec.checked?"☑":"☐"}</td><td>${escapeHtml(item)}</td><td>${escapeHtml(rec.notes)}</td></tr>`;
+      }).join("");
+      return `<div class="print-section"><h4>${cd.title}</h4><table><thead><tr><th style="width:26px;"></th><th>Accommodation</th><th>Notes / Frequency</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+    }).join("");
+
+    const logRows = r.implementationLog.length ? r.implementationLog.map(e=>`
+      <tr><td>${escapeHtml(e.date)}</td><td>${escapeHtml(e.lesson)}</td><td>${escapeHtml(e.accommodation)}</td><td>${escapeHtml(e.notes)}</td><td>${escapeHtml(e.initials)}</td></tr>
+    `).join("") : `<tr><td colspan="5" style="text-align:center;color:#888;">No log entries yet</td></tr>`;
+
+    return `
+      <div class="print-title">SOUTH SEMINOLE ACADEMY</div>
+      <div class="print-sub">STUDENT ACCOMMODATION DOCUMENTATION FORM</div>
+      <div class="print-meta">Math Department · ${escapeHtml(r.schoolYear)} · For use with lesson plan documentation</div>
+
+      <div class="print-section">
+        <h4>Student &amp; Class Information</h4>
+        <table>
+          <tr><td style="font-weight:bold;width:180px;">Student Name</td><td>${escapeHtml(r.studentName)}</td></tr>
+          <tr><td style="font-weight:bold;">Grade Level</td><td>${escapeHtml(r.grade)}</td></tr>
+          <tr><td style="font-weight:bold;">Course / Period</td><td>${escapeHtml(r.coursePeriod)}</td></tr>
+          <tr><td style="font-weight:bold;">Teacher of Record</td><td>${escapeHtml(r.teacher)}</td></tr>
+          <tr><td style="font-weight:bold;">Plan Type</td><td>${planLine}</td></tr>
+          <tr><td style="font-weight:bold;">Plan Review / Renewal Date</td><td>${escapeHtml(r.planReviewDate)}</td></tr>
+          <tr><td style="font-weight:bold;">Case Manager / ESE Contact</td><td>${escapeHtml(r.caseManager)}</td></tr>
+        </table>
+      </div>
+
+      ${catHtml}
+
+      <div class="print-section">
+        <h4>Additional Accommodations Specific to This Student</h4>
+        <p>${escapeHtml(r.additionalAccommodations) || "—"}</p>
+      </div>
+
+      <div class="print-section">
+        <h4>Implementation Log</h4>
+        <table>
+          <thead><tr><th>Date</th><th>Lesson / Unit</th><th>Accommodation Used</th><th>Evidence / Notes</th><th>Initials</th></tr></thead>
+          <tbody>${logRows}</tbody>
+        </table>
+      </div>
+
+      <div class="print-section">
+        <h4>Quarterly Review Notes</h4>
+        <table>
+          <tr><td style="font-weight:bold;width:120px;">Quarter 1</td><td>${escapeHtml(r.quarterlyNotes.q1) || "—"}</td></tr>
+          <tr><td style="font-weight:bold;">Quarter 2</td><td>${escapeHtml(r.quarterlyNotes.q2) || "—"}</td></tr>
+          <tr><td style="font-weight:bold;">Quarter 3</td><td>${escapeHtml(r.quarterlyNotes.q3) || "—"}</td></tr>
+          <tr><td style="font-weight:bold;">Quarter 4</td><td>${escapeHtml(r.quarterlyNotes.q4) || "—"}</td></tr>
+        </table>
+      </div>
+
+      <div class="print-section">
+        <h4>Sign-Off</h4>
+        <table>
+          <tr><td style="width:50%;">Teacher Signature: ______________________________</td><td>Date: ____________</td></tr>
+          <tr><td style="padding-top:20px;">ESE / 504 Coordinator Signature: ______________________________</td><td style="padding-top:20px;">Date: ____________</td></tr>
+        </table>
+      </div>
+
+      <div class="print-footer">SSA Math Department · Department Chair resource · Retain with lesson plans and student file</div>
+    `;
+  }
+
+  function printRecord(r){
+    document.getElementById("printArea").innerHTML = buildPrintHtml(r);
+    window.print();
+  }
+
+  // ---------- Export / Import ----------
+  function exportJson(){
+    const blob = new Blob([JSON.stringify(records, null, 2)], { type:"application/json" });
+    downloadBlob(blob, `SSA_Accommodations_Backup_${dateStamp()}.json`);
+    toast("Backup exported");
+  }
+
+  function exportCsv(){
+    const header = ["Student Name","Grade","Course/Period","Teacher","Plan Types","Plan Review Date","Case Manager","Log Entries","Last Updated"];
+    const rows = records.map(r=>[
+      r.studentName, r.grade, r.coursePeriod, r.teacher,
+      r.planTypes.map(p=>PLAN_LABELS[p]).join("; "),
+      r.planReviewDate, r.caseManager, r.implementationLog.length, formatDate(r.updatedAt)
+    ]);
+    const csv = [header, ...rows].map(row=>row.map(csvEscape).join(",")).join("\n");
+    const blob = new Blob([csv], { type:"text/csv" });
+    downloadBlob(blob, `SSA_Accommodations_Summary_${dateStamp()}.csv`);
+    toast("Summary CSV exported");
+  }
+
+  function csvEscape(v){
+    const s = String(v==null?"":v);
+    return /[",\n]/.test(s) ? '"' + s.replace(/"/g,'""') + '"' : s;
+  }
+  function dateStamp(){
+    return new Date().toISOString().slice(0,10);
+  }
+  function downloadBlob(blob, filename){
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  function importJson(file){
+    const reader = new FileReader();
+    reader.onload = e=>{
+      try{
+        const incoming = JSON.parse(e.target.result);
+        if(!Array.isArray(incoming)) throw new Error("Invalid file format");
+        const existingIds = new Set(records.map(r=>r.id));
+        let added = 0, updated = 0;
+        incoming.forEach(rec=>{
+          if(!rec.id) rec.id = uid();
+          if(existingIds.has(rec.id)){
+            const idx = records.findIndex(r=>r.id===rec.id);
+            records[idx] = rec;
+            updated++;
+          } else {
+            records.push(rec);
+            added++;
+          }
+        });
+        saveRecords();
+        renderList();
+        toast(`Imported: ${added} added, ${updated} updated`);
+      }catch(err){
+        alert("Could not import this file: " + err.message);
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  // ---------- Event wiring ----------
+  document.getElementById("newBtn").addEventListener("click", ()=> openModal(blankRecord()));
+  document.getElementById("closeModalX").addEventListener("click", closeModal);
+  document.getElementById("cancelBtn").addEventListener("click", closeModal);
+  document.getElementById("modalOverlay").addEventListener("click", e=>{
+    if(e.target.id === "modalOverlay") closeModal();
+  });
+
+  document.getElementById("saveBtn").addEventListener("click", ()=>{
+    const base = records.find(r=>r.id===editingId) || blankRecord();
+    if(!editingId) base.id = uid();
+    const updated = readFormIntoRecord(base);
+    if(!updated.studentName.trim()){
+      alert("Please enter a student name before saving.");
+      return;
+    }
+    const idx = records.findIndex(r=>r.id===updated.id);
+    if(idx>=0) records[idx] = updated; else records.push(updated);
+    saveRecords();
+    renderList();
+    closeModal();
+    toast("Record saved");
+  });
+
+  document.getElementById("deleteBtn").addEventListener("click", ()=>{
+    const rec = records.find(r=>r.id===editingId);
+    if(rec && confirm(`Delete the accommodation record for ${rec.studentName || "this student"}? This cannot be undone.`)){
+      records = records.filter(r=>r.id!==editingId);
+      saveRecords();
+      renderList();
+      closeModal();
+      toast("Record deleted");
+    }
+  });
+
+  document.getElementById("printFromModal").addEventListener("click", ()=>{
+    const base = records.find(r=>r.id===editingId) || blankRecord();
+    const current = readFormIntoRecord(base);
+    printRecord(current);
+  });
+
+  document.getElementById("cardGrid").addEventListener("click", e=>{
+    const btn = e.target.closest("button[data-action]");
+    if(!btn) return;
+    const id = btn.getAttribute("data-id");
+    const action = btn.getAttribute("data-action");
+    const rec = records.find(r=>r.id===id);
+    if(!rec) return;
+    if(action==="edit") openModal(rec);
+    if(action==="print") printRecord(rec);
+    if(action==="delete"){
+      if(confirm(`Delete the accommodation record for ${rec.studentName || "this student"}? This cannot be undone.`)){
+        records = records.filter(r=>r.id!==id);
+        saveRecords();
+        renderList();
+        toast("Record deleted");
+      }
+    }
+  });
+
+  document.getElementById("searchInput").addEventListener("input", renderList);
+  document.getElementById("filterPlan").addEventListener("change", renderList);
+  document.getElementById("sortBy").addEventListener("change", renderList);
+
+  document.getElementById("exportBtn").addEventListener("click", exportJson);
+  document.getElementById("exportCsvBtn").addEventListener("click", exportCsv);
+  document.getElementById("importBtn").addEventListener("click", ()=> document.getElementById("importFile").click());
+  document.getElementById("importFile").addEventListener("change", e=>{
+    if(e.target.files[0]) importJson(e.target.files[0]);
+    e.target.value = "";
+  });
+
+  document.addEventListener("keydown", e=>{
+    if(e.key === "Escape") closeModal();
+  });
+
+  // ---------- Init ----------
+  loadRecords();
+  renderList();
+})();
+</script>
+
+</body>
+</html>
