@@ -161,8 +161,38 @@ textarea { resize: vertical; min-height: 70px; }
 
 .wk-note { font-size: 0.72rem; font-weight: 700; color: var(--accent); margin-top: 5px; }
 
+/* mini week calendar */
+.cal { margin-top: 10px; border: 1.5px solid var(--line); border-radius: 12px; padding: 10px 12px 8px; background: #fff; max-width: 330px; }
+.cal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+.cal-head span { font: 700 0.78rem 'Lexend',sans-serif; }
+.cal-head button { border: none; background: none; font-size: 1.05rem; color: var(--slate); cursor: pointer; padding: 0 9px; border-radius: 6px; line-height: 1.4; }
+.cal-head button:hover { background: var(--bg); color: var(--accent); }
+table.cal-grid { width: 100%; border-collapse: separate; border-spacing: 0 3px; }
+.cal-grid th { font: 700 0.56rem 'Inter',sans-serif; text-transform: uppercase; color: var(--slate-light); padding: 2px 1px; text-align: center; }
+.cal-grid td { font: 500 0.72rem 'Inter',sans-serif; text-align: center; padding: 4px 1px; color: var(--ink); }
+.cal-grid td.out { color: #cbd5e1; }
+.cal-grid td.wknd { color: var(--slate-light); }
+.cal-grid td.today span { display: inline-block; min-width: 18px; border-radius: 50%; outline: 1.5px solid var(--accent); outline-offset: 1px; color: var(--accent); font-weight: 700; }
+.cal-grid td.wn { font: 700 0.56rem 'Inter',sans-serif; color: var(--slate-light); }
+tr.cal-week { cursor: pointer; }
+tr.cal-week td:first-child { border-radius: 7px 0 0 7px; }
+tr.cal-week td:last-child { border-radius: 0 7px 7px 0; }
+tr.cal-week:hover td { background: var(--bg); }
+tr.cal-week.sel td { background: var(--accent-soft); }
+tr.cal-week.sel td.wn { color: var(--accent); }
+.cal-dot { display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: var(--accent); margin-left: 3px; }
+.cal-hint { font: 500 0.62rem 'Inter',sans-serif; color: var(--slate-light); text-align: center; margin-top: 4px; }
+
 /* home / my plans */
-#home { display: none; max-width: 780px; margin: 0 auto; padding: 48px 20px 80px; }
+#home { display: none; max-width: 1040px; margin: 0 auto; padding: 48px 20px 80px; }
+.home-body { display: flex; gap: 22px; align-items: flex-start; }
+.home-side { flex: 0 0 310px; position: sticky; top: 20px; }
+.home-main { flex: 1; min-width: 0; }
+@media (max-width: 780px){ .home-body { flex-direction: column; } .home-side { position: static; flex: none; width: 100%; } .cal { max-width: none; } }
+.cal-filter { display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  background: var(--accent-soft); border: 1px solid #bfdbfe; border-radius: 10px;
+  padding: 8px 14px; margin-bottom: 12px; font: 600 0.78rem 'Inter',sans-serif; color: #1d4ed8; }
+.cal-filter button { background: none; border: none; color: #1d4ed8; font: 700 0.74rem 'Inter',sans-serif; cursor: pointer; text-decoration: underline; }
 body.homeview #home { display: block; }
 body.homeview .app { display: none; }
 .home-actions { display: flex; gap: 10px; justify-content: center; margin: 6px 0 26px; flex-wrap: wrap; }
@@ -172,8 +202,9 @@ body.homeview .app { display: none; }
 .home-actions .home-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
 .home-actions .home-primary:hover { background: #1d4ed8; color: #fff; }
 .plan-row { display: flex; align-items: center; gap: 14px; background: #fff; border: 1.5px solid var(--line);
-  border-radius: 14px; padding: 16px 18px; margin-bottom: 10px; transition: border-color .15s var(--ease); flex-wrap: wrap; }
+  border-radius: 14px; padding: 16px 18px; margin-bottom: 10px; transition: border-color .15s var(--ease), background .15s var(--ease); flex-wrap: wrap; cursor: pointer; }
 .plan-row:hover { border-color: var(--accent); }
+.plan-row.sel { border-color: var(--accent); background: var(--accent-soft); }
 .plan-info { flex: 1; min-width: 200px; }
 .plan-info .pl-week { font: 700 0.92rem 'Lexend',sans-serif; }
 .plan-info .pl-week small { font: 600 0.7rem 'Inter',sans-serif; color: var(--accent); margin-left: 8px; }
@@ -277,8 +308,27 @@ body.previewing #preview { display: block; max-width: 800px; margin: 0 auto; pad
     <button id="homeOpenFile" type="button">Open draft file…</button>
     <button id="homeSchedBtn" type="button" title="Period length, block days, and periods per day">⚙ Schedule Settings</button>
   </div>
-  <div id="classTabs"></div>
-  <div id="planList"></div>
+  <div class="home-body">
+    <aside class="home-side">
+      <div class="cal" id="miniCal">
+        <div class="cal-head">
+          <button id="calPrev" type="button" title="Previous month">‹</button>
+          <span id="calTitle"></span>
+          <button id="calNext" type="button" title="Next month">›</button>
+        </div>
+        <table class="cal-grid">
+          <thead><tr><th title="School week">#</th><th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th>Sa</th><th>Su</th></tr></thead>
+          <tbody id="calBody"></tbody>
+        </table>
+        <div class="cal-hint">Click a week to see its plans · <span class="cal-dot" style="vertical-align:1px"></span> = plan saved</div>
+      </div>
+    </aside>
+    <div class="home-main">
+      <div id="classTabs"></div>
+      <div id="calFilterNote" class="cal-filter hidden"></div>
+      <div id="planList"></div>
+    </div>
+  </div>
   <p class="home-note">Plans are saved automatically in this browser as you type. Use Save in the toolbar for a backup file you can move between computers.</p>
 </div>
 
@@ -725,6 +775,39 @@ function updateWeekDates(){
 }
 $("weekOf").addEventListener("change",updateWeekDates);
 
+/* ─── home week calendar (next to plan list) ─── */
+var calMonth=null, calSelWeek=null;
+function renderCal(){
+  if(!calMonth){ const d0=calSelWeek?parseLocalDate(calSelWeek):new Date(); calMonth=new Date(d0.getFullYear(),d0.getMonth(),1); }
+  $("calTitle").textContent=calMonth.toLocaleDateString("en-US",{month:"long",year:"numeric"});
+  let lib={}; try{ lib=loadLib(); }catch(e){}
+  const planWeeks=new Set(Object.keys(lib).map(k=>k.split("|")[0]));
+  const todayISO=fmtISO(new Date());
+  const cur=mondayOf(new Date(calMonth));
+  let html="";
+  for(let r=0;r<6;r++){
+    const monISO=fmtISO(cur);
+    const wk=schoolWeek(monISO,$("firstDay").value);
+    html+=`<tr class="cal-week${monISO===calSelWeek?" sel":""}" data-mon="${monISO}"><td class="wn">${wk&&wk>0?wk:""}${planWeeks.has(monISO)?'<span class="cal-dot"></span>':""}</td>`;
+    for(let c=0;c<7;c++){
+      const cls=[cur.getMonth()!==calMonth.getMonth()?"out":"",c>=5?"wknd":"",fmtISO(cur)===todayISO?"today":""].filter(Boolean).join(" ");
+      const n=fmtISO(cur)===todayISO?`<span>${cur.getDate()}</span>`:cur.getDate();
+      html+=`<td class="${cls}">${n}</td>`;
+      cur.setDate(cur.getDate()+1);
+    }
+    html+="</tr>";
+  }
+  $("calBody").innerHTML=html;
+  document.querySelectorAll("#calBody tr.cal-week").forEach(tr=>{
+    tr.onclick=()=>{
+      calSelWeek=(calSelWeek===tr.dataset.mon)?null:tr.dataset.mon; // click again to clear
+      renderHome(); renderCal();
+    };
+  });
+}
+$("calPrev").onclick=()=>{ calMonth.setMonth(calMonth.getMonth()-1); renderCal(); };
+$("calNext").onclick=()=>{ calMonth.setMonth(calMonth.getMonth()+1); renderCal(); };
+
 /* ─── school district / first day ─── */
 Object.keys(DISTRICTS).forEach(k=>{
   const o=document.createElement("option"); o.textContent=k; $("district").appendChild(o);
@@ -1020,13 +1103,19 @@ function updateClassList(){
   $("classList").innerHTML=classes.map(c=>`<option value="${esc(c)}">`).join("");
 }
 function showEditor(){ updateClassList(); document.body.classList.remove("homeview"); window.scrollTo(0,0); }
-function showHome(){ renderHome(); document.body.classList.add("homeview"); window.scrollTo(0,0); }
+function showHome(){ renderHome(); renderCal(); document.body.classList.add("homeview"); window.scrollTo(0,0); }
+function newPlanForWeek(iso){
+  loadData(blankData()); curKey=null;
+  $("weekOf").value=iso; updateWeekDates(); updateChecklist();
+  showEditor();
+  toast("Planning the "+weekTitle(iso).toLowerCase());
+}
 
 let homeClass="__all";
 function renderHome(){
   const lib=loadLib();
   updateClassList();
-  const all=Object.keys(lib).sort((a,b)=>keyDate(b).localeCompare(keyDate(a))||keyClass(a).localeCompare(keyClass(b)));
+  const all=Object.keys(lib).sort((a,b)=>keyDate(a).localeCompare(keyDate(b))||keyClass(a).localeCompare(keyClass(b))); // oldest first
   /* class filter tabs (shown only when teaching more than one class) */
   const classes=[...new Set(all.map(keyClass))].sort();
   const tabs=$("classTabs");
@@ -1043,26 +1132,51 @@ function renderHome(){
     tabs.style.display="";
   }else{ tabs.style.display="none"; homeClass="__all"; }
 
+  /* week highlight note (no filtering — all plans stay visible) */
+  const note=$("calFilterNote");
+  if(calSelWeek){
+    const hasAny=all.some(k=>keyDate(k)===calSelWeek);
+    note.classList.remove("hidden");
+    note.innerHTML=`<span>Highlighting the ${esc(weekTitle(calSelWeek).toLowerCase())}</span>
+      <span>${hasAny?"":`<button type="button" id="calWeekNew">＋ New plan for this week</button> · `}<button type="button" id="calFilterClear">Clear</button></span>`;
+    const nb=note.querySelector("#calWeekNew");
+    if(nb) nb.onclick=()=>newPlanForWeek(calSelWeek);
+    note.querySelector("#calFilterClear").onclick=()=>{ calSelWeek=null; renderHome(); renderCal(); };
+  }else{
+    note.classList.add("hidden"); note.innerHTML="";
+  }
   const keys=all.filter(k=>homeClass==="__all"||keyClass(k)===homeClass);
   const list=$("planList"); list.innerHTML="";
   if(!keys.length){
     list.innerHTML=`<div class="home-empty">No saved plans yet — your work will appear here automatically as you type.</div>`;
     return;
   }
-  /* group by grading quarter, most recent first */
+  /* group by grading quarter, Q1 → Q4 (oldest at top) */
   const groups={};
   keys.forEach(k=>{ const q=quarterOf(keyDate(k)); (groups[q]=groups[q]||[]).push(k); });
-  Object.keys(groups).map(Number).sort((a,b)=>b-a).forEach(qn=>{
+  Object.keys(groups).map(Number).sort((a,b)=>(a===0?9:a)-(b===0?9:b)).forEach(qn=>{
     const head=document.createElement("div"); head.className="q-head";
     const q=QUARTERS.find(x=>x.n===qn);
     head.innerHTML=qn>0?`Quarter ${qn} <small>${qRange(q)}</small>`:`Other weeks`;
     list.appendChild(head);
     groups[qn].forEach(k=>list.appendChild(planRow(k,lib[k])));
   });
+  const selRow=list.querySelector(".plan-row.sel");
+  if(selRow&&selRow.scrollIntoView) selRow.scrollIntoView({behavior:"smooth",block:"nearest"});
 }
 function planRow(k,e){
   const wk=schoolWeek(/^\d{4}/.test(keyDate(k))?keyDate(k):"", e.firstDay||"");
-  const row=document.createElement("div"); row.className="plan-row";
+  const row=document.createElement("div");
+  row.className="plan-row"+(keyDate(k)===calSelWeek?" sel":"");
+  row.title="Click to highlight this week on the calendar";
+  row.addEventListener("click",ev=>{
+    if(ev.target.closest("button")) return; // action buttons keep their own behavior
+    const iso=keyDate(k);
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(iso)) return;
+    calSelWeek=(calSelWeek===iso)?null:iso;
+    if(calSelWeek){ const dtx=parseLocalDate(iso); calMonth=new Date(dtx.getFullYear(),dtx.getMonth(),1); }
+    renderHome(); renderCal();
+  });
   row.innerHTML=`<div class="plan-info">
       <div class="pl-week">${esc(weekTitle(k))}<span class="pl-class">${esc(keyClass(k))}</span>${wk&&wk>0?`<small>School Week ${wk}</small>`:""}</div>
       <div class="pl-meta">${esc(e.unit||"Untitled unit")} · ${esc(e.subject||"")} · edited ${new Date(e.savedAt).toLocaleDateString("en-US",{month:"short",day:"numeric"})}</div>
