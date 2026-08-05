@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Google Slides Generator | The Calculated Classroom</title>
 <script src="https://accounts.google.com/gsi/client" async defer onload="window.__gisReady=true"></script>
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 <style>
   :root{
     --navy:#1F3864;
@@ -91,10 +92,23 @@
   #emptyDeck h3{color:var(--navy);margin-bottom:6px;}
 
   .slide-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:12px;border-left:5px solid var(--blue);}
-  .slide-card-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+  .slide-card-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;}
   .slide-index{font-size:11px;font-weight:800;color:#fff;background:var(--blue);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
   .slide-type{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--lightgray);font-weight:700;flex:1;}
+  .slide-source{font-size:10.5px;color:#7c3aed;background:#f3e8ff;border-radius:20px;padding:2px 9px;font-weight:700;white-space:nowrap;}
   .slide-actions{display:flex;gap:4px;}
+
+  /* HUB IMPORT PANEL */
+  .hub-row{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;}
+  .hub-row .field{flex:1;min-width:180px;margin-bottom:0;}
+  .hub-status{font-size:12.5px;color:var(--lightgray);margin-top:10px;}
+  .hub-slide-list{margin-top:12px;display:flex;flex-direction:column;gap:6px;max-height:360px;overflow-y:auto;}
+  .hub-slide-item{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--border);border-radius:8px;padding:8px 10px;background:#fafbfe;}
+  .hub-slide-item input[type="checkbox"]{margin-top:3px;}
+  .hub-slide-num{font-size:11px;font-weight:800;color:var(--lightgray);min-width:18px;}
+  .hub-slide-title{font-size:13px;font-weight:700;color:var(--navy);}
+  .hub-slide-body{font-size:12px;color:var(--lightgray);margin-top:2px;white-space:pre-line;}
+  .hub-slide-empty{font-style:italic;color:#a3a3a3;}
 
   .result-box{margin-top:14px;padding:14px 16px;border-radius:8px;background:#eaf7ee;border:1px solid #bfe6c9;display:none;}
   .result-box.show{display:block;}
@@ -140,6 +154,31 @@
       <button class="btn btn-primary" id="saveClientIdBtn" style="align-self:flex-end;">Save</button>
     </div>
     <div class="log" id="setupLog"></div>
+  </div>
+
+  <div class="panel" id="hubPanel">
+    <h2>Pull slides from the SSA Math Hub</h2>
+    <div class="sub">Browse a lesson from the Math Hub's existing slide decks (7th Standard, 7th Accelerated, RAMP 6) and pull its slides straight into this deck &mdash; titles and bullet text are extracted automatically from the real .pptx.</div>
+    <div class="hub-row">
+      <div class="field">
+        <label for="hubSubject">Subject</label>
+        <select id="hubSubject"></select>
+      </div>
+      <div class="field">
+        <label for="hubUnit">Unit</label>
+        <select id="hubUnit"></select>
+      </div>
+      <div class="field">
+        <label for="hubLesson">Lesson</label>
+        <select id="hubLesson"></select>
+      </div>
+      <button class="btn btn-primary" id="hubLoadBtn">Preview Slides</button>
+    </div>
+    <div class="hub-status" id="hubStatus"></div>
+    <div class="hub-slide-list" id="hubSlideList"></div>
+    <div style="margin-top:10px;">
+      <button class="btn btn-primary" id="hubAddBtn" style="display:none;">Add selected slides to deck</button>
+    </div>
   </div>
 
   <div class="layout">
@@ -259,6 +298,13 @@ function addSlide(tplId){
   renderDeck();
 }
 
+function addDeckItem(item){
+  item.uid = 'u'+(state.uidSeed++);
+  state.deck.push(item);
+  saveDeck();
+  renderDeck();
+}
+
 // ---------- deck builder ----------
 function renderDeck(){
   var list = $('deckList');
@@ -273,6 +319,7 @@ function renderDeck(){
       '<div class="slide-card-head">' +
         '<span class="slide-index">'+(i+1)+'</span>' +
         '<span class="slide-type">'+t.icon+' '+t.name+'</span>' +
+        (item.source ? '<span class="slide-source">📚 '+escHtml(item.source)+'</span>' : '') +
         '<div class="slide-actions">' +
           '<button class="btn btn-ghost btn-icon" data-act="up" title="Move up">&#8593;</button>' +
           '<button class="btn btn-ghost btn-icon" data-act="down" title="Move down">&#8595;</button>' +
@@ -492,10 +539,182 @@ $('generateBtn').addEventListener('click', function(){
   });
 });
 
+// ---------- SSA Math Hub import ----------
+var HUB_SITE_ROOT = 'https://mkuh-cmd.github.io/ssa-math-resources/';
+var hubManifest = null;
+var hubParsedSlides = [];
+
+function hubSetStatus(msg){ $('hubStatus').textContent = msg || ''; }
+
+function hubPopulateSubjects(){
+  var sel = $('hubSubject');
+  sel.innerHTML = hubManifest.subjects.map(function(s, i){
+    return '<option value="'+i+'">'+escAttr(s.label)+'</option>';
+  }).join('');
+  hubPopulateUnits();
+}
+
+function hubPopulateUnits(){
+  var subject = hubManifest.subjects[Number($('hubSubject').value || 0)];
+  var seen = [], units = [];
+  subject.lessons.forEach(function(l){
+    var key = String(l.unit);
+    if(seen.indexOf(key) === -1){ seen.push(key); units.push(l); }
+  });
+  var sel = $('hubUnit');
+  sel.innerHTML = units.map(function(l, i){
+    var label = (typeof l.unit === 'number' ? 'Unit '+l.unit : l.unit) + ' — ' + l.unitName;
+    return '<option value="'+escAttr(String(l.unit))+'">'+escAttr(label)+'</option>';
+  }).join('');
+  hubPopulateLessons();
+}
+
+function hubPopulateLessons(){
+  var subject = hubManifest.subjects[Number($('hubSubject').value || 0)];
+  var unitKey = $('hubUnit').value;
+  var lessons = subject.lessons.filter(function(l){ return String(l.unit) === unitKey; });
+  var sel = $('hubLesson');
+  sel.innerHTML = lessons.map(function(l, i){
+    return '<option value="'+i+'">'+escAttr(l.ref+' — '+l.name)+'</option>';
+  }).join('');
+  sel.__lessons = lessons;
+}
+
+$('hubSubject').addEventListener('change', hubPopulateUnits);
+$('hubUnit').addEventListener('change', hubPopulateLessons);
+
+function hubGetSelectedLesson(){
+  var lessons = $('hubLesson').__lessons || [];
+  return lessons[Number($('hubLesson').value || 0)];
+}
+
+function hubExtractSlideText(xmlDoc){
+  var shapes = Array.prototype.slice.call(xmlDoc.getElementsByTagName('p:sp'));
+  var title = '', bodyLines = [];
+  shapes.forEach(function(sp){
+    var isTitle = false;
+    var phEls = sp.getElementsByTagName('p:ph');
+    if(phEls.length){
+      var pt = phEls[0].getAttribute('type') || '';
+      if(pt === 'title' || pt === 'ctrTitle') isTitle = true;
+    }
+    var txBodies = sp.getElementsByTagName('p:txBody');
+    if(!txBodies.length) return;
+    var paras = Array.prototype.slice.call(txBodies[0].getElementsByTagName('a:p'));
+    var lines = paras.map(function(p){
+      var runs = Array.prototype.slice.call(p.getElementsByTagName('a:t'));
+      return runs.map(function(r){ return r.textContent; }).join('');
+    }).filter(function(l){ return l.trim().length; });
+    if(isTitle){ title = lines.join(' '); }
+    else { lines.forEach(function(l){ bodyLines.push(l); }); }
+  });
+  if(!title && bodyLines.length){ title = bodyLines.shift(); }
+  return { title: title.trim(), body: bodyLines.join('\n').trim() };
+}
+
+function hubGetOrderedSlideFiles(zip){
+  return zip.file('ppt/presentation.xml').async('string').then(function(xml){
+    var doc = new DOMParser().parseFromString(xml, 'application/xml');
+    var ids = Array.prototype.slice.call(doc.getElementsByTagName('p:sldId')).map(function(el){
+      return el.getAttribute('r:id');
+    });
+    return zip.file('ppt/_rels/presentation.xml.rels').async('string').then(function(relXml){
+      var relDoc = new DOMParser().parseFromString(relXml, 'application/xml');
+      var rels = {};
+      Array.prototype.slice.call(relDoc.getElementsByTagName('Relationship')).forEach(function(r){
+        rels[r.getAttribute('Id')] = r.getAttribute('Target');
+      });
+      return ids.map(function(id){ return 'ppt/' + rels[id]; }).filter(function(f){ return f.indexOf('slides/slide') !== -1; });
+    });
+  });
+}
+
+function hubRenderSlideList(){
+  var list = $('hubSlideList');
+  if(!hubParsedSlides.length){ list.innerHTML=''; $('hubAddBtn').style.display='none'; return; }
+  list.innerHTML = hubParsedSlides.map(function(s, i){
+    var body = s.body ? escHtml(s.body) : '<span class="hub-slide-empty">(no text extracted — image/graphic slide)</span>';
+    return '<label class="hub-slide-item">' +
+      '<input type="checkbox" data-hub-idx="'+i+'" '+(s.title||s.body ? 'checked' : '')+'>' +
+      '<div><div><span class="hub-slide-num">'+(i+1)+'.</span> <span class="hub-slide-title">'+escHtml(s.title||'(untitled)')+'</span></div>' +
+      '<div class="hub-slide-body">'+body+'</div></div>' +
+      '</label>';
+  }).join('');
+  $('hubAddBtn').style.display = 'inline-block';
+}
+
+$('hubLoadBtn').addEventListener('click', function(){
+  var lesson = hubGetSelectedLesson();
+  var subject = hubManifest.subjects[Number($('hubSubject').value || 0)];
+  if(!lesson){ hubSetStatus('Pick a subject, unit and lesson first.'); return; }
+  hubParsedSlides = [];
+  hubRenderSlideList();
+  var btn = $('hubLoadBtn');
+  btn.disabled = true; btn.textContent = 'Loading…';
+  hubSetStatus('Fetching '+lesson.ref+' — '+lesson.name+'…');
+  var url = HUB_SITE_ROOT + lesson.path;
+  fetch(url).then(function(res){
+    if(!res.ok) throw new Error('Could not fetch the lesson file (status '+res.status+'). Make sure the SSA Math Hub site is deployed and reachable.');
+    return res.arrayBuffer();
+  }).then(function(buf){
+    return JSZip.loadAsync(buf);
+  }).then(function(zip){
+    hubSetStatus('Reading slides…');
+    return hubGetOrderedSlideFiles(zip).then(function(files){
+      return Promise.all(files.map(function(f){
+        return zip.file(f).async('string').then(function(xml){
+          var doc = new DOMParser().parseFromString(xml, 'application/xml');
+          return hubExtractSlideText(doc);
+        });
+      }));
+    });
+  }).then(function(slides){
+    hubParsedSlides = slides.map(function(s){
+      s.subjectLabel = subject.label; s.lessonRef = lesson.ref; s.lessonName = lesson.name;
+      return s;
+    });
+    hubRenderSlideList();
+    hubSetStatus(slides.length+' slide(s) found in '+lesson.ref+' — '+lesson.name+'. Uncheck any you don\'t want, then add them to your deck.');
+  }).catch(function(err){
+    hubSetStatus('Error: '+err.message);
+  }).finally(function(){
+    btn.disabled = false; btn.textContent = 'Preview Slides';
+  });
+});
+
+$('hubAddBtn').addEventListener('click', function(){
+  var checks = Array.prototype.slice.call(document.querySelectorAll('#hubSlideList input[type="checkbox"]:checked'));
+  if(!checks.length){ hubSetStatus('Select at least one slide to add.'); return; }
+  checks.forEach(function(cb){
+    var s = hubParsedSlides[Number(cb.getAttribute('data-hub-idx'))];
+    addDeckItem({
+      templateId: 'blank',
+      title: s.title || '',
+      subtitle: '',
+      body: s.body || '',
+      source: s.subjectLabel+' · '+s.lessonRef
+    });
+  });
+  hubSetStatus('Added '+checks.length+' slide(s) to your deck below.');
+});
+
+function hubInit(){
+  fetch('ssa-math-hub-manifest.json').then(function(res){
+    if(!res.ok) throw new Error('manifest not found');
+    return res.json();
+  }).then(function(data){
+    hubManifest = data;
+    hubPopulateSubjects();
+  }).catch(function(err){
+    $('hubPanel').style.display = 'none';
+  });
+}
+
 // ---------- init ----------
 loadState();
 renderTplList();
 renderDeck();
+hubInit();
 if(state.clientId){ $('clientIdInput').value = state.clientId; setSetupOpen(false); }
 updateAuthUI(false);
 
