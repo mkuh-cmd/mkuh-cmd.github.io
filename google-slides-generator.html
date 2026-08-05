@@ -643,7 +643,7 @@ function hubRenderSlideList(){
   $('hubAddBtn').style.display = 'inline-block';
 }
 
-$('hubLoadBtn').addEventListener('click', function(){
+function hubLoadSelectedLesson(){
   var lesson = hubGetSelectedLesson();
   var subject = hubManifest.subjects[Number($('hubSubject').value || 0)];
   if(!lesson){ hubSetStatus('Pick a subject, unit and lesson first.'); return; }
@@ -652,7 +652,7 @@ $('hubLoadBtn').addEventListener('click', function(){
   var btn = $('hubLoadBtn');
   btn.disabled = true; btn.textContent = 'Loading…';
   hubSetStatus('Fetching '+lesson.ref+' — '+lesson.name+'…');
-  var url = HUB_SITE_ROOT + lesson.path;
+  var url = HUB_SITE_ROOT + lesson.slidePath;
   fetch(url).then(function(res){
     if(!res.ok) throw new Error('Could not fetch the lesson file (status '+res.status+'). Make sure the SSA Math Hub site is deployed and reachable.');
     return res.arrayBuffer();
@@ -680,7 +680,8 @@ $('hubLoadBtn').addEventListener('click', function(){
   }).finally(function(){
     btn.disabled = false; btn.textContent = 'Preview Slides';
   });
-});
+}
+$('hubLoadBtn').addEventListener('click', hubLoadSelectedLesson);
 
 $('hubAddBtn').addEventListener('click', function(){
   var checks = Array.prototype.slice.call(document.querySelectorAll('#hubSlideList input[type="checkbox"]:checked'));
@@ -698,6 +699,29 @@ $('hubAddBtn').addEventListener('click', function(){
   hubSetStatus('Added '+checks.length+' slide(s) to your deck below.');
 });
 
+function hubApplyPendingImport(){
+  var raw = localStorage.getItem('gsg-pending-hub-import');
+  if(!raw) return;
+  localStorage.removeItem('gsg-pending-hub-import');
+  var pending;
+  try{ pending = JSON.parse(raw); }catch(e){ return; }
+  var subjIdx = hubManifest.subjects.findIndex(function(s){ return s.id === pending.subjectId; });
+  if(subjIdx < 0) return;
+  $('hubSubject').value = subjIdx;
+  hubPopulateUnits();
+  var subj = hubManifest.subjects[subjIdx];
+  var lesson = subj.lessons.filter(function(l){ return l.order === pending.order; })[0];
+  if(!lesson) return;
+  $('hubUnit').value = String(lesson.unit);
+  hubPopulateLessons();
+  var lessons = $('hubLesson').__lessons || [];
+  var idx = -1;
+  lessons.forEach(function(l, i){ if(l.order === pending.order) idx = i; });
+  if(idx >= 0) $('hubLesson').value = idx;
+  $('hubPanel').scrollIntoView({ behavior:'smooth', block:'start' });
+  hubLoadSelectedLesson();
+}
+
 function hubInit(){
   fetch('ssa-math-hub-manifest.json').then(function(res){
     if(!res.ok) throw new Error('manifest not found');
@@ -705,6 +729,7 @@ function hubInit(){
   }).then(function(data){
     hubManifest = data;
     hubPopulateSubjects();
+    hubApplyPendingImport();
   }).catch(function(err){
     $('hubPanel').style.display = 'none';
   });

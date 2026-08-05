@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pacing Guide | The Calculated Classroom</title>
+<style>
+  :root{
+    --navy:#1F3864;
+    --blue:#2E5496;
+    --gray:#444444;
+    --lightgray:#6b7280;
+    --rowfill:#EEF2F8;
+    --border:#B9C4D6;
+    --green:#1e7e34;
+    --red:#b02a37;
+    --amber:#a8710a;
+    --purple:#7c3aed;
+  }
+  *{box-sizing:border-box;}
+  body{
+    font-family:Arial, Helvetica, sans-serif;
+    margin:0;
+    background:#f4f6fa;
+    color:var(--gray);
+  }
+  header.app-header{
+    background:var(--navy);
+    color:#fff;
+    padding:18px 28px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  header.app-header .titles h1{margin:0;font-size:20px;letter-spacing:.3px;}
+  header.app-header .titles p{margin:2px 0 0;font-size:12.5px;color:#c9d4e8;font-style:italic;}
+  header.app-header .back-link{display:block;color:#c9d4e8;font-size:12px;font-weight:600;text-decoration:none;margin-bottom:6px;}
+  .header-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+
+  button, .btn{font-family:inherit;cursor:pointer;border:none;border-radius:6px;padding:8px 14px;font-size:13px;font-weight:600;}
+  .btn-primary{background:var(--blue);color:#fff;}
+  .btn-primary:hover{background:var(--navy);}
+  .btn-ghost{background:#fff;color:var(--navy);border:1px solid var(--border);}
+  .btn-ghost:hover{background:var(--rowfill);}
+  .btn-danger{background:#fff;color:var(--red);border:1px solid var(--red);}
+  .btn-danger:hover{background:#fdeaec;}
+  .btn-small{padding:5px 9px;font-size:12px;}
+  button:disabled{opacity:.5;cursor:not-allowed;}
+
+  main{max-width:1100px;margin:22px auto;padding:0 20px 60px;}
+
+  .panel{background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px 18px;margin-bottom:18px;}
+  .panel h2{margin:0 0 4px;font-size:15px;color:var(--navy);}
+  .panel .sub{font-size:12.5px;color:var(--lightgray);margin-bottom:12px;}
+
+  label{font-size:12px;font-weight:700;color:var(--navy);display:block;margin-bottom:4px;}
+  .field{margin-bottom:0;}
+  input[type="text"], input[type="date"], input[type="number"], select{
+    font-family:inherit;
+    padding:8px 10px;
+    border:1px solid var(--border);
+    border-radius:6px;
+    font-size:13px;
+    width:100%;
+  }
+  .setup-row{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;}
+  .setup-row .field{flex:1;min-width:150px;}
+
+  /* THIS WEEK HERO */
+  .hero-week{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;border-radius:12px;padding:20px 22px;margin-bottom:18px;}
+  .hero-week .week-label{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:#c9d4e8;font-weight:700;}
+  .hero-week h2{color:#fff;margin:2px 0 2px;font-size:20px;}
+  .hero-week .week-range{font-size:13px;color:#c9d4e8;margin-bottom:14px;}
+  .hero-empty{font-size:13px;color:#e2e8f0;background:rgba(255,255,255,.08);border:1px dashed rgba(255,255,255,.3);border-radius:8px;padding:16px;text-align:center;}
+
+  .lesson-card{background:rgba(255,255,255,.97);color:var(--gray);border-radius:10px;padding:12px 14px;margin-bottom:10px;}
+  .lesson-card:last-child{margin-bottom:0;}
+  .lesson-card .lc-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;}
+  .lesson-ref{font-size:11px;font-weight:800;color:#fff;background:var(--blue);border-radius:20px;padding:2px 9px;}
+  .lesson-name{font-weight:700;color:var(--navy);font-size:14px;flex:1;}
+  .lesson-unit{font-size:11.5px;color:var(--lightgray);}
+  .res-row{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+  .res-link{display:inline-flex;align-items:center;gap:3px;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:700;text-decoration:none;transition:opacity .15s;}
+  .res-link:hover{opacity:.75;}
+  .res-link.disabled{opacity:.35;pointer-events:none;}
+  .lnk-slide{background:#dbeafe;color:#1d4ed8;}
+  .lnk-student{background:#dcfce7;color:#15803d;}
+  .lnk-teacher{background:#fef3c7;color:#92400e;}
+  .lnk-blank{background:#f3e8ff;color:#7c3aed;}
+  .lnk-key{background:#fee2e2;color:#b91c1c;}
+  .lnk-load{background:var(--navy);color:#fff;margin-left:auto;}
+
+  /* FULL CALENDAR */
+  .week-list{display:flex;flex-direction:column;gap:10px;max-height:640px;overflow-y:auto;padding-right:4px;}
+  .week-row{border:1px solid var(--border);border-radius:8px;padding:10px 12px;background:#fafbfe;}
+  .week-row.current{border-color:var(--blue);box-shadow:0 0 0 2px rgba(46,84,150,.15);}
+  .week-row-head{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
+  .week-num{font-size:12px;font-weight:800;color:var(--navy);}
+  .week-dates{font-size:11.5px;color:var(--lightgray);}
+  .week-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;}
+  .chip{display:inline-flex;align-items:center;gap:6px;background:var(--rowfill);border:1px solid var(--border);border-radius:20px;padding:3px 6px 3px 10px;font-size:12px;color:var(--navy);font-weight:600;}
+  .chip button{background:none;border:none;color:var(--red);font-weight:800;cursor:pointer;padding:0 4px;font-size:13px;}
+  .week-add-row{display:flex;gap:6px;}
+  .week-add-row select{flex:1;}
+
+  footer{text-align:center;padding:24px 20px;color:var(--lightgray);font-size:12px;}
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="titles">
+    <a href="index.html" class="back-link">&#8592; The Calculated Classroom</a>
+    <h1>Pacing Guide</h1>
+    <p>Know exactly what to teach this week &mdash; and jump straight into slides</p>
+  </div>
+  <div class="header-actions">
+    <a class="btn btn-ghost btn-small" href="google-slides-generator.html">Slides Generator &#8599;</a>
+  </div>
+</header>
+
+<main>
+
+  <div class="panel" id="setupPanel">
+    <h2>Course &amp; schedule</h2>
+    <div class="sub">Pick your course, set your school-year start date, and auto-fill the calendar in lesson order &mdash; then adjust any week by hand as your real pacing shifts.</div>
+    <div class="setup-row">
+      <div class="field">
+        <label for="subjectSelect">Course</label>
+        <select id="subjectSelect"></select>
+      </div>
+      <div class="field">
+        <label for="startDateInput">Week 1 starts (Monday)</label>
+        <input type="date" id="startDateInput">
+      </div>
+      <div class="field">
+        <label for="weekCountInput">Weeks in year</label>
+        <input type="number" id="weekCountInput" min="1" max="52" value="36">
+      </div>
+      <div class="field">
+        <label for="paceInput">Lessons per week</label>
+        <input type="number" id="paceInput" min="1" max="10" value="3">
+      </div>
+      <button class="btn btn-primary" id="autofillBtn">Auto-fill in lesson order</button>
+    </div>
+  </div>
+
+  <div class="hero-week" id="heroWeek">
+    <div class="week-label">This Week</div>
+    <h2 id="heroTitle">Loading…</h2>
+    <div class="week-range" id="heroRange"></div>
+    <div id="heroLessons"></div>
+  </div>
+
+  <div class="panel">
+    <h2>Full year calendar</h2>
+    <div class="sub">Click into any week to add or remove lessons.</div>
+    <div class="week-list" id="weekList"></div>
+  </div>
+
+</main>
+
+<footer>The Calculated Classroom &middot; Pacing Guide</footer>
+
+<script>
+(function(){
+'use strict';
+
+var $ = function(id){ return document.getElementById(id); };
+var HUB_SITE_ROOT = 'https://mkuh-cmd.github.io/ssa-math-resources/';
+
+var manifest = null;
+var subject = null;
+var plan = null; // { startDate, weekCount, pace, weeks: {"1":[order,...], ...} }
+
+function escHtml(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+
+// ---------- persistence ----------
+function planKey(subjectId){ return 'pacing-plan-' + subjectId; }
+
+function loadPlan(subjectId, totalLessons){
+  var raw = localStorage.getItem(planKey(subjectId));
+  if(raw){
+    try{ return JSON.parse(raw); }catch(e){}
+  }
+  var today = new Date();
+  var monday = new Date(today);
+  var day = monday.getDay();
+  var diff = (day === 0 ? -6 : 1) - day;
+  monday.setDate(monday.getDate() + diff);
+  var iso = monday.toISOString().slice(0,10);
+  var pace = Math.max(1, Math.round(totalLessons / 36));
+  return { startDate: iso, weekCount: 36, pace: pace, weeks: {} };
+}
+
+function savePlan(){
+  localStorage.setItem(planKey(subject.id), JSON.stringify(plan));
+}
+
+// ---------- date helpers ----------
+function parseISO(iso){ return new Date(iso + 'T00:00:00'); }
+function addDays(date, n){ var d = new Date(date); d.setDate(d.getDate() + n); return d; }
+function fmt(date){ return date.toLocaleDateString('en-US', { month:'short', day:'numeric' }); }
+function fmtYear(date){ return date.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }); }
+
+function weekRange(weekNum){
+  var start = addDays(parseISO(plan.startDate), (weekNum-1)*7);
+  var end = addDays(start, 4);
+  return fmt(start) + ' – ' + fmtYear(end);
+}
+
+function currentWeekNum(){
+  var start = parseISO(plan.startDate);
+  var today = new Date(); today.setHours(0,0,0,0);
+  var diffDays = Math.floor((today - start) / 86400000);
+  var wk = Math.floor(diffDays / 7) + 1;
+  if(wk < 1) wk = 1;
+  if(wk > plan.weekCount) wk = plan.weekCount;
+  return wk;
+}
+
+// ---------- lesson lookup ----------
+function lessonByOrder(order){
+  for(var i=0;i<subject.lessons.length;i++) if(subject.lessons[i].order === order) return subject.lessons[i];
+  return null;
+}
+
+// ---------- rendering ----------
+function resLink(cls, label, path){
+  if(!path) return '<span class="res-link '+cls+' disabled">'+label+'</span>';
+  return '<a class="res-link '+cls+'" href="'+HUB_SITE_ROOT+path+'" target="_blank" rel="noopener">'+label+'</a>';
+}
+
+function lessonCardHtml(l, showLoadBtn){
+  var res = '<div class="res-row">' +
+    resLink('lnk-slide','Slide',l.slidePath) +
+    resLink('lnk-student','Student',l.studentPath) +
+    resLink('lnk-teacher','Teacher',l.teacherPath) +
+    resLink('lnk-blank','Practice',l.blankPath) +
+    resLink('lnk-key','Key',l.keyPath) +
+    (showLoadBtn ? '<button class="btn btn-primary btn-small lnk-load" data-load-order="'+l.order+'">Load into Slide Generator &#8599;</button>' : '') +
+    '</div>';
+  return '<div class="lesson-card">' +
+    '<div class="lc-head"><span class="lesson-ref">'+escHtml(l.ref)+'</span>' +
+    '<span class="lesson-name">'+escHtml(l.name)+'</span>' +
+    '<span class="lesson-unit">'+escHtml(String(l.unitName))+'</span></div>' +
+    res + '</div>';
+}
+
+function renderHero(){
+  var wk = currentWeekNum();
+  $('heroTitle').textContent = 'Week ' + wk;
+  $('heroRange').textContent = weekRange(wk);
+  var orders = plan.weeks[wk] || [];
+  if(!orders.length){
+    $('heroLessons').innerHTML = '<div class="hero-empty">No lessons assigned to this week yet. Add some in the calendar below, or click "Auto-fill in lesson order" above.</div>';
+    return;
+  }
+  $('heroLessons').innerHTML = orders.map(function(o){
+    var l = lessonByOrder(o);
+    return l ? lessonCardHtml(l, true) : '';
+  }).join('');
+}
+
+function renderWeekList(){
+  var wk = currentWeekNum();
+  var html = '';
+  for(var w=1; w<=plan.weekCount; w++){
+    var orders = plan.weeks[w] || [];
+    html += '<div class="week-row'+(w===wk?' current':'')+'" data-week="'+w+'">' +
+      '<div class="week-row-head"><span class="week-num">Week '+w+'</span><span class="week-dates">'+weekRange(w)+'</span></div>' +
+      '<div class="week-chips">' + orders.map(function(o){
+        var l = lessonByOrder(o);
+        var label = l ? (l.ref+' — '+l.name) : ('#'+o);
+        return '<span class="chip">'+escHtml(label)+'<button data-remove-week="'+w+'" data-remove-order="'+o+'">&#10005;</button></span>';
+      }).join('') + '</div>' +
+      '<div class="week-add-row">' +
+        '<select data-week-select="'+w+'">' +
+          '<option value="">+ Add a lesson…</option>' +
+          subject.lessons.map(function(l){ return '<option value="'+l.order+'">'+escHtml(l.ref+' — '+l.name)+'</option>'; }).join('') +
+        '</select>' +
+      '</div>' +
+    '</div>';
+  }
+  $('weekList').innerHTML = html;
+}
+
+function renderAll(){
+  renderHero();
+  renderWeekList();
+}
+
+// ---------- events ----------
+$('weekList').addEventListener('click', function(e){
+  var btn = e.target.closest('[data-remove-week]');
+  if(!btn) return;
+  var w = btn.getAttribute('data-remove-week');
+  var order = Number(btn.getAttribute('data-remove-order'));
+  plan.weeks[w] = (plan.weeks[w] || []).filter(function(o){ return o !== order; });
+  savePlan();
+  renderAll();
+});
+
+$('weekList').addEventListener('change', function(e){
+  var sel = e.target.closest('[data-week-select]');
+  if(!sel || !sel.value) return;
+  var w = sel.getAttribute('data-week-select');
+  var order = Number(sel.value);
+  if(!plan.weeks[w]) plan.weeks[w] = [];
+  if(plan.weeks[w].indexOf(order) === -1) plan.weeks[w].push(order);
+  savePlan();
+  renderAll();
+});
+
+document.addEventListener('click', function(e){
+  var btn = e.target.closest('[data-load-order]');
+  if(!btn) return;
+  var order = Number(btn.getAttribute('data-load-order'));
+  localStorage.setItem('gsg-pending-hub-import', JSON.stringify({ subjectId: subject.id, order: order }));
+  window.open('google-slides-generator.html', '_blank');
+});
+
+$('autofillBtn').addEventListener('click', function(){
+  if(!confirm('This replaces your current week assignments with lessons in order, '+plan.pace+' per week, starting Week 1. Continue?')) return;
+  plan.startDate = $('startDateInput').value || plan.startDate;
+  plan.weekCount = Number($('weekCountInput').value) || plan.weekCount;
+  plan.pace = Number($('paceInput').value) || plan.pace;
+  plan.weeks = {};
+  var w = 1;
+  for(var i=0; i<subject.lessons.length && w<=plan.weekCount; i += plan.pace){
+    plan.weeks[w] = subject.lessons.slice(i, i+plan.pace).map(function(l){ return l.order; });
+    w++;
+  }
+  savePlan();
+  renderAll();
+});
+
+$('startDateInput').addEventListener('change', function(){ plan.startDate = $('startDateInput').value; savePlan(); renderAll(); });
+$('weekCountInput').addEventListener('change', function(){ plan.weekCount = Number($('weekCountInput').value) || plan.weekCount; savePlan(); renderAll(); });
+$('paceInput').addEventListener('change', function(){ plan.pace = Number($('paceInput').value) || plan.pace; savePlan(); });
+
+function onSubjectChange(){
+  var idx = Number($('subjectSelect').value || 0);
+  subject = manifest.subjects[idx];
+  plan = loadPlan(subject.id, subject.lessons.length);
+  $('startDateInput').value = plan.startDate;
+  $('weekCountInput').value = plan.weekCount;
+  $('paceInput').value = plan.pace;
+  localStorage.setItem('pacing-last-subject', subject.id);
+  renderAll();
+}
+$('subjectSelect').addEventListener('change', onSubjectChange);
+
+// ---------- init ----------
+fetch('ssa-math-hub-manifest.json').then(function(res){ return res.json(); }).then(function(data){
+  manifest = data;
+  $('subjectSelect').innerHTML = manifest.subjects.map(function(s,i){
+    return '<option value="'+i+'">'+escHtml(s.label)+'</option>';
+  }).join('');
+  var lastId = localStorage.getItem('pacing-last-subject');
+  var idx = manifest.subjects.findIndex(function(s){ return s.id === lastId; });
+  if(idx >= 0) $('subjectSelect').value = idx;
+  onSubjectChange();
+}).catch(function(err){
+  $('heroTitle').textContent = 'Could not load the Math Hub manifest';
+  $('heroRange').textContent = '';
+  $('heroLessons').innerHTML = '<div class="hero-empty">'+escHtml(err.message)+'</div>';
+});
+
+})();
+</script>
+
+</body>
+</html>
