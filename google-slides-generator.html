@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Google Slides Generator | The Calculated Classroom</title>
+<script src="https://accounts.google.com/gsi/client" async defer onload="window.__gisReady=true"></script>
+<style>
+  :root{
+    --navy:#1F3864;
+    --blue:#2E5496;
+    --gray:#444444;
+    --lightgray:#6b7280;
+    --rowfill:#EEF2F8;
+    --border:#B9C4D6;
+    --green:#1e7e34;
+    --red:#b02a37;
+    --amber:#a8710a;
+  }
+  *{box-sizing:border-box;}
+  body{
+    font-family:Arial, Helvetica, sans-serif;
+    margin:0;
+    background:#f4f6fa;
+    color:var(--gray);
+  }
+  header.app-header{
+    background:var(--navy);
+    color:#fff;
+    padding:18px 28px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  header.app-header .titles h1{margin:0;font-size:20px;letter-spacing:.3px;}
+  header.app-header .titles p{margin:2px 0 0;font-size:12.5px;color:#c9d4e8;font-style:italic;}
+  header.app-header .back-link{display:block;color:#c9d4e8;font-size:12px;font-weight:600;text-decoration:none;margin-bottom:6px;}
+  .header-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+  .auth-pill{font-size:12px;color:#fff;background:rgba(255,255,255,.12);border-radius:20px;padding:6px 12px;font-weight:600;display:flex;align-items:center;gap:6px;}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--red);display:inline-block;}
+  .dot.on{background:#3ddc84;}
+
+  button, .btn{font-family:inherit;cursor:pointer;border:none;border-radius:6px;padding:8px 14px;font-size:13px;font-weight:600;}
+  .btn-primary{background:var(--blue);color:#fff;}
+  .btn-primary:hover{background:var(--navy);}
+  .btn-ghost{background:#fff;color:var(--navy);border:1px solid var(--border);}
+  .btn-ghost:hover{background:var(--rowfill);}
+  .btn-danger{background:#fff;color:var(--red);border:1px solid var(--red);}
+  .btn-danger:hover{background:#fdeaec;}
+  .btn-small{padding:5px 9px;font-size:12px;}
+  .btn-icon{padding:5px 8px;font-size:13px;line-height:1;}
+  button:disabled{opacity:.5;cursor:not-allowed;}
+
+  main{max-width:1280px;margin:22px auto;padding:0 20px 60px;}
+
+  .panel{background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px 18px;margin-bottom:18px;}
+  .panel h2{margin:0 0 4px;font-size:15px;color:var(--navy);}
+  .panel .sub{font-size:12.5px;color:var(--lightgray);margin-bottom:12px;}
+
+  #setupPanel ol{margin:8px 0 14px 20px;font-size:13px;line-height:1.7;color:var(--gray);}
+  #setupPanel code{background:var(--rowfill);padding:1px 5px;border-radius:4px;font-size:12px;}
+  .setup-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+  input[type="text"], input[type="password"], textarea, select{
+    font-family:inherit;
+    padding:8px 10px;
+    border:1px solid var(--border);
+    border-radius:6px;
+    font-size:13px;
+    width:100%;
+  }
+  textarea{resize:vertical;min-height:64px;line-height:1.4;}
+  label{font-size:12px;font-weight:700;color:var(--navy);display:block;margin-bottom:4px;}
+  .field{margin-bottom:10px;}
+
+  .layout{display:grid;grid-template-columns:300px 1fr;gap:18px;align-items:start;}
+  @media(max-width:860px){.layout{grid-template-columns:1fr;}}
+
+  .tpl-list{display:flex;flex-direction:column;gap:8px;}
+  .tpl-card{border:1px solid var(--border);border-radius:8px;padding:10px 12px;background:#fff;display:flex;align-items:center;gap:10px;}
+  .tpl-icon{font-size:18px;width:26px;text-align:center;}
+  .tpl-name{font-size:13px;font-weight:700;color:var(--navy);flex:1;}
+  .tpl-add{padding:5px 10px;font-size:12px;}
+
+  .deck-toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px;}
+  .deck-toolbar .spacer{flex:1;}
+  .stat-pill{font-size:12px;color:var(--navy);background:var(--rowfill);border-radius:20px;padding:5px 12px;font-weight:600;white-space:nowrap;}
+
+  #emptyDeck{text-align:center;padding:50px 20px;color:var(--lightgray);background:#fff;border:1px dashed var(--border);border-radius:10px;}
+  #emptyDeck h3{color:var(--navy);margin-bottom:6px;}
+
+  .slide-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:12px;border-left:5px solid var(--blue);}
+  .slide-card-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+  .slide-index{font-size:11px;font-weight:800;color:#fff;background:var(--blue);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .slide-type{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--lightgray);font-weight:700;flex:1;}
+  .slide-actions{display:flex;gap:4px;}
+
+  .result-box{margin-top:14px;padding:14px 16px;border-radius:8px;background:#eaf7ee;border:1px solid #bfe6c9;display:none;}
+  .result-box.show{display:block;}
+  .result-box.error{background:#fdeaec;border-color:#f3b7bf;}
+  .result-box a{color:var(--navy);font-weight:700;}
+  .log{font-size:12px;color:var(--lightgray);margin-top:6px;white-space:pre-wrap;}
+
+  footer{text-align:center;padding:24px 20px;color:var(--lightgray);font-size:12px;}
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="titles">
+    <a href="index.html" class="back-link">&#8592; The Calculated Classroom</a>
+    <h1>Google Slides Generator</h1>
+    <p>Assemble MYP lesson slides from templates &middot; push straight into a real Google Slides deck</p>
+  </div>
+  <div class="header-actions">
+    <span class="auth-pill"><span class="dot" id="authDot"></span><span id="authLabel">Not connected</span></span>
+    <button class="btn btn-ghost btn-small" id="setupToggleBtn">Setup</button>
+    <button class="btn btn-primary btn-small" id="signInBtn">Sign in with Google</button>
+    <button class="btn btn-ghost btn-small" id="signOutBtn" style="display:none;">Sign out</button>
+  </div>
+</header>
+
+<main>
+
+  <div class="panel" id="setupPanel">
+    <h2>One-time setup</h2>
+    <div class="sub">This tool talks directly to your own Google account &mdash; it needs a Google Cloud OAuth Client ID that you create and control. No server, no third party ever sees your slides.</div>
+    <ol>
+      <li>Go to <code>Google Cloud Console → APIs &amp; Services → Credentials</code> and create an <b>OAuth client ID</b> of type <b>Web application</b>.</li>
+      <li>Under <b>Authorized JavaScript origins</b>, add <code>https://mkuh-cmd.github.io</code> (and <code>http://localhost</code> if you test locally).</li>
+      <li>In <b>APIs &amp; Services → Library</b>, enable the <b>Google Slides API</b>.</li>
+      <li>Copy the generated <b>Client ID</b> and paste it below. It's saved only in this browser (localStorage).</li>
+    </ol>
+    <div class="setup-row">
+      <div class="field" style="flex:1;min-width:280px;">
+        <label for="clientIdInput">Google OAuth Client ID</label>
+        <input type="text" id="clientIdInput" placeholder="xxxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com">
+      </div>
+      <button class="btn btn-primary" id="saveClientIdBtn" style="align-self:flex-end;">Save</button>
+    </div>
+    <div class="log" id="setupLog"></div>
+  </div>
+
+  <div class="layout">
+
+    <!-- TEMPLATE LIBRARY -->
+    <div class="panel" style="margin-bottom:0;">
+      <h2>Slide templates</h2>
+      <div class="sub">Click + to add a slide to your deck, then edit its content on the right.</div>
+      <div class="tpl-list" id="tplList"></div>
+      <div style="margin-top:14px;">
+        <button class="btn btn-ghost" id="starterDeckBtn" style="width:100%;">+ Load MYP daily-lesson starter deck</button>
+      </div>
+    </div>
+
+    <!-- DECK BUILDER -->
+    <div>
+      <div class="panel">
+        <div class="deck-toolbar">
+          <div class="field" style="flex:1;min-width:220px;margin-bottom:0;">
+            <label for="deckNameInput">Presentation title</label>
+            <input type="text" id="deckNameInput" placeholder="e.g., Grade 7 Math &middot; Aug 5, 2026">
+          </div>
+          <span class="stat-pill" id="slideCountPill">0 slides</span>
+          <div class="spacer"></div>
+          <button class="btn btn-danger btn-small" id="clearDeckBtn">Clear deck</button>
+          <button class="btn btn-primary" id="generateBtn">Generate in Google Slides</button>
+        </div>
+
+        <div id="emptyDeck">
+          <h3>Your deck is empty</h3>
+          <div>Add slides from the template library on the left to get started.</div>
+        </div>
+
+        <div id="deckList"></div>
+
+        <div class="result-box" id="resultBox">
+          <div id="resultText"></div>
+          <div class="log" id="resultLog"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</main>
+
+<footer>The Calculated Classroom &middot; Google Slides Generator runs entirely in your browser</footer>
+
+<script>
+(function(){
+'use strict';
+
+var TEMPLATES = [
+  { id:'title', icon:'🏷️', name:'Title Slide', layout:'TITLE', fields:[
+      {key:'title', label:'Lesson / Unit Title', placeholder:'Unit 3: Ratios & Proportions'},
+      {key:'subtitle', label:'Subtitle (class · date · teacher)', placeholder:'Grade 7 Math · Aug 5, 2026 · Mr. Kuhlmann'}
+    ]},
+  { id:'objective', icon:'🎯', name:'Statement of Inquiry / ATL', layout:'BODY', bodyLabel:'Statement of Inquiry & ATL skills (one per line)', defaultTitle:"Today's Focus" },
+  { id:'donow', icon:'✏️', name:'Do Now / Bell Ringer', layout:'BODY', bodyLabel:'Prompt (one line per item)', defaultTitle:'Do Now' },
+  { id:'agenda', icon:'🗒️', name:'Agenda', layout:'BODY', bodyLabel:"Today's plan (one item per line)", defaultTitle:'Agenda' },
+  { id:'direct', icon:'📖', name:'Direct Instruction', layout:'BODY', bodyLabel:'Key points (one bullet per line)', defaultTitle:'Direct Instruction' },
+  { id:'guided', icon:'🤝', name:'Guided Practice', layout:'BODY', bodyLabel:'Worked example / steps (one per line)', defaultTitle:'Guided Practice' },
+  { id:'independent', icon:'📝', name:'Independent Practice', layout:'BODY', bodyLabel:'Task instructions (one per line)', defaultTitle:'Your Turn' },
+  { id:'exit', icon:'🚪', name:'Exit Ticket', layout:'BODY', bodyLabel:'Reflection prompt (one per line)', defaultTitle:'Exit Ticket' },
+  { id:'blank', icon:'⬜', name:'Custom / Blank', layout:'BODY', bodyLabel:'Body text (one bullet per line)', defaultTitle:'' }
+];
+
+var STARTER_DECK = ['title','objective','donow','agenda','direct','guided','independent','exit'];
+
+var $ = function(id){ return document.getElementById(id); };
+var tplById = {};
+TEMPLATES.forEach(function(t){ tplById[t.id]=t; });
+
+var state = { deck: [], clientId: '', uidSeed: 1 };
+var tokenClient = null, accessToken = null, tokenExpiry = 0;
+
+// ---------- persistence ----------
+function loadState(){
+  try{
+    var d = JSON.parse(localStorage.getItem('gsg-deck')||'[]');
+    if(Array.isArray(d)) state.deck = d;
+    state.clientId = localStorage.getItem('gsg-client-id') || '';
+    var name = localStorage.getItem('gsg-deck-name');
+    if(name) $('deckNameInput').value = name;
+  }catch(e){}
+}
+function saveDeck(){
+  localStorage.setItem('gsg-deck', JSON.stringify(state.deck));
+  localStorage.setItem('gsg-deck-name', $('deckNameInput').value);
+}
+
+// ---------- template library ----------
+function renderTplList(){
+  var html = '';
+  TEMPLATES.forEach(function(t){
+    html += '<div class="tpl-card">' +
+      '<span class="tpl-icon">'+t.icon+'</span>' +
+      '<span class="tpl-name">'+t.name+'</span>' +
+      '<button class="btn btn-primary tpl-add" data-add="'+t.id+'">+ Add</button>' +
+      '</div>';
+  });
+  $('tplList').innerHTML = html;
+  $('tplList').addEventListener('click', function(e){
+    var btn = e.target.closest('[data-add]');
+    if(!btn) return;
+    addSlide(btn.getAttribute('data-add'));
+  });
+}
+
+function addSlide(tplId){
+  var t = tplById[tplId];
+  var item = { uid: 'u'+(state.uidSeed++), templateId: tplId,
+    title: t.layout==='TITLE' ? '' : (t.defaultTitle||''),
+    subtitle: '', body: '' };
+  state.deck.push(item);
+  saveDeck();
+  renderDeck();
+}
+
+// ---------- deck builder ----------
+function renderDeck(){
+  var list = $('deckList');
+  $('slideCountPill').textContent = state.deck.length + (state.deck.length===1?' slide':' slides');
+  $('emptyDeck').style.display = state.deck.length ? 'none' : 'block';
+  if(!state.deck.length){ list.innerHTML=''; return; }
+
+  var html = '';
+  state.deck.forEach(function(item, i){
+    var t = tplById[item.templateId];
+    html += '<div class="slide-card" data-uid="'+item.uid+'">' +
+      '<div class="slide-card-head">' +
+        '<span class="slide-index">'+(i+1)+'</span>' +
+        '<span class="slide-type">'+t.icon+' '+t.name+'</span>' +
+        '<div class="slide-actions">' +
+          '<button class="btn btn-ghost btn-icon" data-act="up" title="Move up">&#8593;</button>' +
+          '<button class="btn btn-ghost btn-icon" data-act="down" title="Move down">&#8595;</button>' +
+          '<button class="btn btn-ghost btn-icon" data-act="dup" title="Duplicate">&#10697;</button>' +
+          '<button class="btn btn-danger btn-icon" data-act="del" title="Remove">&#10005;</button>' +
+        '</div>' +
+      '</div>';
+
+    if(t.layout==='TITLE'){
+      html += '<div class="field"><label>Title</label><input type="text" data-field="title" placeholder="'+(t.fields[0].placeholder||'')+'" value="'+escAttr(item.title)+'"></div>';
+      html += '<div class="field"><label>Subtitle</label><input type="text" data-field="subtitle" placeholder="'+(t.fields[1].placeholder||'')+'" value="'+escAttr(item.subtitle)+'"></div>';
+    } else {
+      html += '<div class="field"><label>Title</label><input type="text" data-field="title" value="'+escAttr(item.title)+'"></div>';
+      html += '<div class="field"><label>'+t.bodyLabel+'</label><textarea data-field="body" rows="4">'+escHtml(item.body)+'</textarea></div>';
+    }
+    html += '</div>';
+  });
+  list.innerHTML = html;
+}
+
+function escAttr(s){ return (s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+function escHtml(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+
+function findItem(uid){
+  for(var i=0;i<state.deck.length;i++) if(state.deck[i].uid===uid) return i;
+  return -1;
+}
+
+$('deckList').addEventListener('input', function(e){
+  var field = e.target.getAttribute('data-field');
+  if(!field) return;
+  var card = e.target.closest('.slide-card');
+  var idx = findItem(card.getAttribute('data-uid'));
+  if(idx<0) return;
+  state.deck[idx][field] = e.target.value;
+  saveDeck();
+});
+
+$('deckList').addEventListener('click', function(e){
+  var btn = e.target.closest('[data-act]');
+  if(!btn) return;
+  var card = btn.closest('.slide-card');
+  var idx = findItem(card.getAttribute('data-uid'));
+  if(idx<0) return;
+  var act = btn.getAttribute('data-act');
+  if(act==='del'){ state.deck.splice(idx,1); }
+  else if(act==='up' && idx>0){ var a=state.deck[idx]; state.deck[idx]=state.deck[idx-1]; state.deck[idx-1]=a; }
+  else if(act==='down' && idx<state.deck.length-1){ var b=state.deck[idx]; state.deck[idx]=state.deck[idx+1]; state.deck[idx+1]=b; }
+  else if(act==='dup'){ var copy=JSON.parse(JSON.stringify(state.deck[idx])); copy.uid='u'+(state.uidSeed++); state.deck.splice(idx+1,0,copy); }
+  saveDeck();
+  renderDeck();
+});
+
+$('deckNameInput').addEventListener('input', saveDeck);
+
+$('clearDeckBtn').addEventListener('click', function(){
+  if(!state.deck.length) return;
+  if(!confirm('Remove all slides from this deck?')) return;
+  state.deck = [];
+  saveDeck();
+  renderDeck();
+});
+
+$('starterDeckBtn').addEventListener('click', function(){
+  STARTER_DECK.forEach(addSlide);
+});
+
+// ---------- setup / auth ----------
+function setSetupOpen(open){
+  $('setupPanel').style.display = open ? 'block' : 'none';
+}
+$('setupToggleBtn').addEventListener('click', function(){
+  setSetupOpen($('setupPanel').style.display === 'none');
+});
+
+function updateAuthUI(connected){
+  $('authDot').className = 'dot' + (connected ? ' on' : '');
+  $('authLabel').textContent = connected ? 'Signed in' : 'Not connected';
+  $('signInBtn').style.display = connected ? 'none' : 'inline-block';
+  $('signOutBtn').style.display = connected ? 'inline-block' : 'none';
+}
+
+function initGis(){
+  if(!window.google || !google.accounts || !google.accounts.oauth2 || !state.clientId) return false;
+  tokenClient = google.accounts.oauth2.initTokenClient({
+    client_id: state.clientId,
+    scope: 'https://www.googleapis.com/auth/presentations',
+    callback: function(){}
+  });
+  return true;
+}
+
+$('saveClientIdBtn').addEventListener('click', function(){
+  var v = $('clientIdInput').value.trim();
+  if(!v){ $('setupLog').textContent = 'Enter a Client ID first.'; return; }
+  state.clientId = v;
+  localStorage.setItem('gsg-client-id', v);
+  var ok = initGis();
+  $('setupLog').textContent = ok ? 'Saved. You can now sign in.' : 'Saved. Waiting for Google sign-in library to finish loading — try Sign in in a moment.';
+  if(ok) setSetupOpen(false);
+});
+
+$('signInBtn').addEventListener('click', function(){
+  if(!state.clientId){ setSetupOpen(true); $('setupLog').textContent='Add your Google OAuth Client ID first.'; return; }
+  if(!tokenClient && !initGis()){ $('setupLog').textContent='Google sign-in library is still loading, try again in a second.'; setSetupOpen(true); return; }
+  tokenClient.callback = function(resp){
+    if(resp.error){ showResult(false, 'Sign-in failed: '+resp.error); return; }
+    accessToken = resp.access_token;
+    tokenExpiry = Date.now() + (resp.expires_in*1000);
+    updateAuthUI(true);
+  };
+  tokenClient.requestAccessToken({ prompt: accessToken ? '' : 'consent' });
+});
+
+$('signOutBtn').addEventListener('click', function(){
+  if(accessToken && window.google) google.accounts.oauth2.revoke(accessToken, function(){});
+  accessToken = null; tokenExpiry = 0;
+  updateAuthUI(false);
+});
+
+function ensureToken(){
+  return new Promise(function(resolve, reject){
+    if(accessToken && Date.now() < tokenExpiry - 60000){ resolve(accessToken); return; }
+    if(!tokenClient && !initGis()){ reject(new Error('Google sign-in not ready. Check your Client ID in Setup.')); return; }
+    tokenClient.callback = function(resp){
+      if(resp.error){ reject(new Error(resp.error)); return; }
+      accessToken = resp.access_token;
+      tokenExpiry = Date.now() + (resp.expires_in*1000);
+      updateAuthUI(true);
+      resolve(accessToken);
+    };
+    tokenClient.requestAccessToken({ prompt: accessToken ? '' : 'consent' });
+  });
+}
+
+// ---------- Slides API ----------
+function buildRequests(deck){
+  var requests = [];
+  deck.forEach(function(item, i){
+    var t = tplById[item.templateId];
+    var slideId = 'slide_'+i;
+    if(t.layout==='TITLE'){
+      var titleId='ti_'+i, subId='su_'+i;
+      requests.push({ createSlide:{ objectId:slideId, insertionIndex:i+1,
+        slideLayoutReference:{ predefinedLayout:'TITLE' },
+        placeholderIdMappings:[
+          { layoutPlaceholder:{ type:'CENTERED_TITLE' }, objectId:titleId },
+          { layoutPlaceholder:{ type:'SUBTITLE' }, objectId:subId }
+        ]}});
+      if(item.title) requests.push({ insertText:{ objectId:titleId, text:item.title }});
+      if(item.subtitle) requests.push({ insertText:{ objectId:subId, text:item.subtitle }});
+    } else {
+      var tId='ti_'+i, bId='bo_'+i;
+      requests.push({ createSlide:{ objectId:slideId, insertionIndex:i+1,
+        slideLayoutReference:{ predefinedLayout:'TITLE_AND_BODY' },
+        placeholderIdMappings:[
+          { layoutPlaceholder:{ type:'TITLE' }, objectId:tId },
+          { layoutPlaceholder:{ type:'BODY' }, objectId:bId }
+        ]}});
+      if(item.title) requests.push({ insertText:{ objectId:tId, text:item.title }});
+      var bodyText = (item.body||'').split('\n').map(function(s){return s.trim();}).filter(Boolean).join('\n');
+      if(bodyText){
+        requests.push({ insertText:{ objectId:bId, text:bodyText }});
+        requests.push({ createParagraphBullets:{ objectId:bId, textRange:{ type:'ALL' }, bulletPreset:'BULLET_DISC_CIRCLE_SQUARE' }});
+      }
+    }
+  });
+  return requests;
+}
+
+function showResult(ok, msg, extraHtml){
+  var box = $('resultBox');
+  box.className = 'result-box show' + (ok?'':' error');
+  $('resultText').innerHTML = (extraHtml||'') + '<div>'+msg+'</div>';
+}
+
+function apiFetch(url, token, body){
+  return fetch(url, {
+    method:'POST',
+    headers:{ 'Authorization':'Bearer '+token, 'Content-Type':'application/json' },
+    body: JSON.stringify(body)
+  }).then(function(res){
+    return res.json().then(function(data){
+      if(!res.ok){ throw new Error((data.error && data.error.message) || ('Request failed: '+res.status)); }
+      return data;
+    });
+  });
+}
+
+$('generateBtn').addEventListener('click', function(){
+  if(!state.deck.length){ showResult(false, 'Add at least one slide to your deck first.'); return; }
+  var title = $('deckNameInput').value.trim() || 'Untitled Lesson Deck';
+  var btn = $('generateBtn');
+  btn.disabled = true; btn.textContent = 'Generating…';
+  $('resultLog').textContent = '';
+  showResult(true, 'Connecting to Google…');
+
+  ensureToken().then(function(token){
+    showResult(true, 'Creating presentation…');
+    return apiFetch('https://slides.googleapis.com/v1/presentations', token, { title: title }).then(function(pres){
+      var presentationId = pres.presentationId;
+      var defaultSlideId = pres.slides && pres.slides[0] && pres.slides[0].objectId;
+      showResult(true, 'Adding '+state.deck.length+' slide(s)…');
+      var requests = buildRequests(state.deck);
+      if(defaultSlideId) requests.push({ deleteObject:{ objectId: defaultSlideId }});
+      return apiFetch('https://slides.googleapis.com/v1/presentations/'+presentationId+':batchUpdate', token, { requests: requests })
+        .then(function(){ return presentationId; });
+    });
+  }).then(function(presentationId){
+    var url = 'https://docs.google.com/presentation/d/'+presentationId+'/edit';
+    showResult(true, 'Deck created successfully.', '<a href="'+url+'" target="_blank" rel="noopener">Open in Google Slides ↗</a>');
+    window.open(url, '_blank');
+  }).catch(function(err){
+    showResult(false, 'Something went wrong: '+err.message);
+  }).finally(function(){
+    btn.disabled = false; btn.textContent = 'Generate in Google Slides';
+  });
+});
+
+// ---------- init ----------
+loadState();
+renderTplList();
+renderDeck();
+if(state.clientId){ $('clientIdInput').value = state.clientId; setSetupOpen(false); }
+updateAuthUI(false);
+
+var gisWait = setInterval(function(){
+  if(window.__gisReady && window.google && google.accounts){
+    clearInterval(gisWait);
+    if(state.clientId) initGis();
+  }
+}, 200);
+
+})();
+</script>
+
+</body>
+</html>
