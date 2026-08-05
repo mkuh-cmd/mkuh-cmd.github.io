@@ -1,0 +1,1171 @@
+{
+  "generatedAt": "2026-08-05T15:12:55.593Z",
+  "subjects": [
+    {
+      "id": "7th-standard",
+      "label": "7th Grade Standard",
+      "lessons": [
+        {
+          "unit": 1,
+          "unitName": "Number Sense & Foundations",
+          "ref": "1.1",
+          "name": "Statistics and Interpreting Data",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%201/Unit%201.1.pptx"
+        },
+        {
+          "unit": 1,
+          "unitName": "Number Sense & Foundations",
+          "ref": "1.2",
+          "name": "Ratio Relationships",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%201/Unit%201.2.pptx"
+        },
+        {
+          "unit": 1,
+          "unitName": "Number Sense & Foundations",
+          "ref": "1.3",
+          "name": "Rational Numbers and Absolute Value",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%201/Unit%201.3.pptx"
+        },
+        {
+          "unit": 1,
+          "unitName": "Number Sense & Foundations",
+          "ref": "1.4",
+          "name": "Operations with Integers",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%201/Unit%201.4.pptx"
+        },
+        {
+          "unit": 1,
+          "unitName": "Number Sense & Foundations",
+          "ref": "1.5",
+          "name": "Solving One-Step Equations",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%201/Unit%201.5.pptx"
+        },
+        {
+          "unit": 1,
+          "unitName": "Number Sense & Foundations",
+          "ref": "1.6",
+          "name": "Writing and Solving One-Step Equations in Real-World Contexts",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%201/Unit%201.6.pptx"
+        },
+        {
+          "unit": 2,
+          "unitName": "Probability & Number Forms",
+          "ref": "2.1",
+          "name": "Exploring Sample Space",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%202/Unit%202.1.pptx"
+        },
+        {
+          "unit": 2,
+          "unitName": "Probability & Number Forms",
+          "ref": "2.2",
+          "name": "Determining Sample Space",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%202/Unit%202.2.pptx"
+        },
+        {
+          "unit": 2,
+          "unitName": "Probability & Number Forms",
+          "ref": "2.3",
+          "name": "Rewriting Numbers in Equivalent Forms",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%202/Unit%202.3.pptx"
+        },
+        {
+          "unit": 2,
+          "unitName": "Probability & Number Forms",
+          "ref": "2.4",
+          "name": "Converting Between Repeating Decimals and Fractions",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%202/Unit%202.4.pptx"
+        },
+        {
+          "unit": 2,
+          "unitName": "Probability & Number Forms",
+          "ref": "2.5",
+          "name": "Probability",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%202/Unit%202.5.pptx"
+        },
+        {
+          "unit": 2,
+          "unitName": "Probability & Number Forms",
+          "ref": "2.6",
+          "name": "Comparing Probabilities",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%202/Unit%202.6.pptx"
+        },
+        {
+          "unit": 2,
+          "unitName": "Probability & Number Forms",
+          "ref": "2.7",
+          "name": "Experimental and Theoretical Probability",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%202/Unit%202.7.pptx"
+        },
+        {
+          "unit": 2,
+          "unitName": "Probability & Number Forms",
+          "ref": "2.8",
+          "name": "Simulating Small and Large Numbers of Trials",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%202/Unit%202.8.pptx"
+        },
+        {
+          "unit": 2,
+          "unitName": "Probability & Number Forms",
+          "ref": "2.9",
+          "name": "Experimental and Theoretical Probabilities from Simulations",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%202/Unit%202.9.pptx"
+        },
+        {
+          "unit": 3,
+          "unitName": "Rational Number Operations",
+          "ref": "3.1",
+          "name": "Adding Rational Numbers",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%203/Unit%203.1.pptx"
+        },
+        {
+          "unit": 3,
+          "unitName": "Rational Number Operations",
+          "ref": "3.2",
+          "name": "Subtracting Rational Numbers",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%203/Unit%203.2.pptx"
+        },
+        {
+          "unit": 3,
+          "unitName": "Rational Number Operations",
+          "ref": "3.3",
+          "name": "Multiplying Rational Numbers",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%203/Unit%203.3.pptx"
+        },
+        {
+          "unit": 3,
+          "unitName": "Rational Number Operations",
+          "ref": "3.4",
+          "name": "Dividing Rational Numbers",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%203/Unit%203.4.pptx"
+        },
+        {
+          "unit": 3,
+          "unitName": "Rational Number Operations",
+          "ref": "3.5",
+          "name": "Solving Real-World Problems with Rational Numbers – Part 1",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%203/Unit%203.5.pptx"
+        },
+        {
+          "unit": 3,
+          "unitName": "Rational Number Operations",
+          "ref": "3.6",
+          "name": "Solving Real-World Problems with Rational Numbers – Part 2",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%203/Unit%203.6.pptx"
+        },
+        {
+          "unit": 3,
+          "unitName": "Rational Number Operations",
+          "ref": "3.7",
+          "name": "Solving Real-World Problems with Rational Numbers – Part 3",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%203/Unit%203.7.pptx"
+        },
+        {
+          "unit": 3,
+          "unitName": "Rational Number Operations",
+          "ref": "3.8",
+          "name": "Solving Real-World Problems with Rational Numbers – Part 4",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%203/Unit%203.8.pptx"
+        },
+        {
+          "unit": 4,
+          "unitName": "Area & Circles",
+          "ref": "4.1",
+          "name": "Deriving Area Formulas for Trapezoids, Parallelograms, and Rhombi",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%204/Unit%204.1.pptx"
+        },
+        {
+          "unit": 4,
+          "unitName": "Area & Circles",
+          "ref": "4.2",
+          "name": "Finding the Area of Trapezoids, Parallelograms, and Rhombi",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%204/Unit%204.2.pptx"
+        },
+        {
+          "unit": 4,
+          "unitName": "Area & Circles",
+          "ref": "4.3",
+          "name": "Finding the Area of Polygons",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%204/Unit%204.3.pptx"
+        },
+        {
+          "unit": 4,
+          "unitName": "Area & Circles",
+          "ref": "4.4",
+          "name": "Finding the Area of Composite Figures",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%204/Unit%204.4.pptx"
+        },
+        {
+          "unit": 4,
+          "unitName": "Area & Circles",
+          "ref": "4.5",
+          "name": "Exploring Relationships in Circles",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%204/Unit%204.5.pptx"
+        },
+        {
+          "unit": 4,
+          "unitName": "Area & Circles",
+          "ref": "4.6",
+          "name": "Finding Circumference",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%204/Unit%204.6.pptx"
+        },
+        {
+          "unit": 4,
+          "unitName": "Area & Circles",
+          "ref": "4.7",
+          "name": "Finding Radius and Diameter",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%204/Unit%204.7.pptx"
+        },
+        {
+          "unit": 4,
+          "unitName": "Area & Circles",
+          "ref": "4.8",
+          "name": "Exploring the Area of a Circle",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%204/Unit%204.8.pptx"
+        },
+        {
+          "unit": 4,
+          "unitName": "Area & Circles",
+          "ref": "4.9",
+          "name": "Finding the Area of a Circle",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%204/Unit%204.9.pptx"
+        },
+        {
+          "unit": 4,
+          "unitName": "Area & Circles",
+          "ref": "4.10",
+          "name": "Using Circumference and Area to Solve Problems",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%204/Unit%204.10.pptx"
+        },
+        {
+          "unit": 5,
+          "unitName": "Statistics, Scale & Proportions",
+          "ref": "5.1",
+          "name": "Random Samples vs. Population",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%205/Unit%205.1.pptx"
+        },
+        {
+          "unit": 5,
+          "unitName": "Statistics, Scale & Proportions",
+          "ref": "5.2",
+          "name": "Determining Probability",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%205/Unit%205.2.pptx"
+        },
+        {
+          "unit": 5,
+          "unitName": "Statistics, Scale & Proportions",
+          "ref": "5.3",
+          "name": "Making Population Predictions – Part 1",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%205/Unit%205.3.pptx"
+        },
+        {
+          "unit": 5,
+          "unitName": "Statistics, Scale & Proportions",
+          "ref": "5.4",
+          "name": "Making Population Predictions – Part 2",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%205/Unit%205.4.pptx"
+        },
+        {
+          "unit": 5,
+          "unitName": "Statistics, Scale & Proportions",
+          "ref": "5.5",
+          "name": "Scale Factors – Perimeter",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%205/Unit%205.5.pptx"
+        },
+        {
+          "unit": 5,
+          "unitName": "Statistics, Scale & Proportions",
+          "ref": "5.6",
+          "name": "Scale Factors – Area",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%205/Unit%205.6.pptx"
+        },
+        {
+          "unit": 5,
+          "unitName": "Statistics, Scale & Proportions",
+          "ref": "5.7",
+          "name": "Scale Drawings",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%205/Unit%205.7.pptx"
+        },
+        {
+          "unit": 5,
+          "unitName": "Statistics, Scale & Proportions",
+          "ref": "5.8",
+          "name": "Solving Problems Involving Dimensions and Perimeters of Geometric Figures",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%205/Unit%205.8.pptx"
+        },
+        {
+          "unit": 5,
+          "unitName": "Statistics, Scale & Proportions",
+          "ref": "5.9",
+          "name": "Solving Problems Involving Dimensions and Areas of Geometric Figures",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%205/Unit%205.9.pptx"
+        },
+        {
+          "unit": 5,
+          "unitName": "Statistics, Scale & Proportions",
+          "ref": "5.10",
+          "name": "Solving Problems Involving Real-World Scale Drawings",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%205/Unit%205.10.pptx"
+        },
+        {
+          "unit": 6,
+          "unitName": "Proportional Relationships",
+          "ref": "6.1",
+          "name": "Paying Your Way in Mathlandia",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%206/Unit%206.1.pptx"
+        },
+        {
+          "unit": 6,
+          "unitName": "Proportional Relationships",
+          "ref": "6.2",
+          "name": "Currency Conversions",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%206/Unit%206.2.pptx"
+        },
+        {
+          "unit": 6,
+          "unitName": "Proportional Relationships",
+          "ref": "6.3",
+          "name": "Converting Units of Length",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%206/Unit%206.3.pptx"
+        },
+        {
+          "unit": 6,
+          "unitName": "Proportional Relationships",
+          "ref": "6.4",
+          "name": "Converting Mass and Area",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%206/Unit%206.4.pptx"
+        },
+        {
+          "unit": 6,
+          "unitName": "Proportional Relationships",
+          "ref": "6.5",
+          "name": "Converting Units of Volume",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%206/Unit%206.5.pptx"
+        },
+        {
+          "unit": 6,
+          "unitName": "Proportional Relationships",
+          "ref": "6.6",
+          "name": "Creating Proportions",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%206/Unit%206.6.pptx"
+        },
+        {
+          "unit": 6,
+          "unitName": "Proportional Relationships",
+          "ref": "6.7",
+          "name": "Using Proportions to Solve Problems",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%206/Unit%206.7.pptx"
+        },
+        {
+          "unit": 6,
+          "unitName": "Proportional Relationships",
+          "ref": "6.8",
+          "name": "Solving Real-World Problems Involving Proportions",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%206/Unit%206.8.pptx"
+        },
+        {
+          "unit": 6,
+          "unitName": "Proportional Relationships",
+          "ref": "6.9",
+          "name": "Exploring Multi-Step Proportion Problems",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%206/Unit%206.9.pptx"
+        },
+        {
+          "unit": 6,
+          "unitName": "Proportional Relationships",
+          "ref": "6.10",
+          "name": "Solving Multi-Step Proportion Problems",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%206/Unit%206.10.pptx"
+        },
+        {
+          "unit": 6,
+          "unitName": "Proportional Relationships",
+          "ref": "6.11",
+          "name": "Reasoning Through Problems Involving Proportional Relationships",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%206/Unit%206.11.pptx"
+        },
+        {
+          "unit": 7,
+          "unitName": "Percents & Data Representation",
+          "ref": "7.1",
+          "name": "Circle Graphs",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%207/Unit%207.1.pptx"
+        },
+        {
+          "unit": 7,
+          "unitName": "Percents & Data Representation",
+          "ref": "7.2",
+          "name": "Sectors of a Circle",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%207/Unit%207.2.pptx"
+        },
+        {
+          "unit": 7,
+          "unitName": "Percents & Data Representation",
+          "ref": "7.3",
+          "name": "Constructing Circle Graphs",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%207/Unit%207.3.pptx"
+        },
+        {
+          "unit": 7,
+          "unitName": "Percents & Data Representation",
+          "ref": "7.4",
+          "name": "Interpreting Circle Graphs",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%207/Unit%207.4.pptx"
+        },
+        {
+          "unit": 7,
+          "unitName": "Percents & Data Representation",
+          "ref": "7.5",
+          "name": "Discounts and Markups",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%207/Unit%207.5.pptx"
+        },
+        {
+          "unit": 7,
+          "unitName": "Percents & Data Representation",
+          "ref": "7.6",
+          "name": "Determining Tax, Tip, or Fees Given a Percentage",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%207/Unit%207.6.pptx"
+        },
+        {
+          "unit": 7,
+          "unitName": "Percents & Data Representation",
+          "ref": "7.7",
+          "name": "Solving Multi-Step Problems Involving Discounts, Taxes, Tips, or Fees",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%207/Unit%207.7.pptx"
+        },
+        {
+          "unit": 7,
+          "unitName": "Percents & Data Representation",
+          "ref": "7.8",
+          "name": "Simple Interest",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%207/Unit%207.8.pptx"
+        },
+        {
+          "unit": 7,
+          "unitName": "Percents & Data Representation",
+          "ref": "7.9",
+          "name": "Percent Increase and Decrease",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%207/Unit%207.9.pptx"
+        },
+        {
+          "unit": 7,
+          "unitName": "Percents & Data Representation",
+          "ref": "7.10",
+          "name": "Calculating Percent Error",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%207/Unit%207.10.pptx"
+        },
+        {
+          "unit": 8,
+          "unitName": "Exponents & Expressions",
+          "ref": "8.1",
+          "name": "Product Laws of Exponents",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%208/Unit%208.1.pptx"
+        },
+        {
+          "unit": 8,
+          "unitName": "Exponents & Expressions",
+          "ref": "8.2",
+          "name": "Quotient Laws of Exponents",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%208/Unit%208.2.pptx"
+        },
+        {
+          "unit": 8,
+          "unitName": "Exponents & Expressions",
+          "ref": "8.3",
+          "name": "Exponential Expressions",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%208/Unit%208.3.pptx"
+        },
+        {
+          "unit": 8,
+          "unitName": "Exponents & Expressions",
+          "ref": "8.4",
+          "name": "Evaluating Numeric Expressions – Part 1",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%208/Unit%208.4.pptx"
+        },
+        {
+          "unit": 8,
+          "unitName": "Exponents & Expressions",
+          "ref": "8.5",
+          "name": "Evaluating Numeric Expressions – Part 2",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%208/Unit%208.5.pptx"
+        },
+        {
+          "unit": 8,
+          "unitName": "Exponents & Expressions",
+          "ref": "8.6",
+          "name": "Evaluating Numeric Expressions – Part 3",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%208/Unit%208.6.pptx"
+        },
+        {
+          "unit": 9,
+          "unitName": "Linear Expressions",
+          "ref": "9.1",
+          "name": "Adding and Subtracting Linear Expressions with Integer Coefficients",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%209/Unit%209.1.pptx"
+        },
+        {
+          "unit": 9,
+          "unitName": "Linear Expressions",
+          "ref": "9.2",
+          "name": "Adding Linear Expressions with Rational Coefficients",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%209/Unit%209.2.pptx"
+        },
+        {
+          "unit": 9,
+          "unitName": "Linear Expressions",
+          "ref": "9.3",
+          "name": "Subtracting Linear Expressions with Rational Coefficients",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%209/Unit%209.3.pptx"
+        },
+        {
+          "unit": 9,
+          "unitName": "Linear Expressions",
+          "ref": "9.4",
+          "name": "Adding and Subtracting Expressions with Rational Coefficients",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%209/Unit%209.4.pptx"
+        },
+        {
+          "unit": 9,
+          "unitName": "Linear Expressions",
+          "ref": "9.5",
+          "name": "Equivalent Numerical Expressions",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%209/Unit%209.5.pptx"
+        },
+        {
+          "unit": 9,
+          "unitName": "Linear Expressions",
+          "ref": "9.6",
+          "name": "Rewriting Equivalent Numerical Expressions",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%209/Unit%209.6.pptx"
+        },
+        {
+          "unit": 9,
+          "unitName": "Linear Expressions",
+          "ref": "9.7",
+          "name": "Equivalent Linear Expressions",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%209/Unit%209.7.pptx"
+        },
+        {
+          "unit": 9,
+          "unitName": "Linear Expressions",
+          "ref": "9.8",
+          "name": "Equivalent Expressions Using Properties of Operations",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%209/Unit%209.8.pptx"
+        },
+        {
+          "unit": 10,
+          "unitName": "Equations & Inequalities",
+          "ref": "10.1",
+          "name": "Exploring Inequalities – Part 1",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%2010/Unit%2010.1.pptx"
+        },
+        {
+          "unit": 10,
+          "unitName": "Equations & Inequalities",
+          "ref": "10.2",
+          "name": "Solving One-Step Inequalities Using Addition and Subtraction",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%2010/Unit%2010.2.pptx"
+        },
+        {
+          "unit": 10,
+          "unitName": "Equations & Inequalities",
+          "ref": "10.3",
+          "name": "Exploring Inequalities – Part 2",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%2010/Unit%2010.3.pptx"
+        },
+        {
+          "unit": 10,
+          "unitName": "Equations & Inequalities",
+          "ref": "10.4",
+          "name": "Solving One-Step Inequalities Using Multiplication and Division",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%2010/Unit%2010.4.pptx"
+        },
+        {
+          "unit": 10,
+          "unitName": "Equations & Inequalities",
+          "ref": "10.5",
+          "name": "Solving Two-Step Equations Using Properties of Equality",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%2010/Unit%2010.5.pptx"
+        },
+        {
+          "unit": 10,
+          "unitName": "Equations & Inequalities",
+          "ref": "10.6",
+          "name": "Solving Two-Step Equations",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%2010/Unit%2010.6.pptx"
+        },
+        {
+          "unit": 10,
+          "unitName": "Equations & Inequalities",
+          "ref": "10.7",
+          "name": "Solving Equations Involving the Distributive Property",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%2010/Unit%2010.7.pptx"
+        },
+        {
+          "unit": 10,
+          "unitName": "Equations & Inequalities",
+          "ref": "10.8",
+          "name": "Solving Real-World Problems with Two-Step Equations",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%2010/Unit%2010.8.pptx"
+        },
+        {
+          "unit": 10,
+          "unitName": "Equations & Inequalities",
+          "ref": "10.9",
+          "name": "Writing Two-Step Equations from Real-World Contexts",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%2010/Unit%2010.9.pptx"
+        },
+        {
+          "unit": 10,
+          "unitName": "Equations & Inequalities",
+          "ref": "10.10",
+          "name": "Writing and Solving Equations in Real-World Context",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%2010/Unit%2010.10.pptx"
+        },
+        {
+          "unit": 11,
+          "unitName": "Proportional Relationships & Graphs",
+          "ref": "11.1",
+          "name": "Graphing Proportional Relationships",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%2011/Unit%2011.1.pptx"
+        },
+        {
+          "unit": 11,
+          "unitName": "Proportional Relationships & Graphs",
+          "ref": "11.2",
+          "name": "Constant of Proportionality – Part 1",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%2011/Unit%2011.2.pptx"
+        },
+        {
+          "unit": 11,
+          "unitName": "Proportional Relationships & Graphs",
+          "ref": "11.3",
+          "name": "Constant of Proportionality – Part 2",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%2011/Unit%2011.3.pptx"
+        },
+        {
+          "unit": 11,
+          "unitName": "Proportional Relationships & Graphs",
+          "ref": "11.4",
+          "name": "Features of Proportional Relationships",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%2011/Unit%2011.4.pptx"
+        },
+        {
+          "unit": 11,
+          "unitName": "Proportional Relationships & Graphs",
+          "ref": "11.5",
+          "name": "Is It Proportional?",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%2011/Unit%2011.5.pptx"
+        },
+        {
+          "unit": 11,
+          "unitName": "Proportional Relationships & Graphs",
+          "ref": "11.6",
+          "name": "Representing Proportional Relationships with Equations",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%2011/Unit%2011.6.pptx"
+        },
+        {
+          "unit": 11,
+          "unitName": "Proportional Relationships & Graphs",
+          "ref": "11.7",
+          "name": "Translating Between Representations of Proportional Relationships",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%2011/Unit%2011.7.pptx"
+        },
+        {
+          "unit": 11,
+          "unitName": "Proportional Relationships & Graphs",
+          "ref": "11.8",
+          "name": "Putting It All Together",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%2011/Unit%2011.8.pptx"
+        },
+        {
+          "unit": 11,
+          "unitName": "Proportional Relationships & Graphs",
+          "ref": "11.9",
+          "name": "Revisiting Relationships in Circles",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%2011/Unit%2011.9.pptx"
+        },
+        {
+          "unit": 12,
+          "unitName": "Surface Area & Volume of Cylinders",
+          "ref": "12.1",
+          "name": "Finding Surface Area of Right Circular Cylinders Using Nets",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%2012/Unit%2012.1.pptx"
+        },
+        {
+          "unit": 12,
+          "unitName": "Surface Area & Volume of Cylinders",
+          "ref": "12.2",
+          "name": "Finding Surface Area of Right Circular Cylinders",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%2012/Unit%2012.2.pptx"
+        },
+        {
+          "unit": 12,
+          "unitName": "Surface Area & Volume of Cylinders",
+          "ref": "12.3",
+          "name": "Solving Problems Involving Surface Area of Right Circular Cylinders",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%2012/Unit%2012.3.pptx"
+        },
+        {
+          "unit": 12,
+          "unitName": "Surface Area & Volume of Cylinders",
+          "ref": "12.4",
+          "name": "Volume of Right Circular Cylinders – Part 1",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%2012/Unit%2012.4.pptx"
+        },
+        {
+          "unit": 12,
+          "unitName": "Surface Area & Volume of Cylinders",
+          "ref": "12.5",
+          "name": "Volume of Right Circular Cylinders – Part 2",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%2012/Unit%2012.5.pptx"
+        },
+        {
+          "unit": 12,
+          "unitName": "Surface Area & Volume of Cylinders",
+          "ref": "12.6",
+          "name": "Problem-Solving with Volume of Cylinders",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%2012/Unit%2012.6.pptx"
+        },
+        {
+          "unit": 13,
+          "unitName": "Data & Statistics",
+          "ref": "13.1",
+          "name": "Effects of Outliers",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%2013/Unit%2013.1.pptx"
+        },
+        {
+          "unit": 13,
+          "unitName": "Data & Statistics",
+          "ref": "13.2",
+          "name": "Justifying Measures of Center and Spread",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%2013/Unit%2013.2.pptx"
+        },
+        {
+          "unit": 13,
+          "unitName": "Data & Statistics",
+          "ref": "13.3",
+          "name": "Determining Appropriate Measures of Center and Variation",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%2013/Unit%2013.3.pptx"
+        },
+        {
+          "unit": 13,
+          "unitName": "Data & Statistics",
+          "ref": "13.4",
+          "name": "Comparing Graphical Representations",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%2013/Unit%2013.4.pptx"
+        },
+        {
+          "unit": 13,
+          "unitName": "Data & Statistics",
+          "ref": "13.5",
+          "name": "Comparing Data Sets",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%2013/Unit%2013.5.pptx"
+        },
+        {
+          "unit": 13,
+          "unitName": "Data & Statistics",
+          "ref": "13.6",
+          "name": "Comparing Data Sets and Graphs",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%2013/Unit%2013.6.pptx"
+        },
+        {
+          "unit": 13,
+          "unitName": "Data & Statistics",
+          "ref": "13.7",
+          "name": "Representing Real-World Contexts with Graphs",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%2013/Unit%2013.7.pptx"
+        },
+        {
+          "unit": 13,
+          "unitName": "Data & Statistics",
+          "ref": "13.8",
+          "name": "Creating Displays for Numerical Data",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%2013/Unit%2013.8.pptx"
+        },
+        {
+          "unit": 13,
+          "unitName": "Data & Statistics",
+          "ref": "13.9",
+          "name": "Creating Displays for Categorical Data",
+          "path": "3.%20Textbook/4.%207th%20Standard/1.%20Presentation%20Slide/Unit%2013/Unit%2013.9.pptx"
+        }
+      ]
+    },
+    {
+      "id": "7th-accelerated",
+      "label": "7th Grade Accelerated",
+      "lessons": [
+        {
+          "unit": 1,
+          "unitName": "Equations & Inequalities",
+          "ref": "1.1",
+          "name": "Rewriting Numbers in Equivalent Forms",
+          "path": "3.%20Textbook/3.%20RAMP%206/1.%20Presentation%20Slide/Quarter%201/10.%20%5B7A%5D%201.1.pptx"
+        },
+        {
+          "unit": 1,
+          "unitName": "Equations & Inequalities",
+          "ref": "1.2",
+          "name": "Converting Between Repeating Decimals and Fractions",
+          "path": "3.%20Textbook/3.%20RAMP%206/1.%20Presentation%20Slide/Quarter%201/11.%20%5B7A%5D%201.2.pptx"
+        },
+        {
+          "unit": 1,
+          "unitName": "Equations & Inequalities",
+          "ref": "1.3",
+          "name": "Solving Two-Step Equations Using Properties of Equality",
+          "path": "3.%20Textbook/3.%20RAMP%206/1.%20Presentation%20Slide/Quarter%201/12.%20%5B7A%5D%201.3.pptx"
+        },
+        {
+          "unit": 1,
+          "unitName": "Equations & Inequalities",
+          "ref": "1.4",
+          "name": "Solving Two-Step Equations",
+          "path": "3.%20Textbook/3.%20RAMP%206/1.%20Presentation%20Slide/Quarter%201/13.%20%5B7A%5D%201.4.pptx"
+        },
+        {
+          "unit": 1,
+          "unitName": "Equations & Inequalities",
+          "ref": "1.5",
+          "name": "Solving Mathematical and Real-World Problems With Equations",
+          "path": "3.%20Textbook/3.%20RAMP%206/1.%20Presentation%20Slide/Quarter%201/14.%20%5B7A%5D%201.5.pptx"
+        },
+        {
+          "unit": 1,
+          "unitName": "Equations & Inequalities",
+          "ref": "1.6",
+          "name": "Writing Two-Step Equations From Real-World Contexts",
+          "path": "3.%20Textbook/3.%20RAMP%206/1.%20Presentation%20Slide/Quarter%201/15.%20%5B7A%5D%201.6.pptx"
+        },
+        {
+          "unit": 1,
+          "unitName": "Equations & Inequalities",
+          "ref": "1.7",
+          "name": "Writing and Solving Equations in Real-World Context",
+          "path": "3.%20Textbook/3.%20RAMP%206/1.%20Presentation%20Slide/Quarter%201/16.%20%5B7A%5D%201.7.pptx"
+        },
+        {
+          "unit": 1,
+          "unitName": "Equations & Inequalities",
+          "ref": "1.8",
+          "name": "Determining Solutions to Inequalities",
+          "path": "3.%20Textbook/3.%20RAMP%206/1.%20Presentation%20Slide/Quarter%201/19.%20%5B7A%5D%201.8.pptx"
+        },
+        {
+          "unit": 1,
+          "unitName": "Equations & Inequalities",
+          "ref": "1.9",
+          "name": "Solving Inequalities – Part 1",
+          "path": "3.%20Textbook/3.%20RAMP%206/1.%20Presentation%20Slide/Quarter%201/20.%20%5B7A%5D%201.9.pptx"
+        },
+        {
+          "unit": 1,
+          "unitName": "Equations & Inequalities",
+          "ref": "1.10",
+          "name": "Solving Inequalities – Part 2",
+          "path": "3.%20Textbook/3.%20RAMP%206/1.%20Presentation%20Slide/Quarter%201/21.%20%5B7A%5D%201.10.pptx"
+        },
+        {
+          "unit": 2,
+          "unitName": "Real Number System",
+          "ref": "2.1",
+          "name": "Square Values",
+          "path": "3.%20Textbook/3.%20RAMP%206/1.%20Presentation%20Slide/Quarter%201/22.%20%5B7A%5D%202.1.pptx"
+        },
+        {
+          "unit": 2,
+          "unitName": "Real Number System",
+          "ref": "2.3",
+          "name": "Cube Values",
+          "path": "3.%20Textbook/3.%20RAMP%206/1.%20Presentation%20Slide/Quarter%201/23.%20%5B7A%5D%202.3.pptx"
+        },
+        {
+          "unit": 2,
+          "unitName": "Real Number System",
+          "ref": "2.2",
+          "name": "Square Values and Square Roots",
+          "path": "3.%20Textbook/3.%20RAMP%206/1.%20Presentation%20Slide/Quarter%201/24.%20%5B7A%5D%202.2.pptx"
+        },
+        {
+          "unit": 2,
+          "unitName": "Real Number System",
+          "ref": "2.4",
+          "name": "Approximating Irrational Numbers",
+          "path": "3.%20Textbook/3.%20RAMP%206/1.%20Presentation%20Slide/Quarter%201/25.%20%5B7A%5D%202.4.pptx"
+        },
+        {
+          "unit": 2,
+          "unitName": "Real Number System",
+          "ref": "2.5",
+          "name": "Rational and Irrational Numbers on the Number Line",
+          "path": "3.%20Textbook/3.%20RAMP%206/1.%20Presentation%20Slide/Quarter%201/26.%20%5B7A%5D%202.5.pptx"
+        },
+        {
+          "unit": 2,
+          "unitName": "Real Number System",
+          "ref": "2.6",
+          "name": "Plotting, Ordering, and Comparing Real Numbers",
+          "path": "3.%20Textbook/3.%20RAMP%206/1.%20Presentation%20Slide/Quarter%201/27.%20%5B7A%5D%202.6.pptx"
+        },
+        {
+          "unit": 3,
+          "unitName": "Exponents & Scientific Notation",
+          "ref": "3.1",
+          "name": "Product Laws of Exponents",
+          "path": "3.%20Textbook/5.%207th%20Accelerated/1.%20Presentation%20Slide/Quarter%201/3.1.pptx"
+        },
+        {
+          "unit": 3,
+          "unitName": "Exponents & Scientific Notation",
+          "ref": "3.2",
+          "name": "Quotient Laws of Exponents",
+          "path": "3.%20Textbook/5.%207th%20Accelerated/1.%20Presentation%20Slide/Quarter%201/3.2.pptx"
+        },
+        {
+          "unit": 3,
+          "unitName": "Exponents & Scientific Notation",
+          "ref": "3.3",
+          "name": "Exponential Expressions",
+          "path": "3.%20Textbook/5.%207th%20Accelerated/1.%20Presentation%20Slide/Quarter%201/3.3.pptx"
+        },
+        {
+          "unit": 3,
+          "unitName": "Exponents & Scientific Notation",
+          "ref": "3.4",
+          "name": "Negative Exponent Law",
+          "path": "3.%20Textbook/5.%207th%20Accelerated/1.%20Presentation%20Slide/Quarter%201/3.4.pptx"
+        },
+        {
+          "unit": 3,
+          "unitName": "Exponents & Scientific Notation",
+          "ref": "3.5",
+          "name": "Applying Exponent Laws",
+          "path": "3.%20Textbook/5.%207th%20Accelerated/1.%20Presentation%20Slide/Quarter%201/3.5.pptx"
+        },
+        {
+          "unit": 3,
+          "unitName": "Exponents & Scientific Notation",
+          "ref": "3.6",
+          "name": "Evaluating Numerical Expressions with Integer Exponents",
+          "path": "3.%20Textbook/5.%207th%20Accelerated/1.%20Presentation%20Slide/Quarter%201/3.6.pptx"
+        },
+        {
+          "unit": 3,
+          "unitName": "Exponents & Scientific Notation",
+          "ref": "3.7",
+          "name": "Equivalent Expressions",
+          "path": "3.%20Textbook/5.%207th%20Accelerated/1.%20Presentation%20Slide/Quarter%201/3.7.pptx"
+        },
+        {
+          "unit": 3,
+          "unitName": "Exponents & Scientific Notation",
+          "ref": "3.8",
+          "name": "Writing Large Numbers in Scientific Notation",
+          "path": "3.%20Textbook/5.%207th%20Accelerated/1.%20Presentation%20Slide/Quarter%201/3.8.pptx"
+        },
+        {
+          "unit": 3,
+          "unitName": "Exponents & Scientific Notation",
+          "ref": "3.9",
+          "name": "Writing Small Numbers in Scientific Notation",
+          "path": "3.%20Textbook/5.%207th%20Accelerated/1.%20Presentation%20Slide/Quarter%201/3.9.pptx"
+        }
+      ]
+    },
+    {
+      "id": "ramp6",
+      "label": "RAMP 6",
+      "lessons": [
+        {
+          "unit": "6A · Unit 11",
+          "unitName": "Rational Numbers",
+          "ref": "11.8",
+          "name": "Evaluating Numeric Expressions – Part 1",
+          "path": "3.%20Textbook/3.%20RAMP%206/1.%20Presentation%20Slide/Quarter%201/1.%20%5B6A%5D%2011.8.pptx"
+        },
+        {
+          "unit": "6A · Unit 11",
+          "unitName": "Rational Numbers",
+          "ref": "11.9",
+          "name": "Evaluating Numeric Expressions – Part 2",
+          "path": "3.%20Textbook/3.%20RAMP%206/1.%20Presentation%20Slide/Quarter%201/2.%20%5B6A%5D%2011.9.pptx"
+        },
+        {
+          "unit": "6A · Unit 11",
+          "unitName": "Rational Numbers",
+          "ref": "11.1",
+          "name": "Adding Rational Numbers",
+          "path": "3.%20Textbook/3.%20RAMP%206/1.%20Presentation%20Slide/Quarter%201/3.%20%5B6A%5D%2011.1.pptx"
+        },
+        {
+          "unit": "6A · Unit 11",
+          "unitName": "Rational Numbers",
+          "ref": "11.2",
+          "name": "Subtracting Rational Numbers",
+          "path": "3.%20Textbook/3.%20RAMP%206/1.%20Presentation%20Slide/Quarter%201/4.%20%5B6A%5D%2011.2.pptx"
+        },
+        {
+          "unit": "6A · Unit 11",
+          "unitName": "Rational Numbers",
+          "ref": "11.3",
+          "name": "Multiplying Rational Numbers",
+          "path": "3.%20Textbook/3.%20RAMP%206/1.%20Presentation%20Slide/Quarter%201/5.%20%5B6A%5D%2011.3.pptx"
+        },
+        {
+          "unit": "6A · Unit 11",
+          "unitName": "Rational Numbers",
+          "ref": "11.4",
+          "name": "Dividing Rational Numbers",
+          "path": "3.%20Textbook/3.%20RAMP%206/1.%20Presentation%20Slide/Quarter%201/6.%20%5B6A%5D%2011.4.pptx"
+        },
+        {
+          "unit": "6A · Unit 11",
+          "unitName": "Rational Numbers",
+          "ref": "11.5",
+          "name": "Solving Real-World Problems with Rational Numbers – Part 1",
+          "path": "3.%20Textbook/3.%20RAMP%206/1.%20Presentation%20Slide/Quarter%201/7.%20%5B6A%5D%2011.5.pptx"
+        },
+        {
+          "unit": "6A · Unit 11",
+          "unitName": "Rational Numbers",
+          "ref": "11.6",
+          "name": "Solving Real-World Problems with Rational Numbers – Part 2",
+          "path": "3.%20Textbook/3.%20RAMP%206/1.%20Presentation%20Slide/Quarter%201/8.%20%5B6A%5D%2011.6.pptx"
+        },
+        {
+          "unit": "6A · Unit 11",
+          "unitName": "Rational Numbers",
+          "ref": "11.7",
+          "name": "Solving Real-World Problems with Rational Numbers – Part 3",
+          "path": "3.%20Textbook/3.%20RAMP%206/1.%20Presentation%20Slide/Quarter%201/9.%20%5B6A%5D%2011.7.pptx"
+        },
+        {
+          "unit": "7A · Unit 1",
+          "unitName": "Equations & Inequalities",
+          "ref": "1.1",
+          "name": "Rewriting Numbers in Equivalent Forms",
+          "path": "3.%20Textbook/3.%20RAMP%206/1.%20Presentation%20Slide/Quarter%201/10.%20%5B7A%5D%201.1.pptx"
+        },
+        {
+          "unit": "7A · Unit 1",
+          "unitName": "Equations & Inequalities",
+          "ref": "1.2",
+          "name": "Converting Between Repeating Decimals and Fractions",
+          "path": "3.%20Textbook/3.%20RAMP%206/1.%20Presentation%20Slide/Quarter%201/11.%20%5B7A%5D%201.2.pptx"
+        },
+        {
+          "unit": "7A · Unit 1",
+          "unitName": "Equations & Inequalities",
+          "ref": "1.3",
+          "name": "Solving Two-Step Equations Using Properties of Equality",
+          "path": "3.%20Textbook/3.%20RAMP%206/1.%20Presentation%20Slide/Quarter%201/12.%20%5B7A%5D%201.3.pptx"
+        },
+        {
+          "unit": "7A · Unit 1",
+          "unitName": "Equations & Inequalities",
+          "ref": "1.4",
+          "name": "Solving Two-Step Equations",
+          "path": "3.%20Textbook/3.%20RAMP%206/1.%20Presentation%20Slide/Quarter%201/13.%20%5B7A%5D%201.4.pptx"
+        },
+        {
+          "unit": "7A · Unit 1",
+          "unitName": "Equations & Inequalities",
+          "ref": "1.5",
+          "name": "Solving Mathematical and Real-World Problems With Equations",
+          "path": "3.%20Textbook/3.%20RAMP%206/1.%20Presentation%20Slide/Quarter%201/14.%20%5B7A%5D%201.5.pptx"
+        },
+        {
+          "unit": "7A · Unit 1",
+          "unitName": "Equations & Inequalities",
+          "ref": "1.6",
+          "name": "Writing Two-Step Equations From Real-World Contexts",
+          "path": "3.%20Textbook/3.%20RAMP%206/1.%20Presentation%20Slide/Quarter%201/15.%20%5B7A%5D%201.6.pptx"
+        },
+        {
+          "unit": "7A · Unit 1",
+          "unitName": "Equations & Inequalities",
+          "ref": "1.7",
+          "name": "Writing and Solving Equations in Real-World Context",
+          "path": "3.%20Textbook/3.%20RAMP%206/1.%20Presentation%20Slide/Quarter%201/16.%20%5B7A%5D%201.7.pptx"
+        },
+        {
+          "unit": "6A · Unit 14",
+          "unitName": "Inequalities",
+          "ref": "14.9",
+          "name": "Solving One-Step Inequalities Using Addition and Subtraction",
+          "path": "3.%20Textbook/3.%20RAMP%206/1.%20Presentation%20Slide/Quarter%201/17.%20%5B6A%5D%2014.9.pptx"
+        },
+        {
+          "unit": "6A · Unit 14",
+          "unitName": "Inequalities",
+          "ref": "14.10",
+          "name": "Solving One-Step Inequalities Using Multiplication and Division",
+          "path": "3.%20Textbook/3.%20RAMP%206/1.%20Presentation%20Slide/Quarter%201/18.%20%5B6A%5D%2014.10.pptx"
+        },
+        {
+          "unit": "7A · Unit 1 (cont.)",
+          "unitName": "Equations & Inequalities",
+          "ref": "1.8",
+          "name": "Determining Solutions to Inequalities",
+          "path": "3.%20Textbook/3.%20RAMP%206/1.%20Presentation%20Slide/Quarter%201/19.%20%5B7A%5D%201.8.pptx"
+        },
+        {
+          "unit": "7A · Unit 1 (cont.)",
+          "unitName": "Equations & Inequalities",
+          "ref": "1.9",
+          "name": "Solving Inequalities – Part 1",
+          "path": "3.%20Textbook/3.%20RAMP%206/1.%20Presentation%20Slide/Quarter%201/20.%20%5B7A%5D%201.9.pptx"
+        },
+        {
+          "unit": "7A · Unit 1 (cont.)",
+          "unitName": "Equations & Inequalities",
+          "ref": "1.10",
+          "name": "Solving Inequalities – Part 2",
+          "path": "3.%20Textbook/3.%20RAMP%206/1.%20Presentation%20Slide/Quarter%201/21.%20%5B7A%5D%201.10.pptx"
+        },
+        {
+          "unit": "7A · Unit 2",
+          "unitName": "Real Number System",
+          "ref": "2.1",
+          "name": "Square Values",
+          "path": "3.%20Textbook/3.%20RAMP%206/1.%20Presentation%20Slide/Quarter%201/22.%20%5B7A%5D%202.1.pptx"
+        },
+        {
+          "unit": "7A · Unit 2",
+          "unitName": "Real Number System",
+          "ref": "2.3",
+          "name": "Cube Values",
+          "path": "3.%20Textbook/3.%20RAMP%206/1.%20Presentation%20Slide/Quarter%201/23.%20%5B7A%5D%202.3.pptx"
+        },
+        {
+          "unit": "7A · Unit 2",
+          "unitName": "Real Number System",
+          "ref": "2.2",
+          "name": "Square Values and Square Roots",
+          "path": "3.%20Textbook/3.%20RAMP%206/1.%20Presentation%20Slide/Quarter%201/24.%20%5B7A%5D%202.2.pptx"
+        },
+        {
+          "unit": "7A · Unit 2",
+          "unitName": "Real Number System",
+          "ref": "2.4",
+          "name": "Approximating Irrational Numbers",
+          "path": "3.%20Textbook/3.%20RAMP%206/1.%20Presentation%20Slide/Quarter%201/25.%20%5B7A%5D%202.4.pptx"
+        },
+        {
+          "unit": "7A · Unit 2",
+          "unitName": "Real Number System",
+          "ref": "2.5",
+          "name": "Rational and Irrational Numbers on the Number Line",
+          "path": "3.%20Textbook/3.%20RAMP%206/1.%20Presentation%20Slide/Quarter%201/26.%20%5B7A%5D%202.5.pptx"
+        },
+        {
+          "unit": "7A · Unit 2",
+          "unitName": "Real Number System",
+          "ref": "2.6",
+          "name": "Plotting, Ordering, and Comparing Real Numbers",
+          "path": "3.%20Textbook/3.%20RAMP%206/1.%20Presentation%20Slide/Quarter%201/27.%20%5B7A%5D%202.6.pptx"
+        }
+      ]
+    }
+  ]
+}
