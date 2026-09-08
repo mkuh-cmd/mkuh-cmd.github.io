@@ -74,6 +74,9 @@
   textarea{resize:vertical;min-height:64px;line-height:1.4;}
   label{font-size:12px;font-weight:700;color:var(--navy);display:block;margin-bottom:4px;}
   .field{margin-bottom:10px;}
+  .dok-stems{background:#f5f3ff;border:1px solid #ddd6fe;border-radius:8px;padding:8px 12px;font-size:12px;color:#5b21b6;margin-bottom:10px;}
+  .dok-stems ul{margin:4px 0 0 18px;padding:0;}
+  .dok-stems li{margin-bottom:2px;}
 
   .layout{display:grid;grid-template-columns:300px 1fr;gap:18px;align-items:start;}
   @media(max-width:860px){.layout{grid-template-columns:1fr;}}
@@ -159,6 +162,7 @@
   <div class="panel" id="hubPanel">
     <h2>Pull slides from the SSA Math Hub</h2>
     <div class="sub">Browse a lesson from the Math Hub's existing slide decks (7th Standard, 7th Accelerated, RAMP 6) and pull its slides straight into this deck &mdash; titles and bullet text are extracted automatically from the real .pptx.</div>
+    <div class="sub" id="hubManifestFreshness"></div>
     <div class="hub-row">
       <div class="field">
         <label for="hubSubject">Subject</label>
@@ -242,11 +246,38 @@ var TEMPLATES = [
   { id:'direct', icon:'📖', name:'Direct Instruction', layout:'BODY', bodyLabel:'Key points (one bullet per line)', defaultTitle:'Direct Instruction' },
   { id:'guided', icon:'🤝', name:'Guided Practice', layout:'BODY', bodyLabel:'Worked example / steps (one per line)', defaultTitle:'Guided Practice' },
   { id:'independent', icon:'📝', name:'Independent Practice', layout:'BODY', bodyLabel:'Task instructions (one per line)', defaultTitle:'Your Turn' },
+  { id:'hot', icon:'🧠', name:'Higher-Order Thinking', layout:'HOT', bodyLabel:'Question or task (write your own, using a stem below as a starting point)', defaultTitle:'Think Deeper', defaultDok:'3' },
   { id:'exit', icon:'🚪', name:'Exit Ticket', layout:'BODY', bodyLabel:'Reflection prompt (one per line)', defaultTitle:'Exit Ticket' },
   { id:'blank', icon:'⬜', name:'Custom / Blank', layout:'BODY', bodyLabel:'Body text (one bullet per line)', defaultTitle:'' }
 ];
 
-var STARTER_DECK = ['title','objective','donow','agenda','direct','guided','independent','exit'];
+// DOK (Depth of Knowledge) reference for the Higher-Order Thinking template.
+// These are Bloom's-aligned sentence stems, not auto-generated questions —
+// the teacher still writes the actual prompt; the stems just nudge it toward
+// the cognitive demand of the selected DOK level instead of pure recall.
+var DOK_LABELS = { '2': 'DOK 2 — Skill / Concept', '3': 'DOK 3 — Strategic Thinking', '4': 'DOK 4 — Extended Thinking' };
+var DOK_STEMS = {
+  '2': [
+    'Explain how you found... in your own words.',
+    'Compare and contrast... with...',
+    'Predict what would happen if...',
+    'Classify these examples by...'
+  ],
+  '3': [
+    'Justify why... is true using evidence from the problem.',
+    'What is the most efficient strategy for...? Defend your choice.',
+    'Critique this solution — where does the reasoning break down?',
+    'What would happen if you changed...? Explain your reasoning.'
+  ],
+  '4': [
+    'Design a real-world scenario that requires...',
+    'Investigate two methods for... and defend which is better, using evidence.',
+    'Create an original problem that requires applying... across multiple concepts.',
+    'Extend this pattern/rule to a new context and prove it still holds.'
+  ]
+};
+
+var STARTER_DECK = ['title','objective','donow','agenda','direct','guided','independent','hot','exit'];
 
 var $ = function(id){ return document.getElementById(id); };
 var tplById = {};
@@ -293,6 +324,7 @@ function addSlide(tplId){
   var item = { uid: 'u'+(state.uidSeed++), templateId: tplId,
     title: t.layout==='TITLE' ? '' : (t.defaultTitle||''),
     subtitle: '', body: '' };
+  if(t.layout==='HOT') item.dokLevel = t.defaultDok || '3';
   state.deck.push(item);
   saveDeck();
   renderDeck();
@@ -320,6 +352,7 @@ function renderDeck(){
         '<span class="slide-index">'+(i+1)+'</span>' +
         '<span class="slide-type">'+t.icon+' '+t.name+'</span>' +
         (item.source ? '<span class="slide-source">📚 '+escHtml(item.source)+'</span>' : '') +
+        (t.layout==='HOT' && item.dokLevel ? '<span class="slide-source">'+escHtml(DOK_LABELS[item.dokLevel])+'</span>' : '') +
         '<div class="slide-actions">' +
           '<button class="btn btn-ghost btn-icon" data-act="up" title="Move up">&#8593;</button>' +
           '<button class="btn btn-ghost btn-icon" data-act="down" title="Move down">&#8595;</button>' +
@@ -331,6 +364,14 @@ function renderDeck(){
     if(t.layout==='TITLE'){
       html += '<div class="field"><label>Title</label><input type="text" data-field="title" placeholder="'+(t.fields[0].placeholder||'')+'" value="'+escAttr(item.title)+'"></div>';
       html += '<div class="field"><label>Subtitle</label><input type="text" data-field="subtitle" placeholder="'+(t.fields[1].placeholder||'')+'" value="'+escAttr(item.subtitle)+'"></div>';
+    } else if(t.layout==='HOT'){
+      var dok = item.dokLevel || t.defaultDok || '3';
+      html += '<div class="field"><label>Depth of Knowledge</label><select data-field="dokLevel">' +
+        ['2','3','4'].map(function(lv){ return '<option value="'+lv+'"'+(lv===dok?' selected':'')+'>'+DOK_LABELS[lv]+'</option>'; }).join('') +
+        '</select></div>';
+      html += '<div class="dok-stems">Stem ideas for '+DOK_LABELS[dok]+':<ul>' + DOK_STEMS[dok].map(function(s){ return '<li>'+escHtml(s)+'</li>'; }).join('') + '</ul></div>';
+      html += '<div class="field"><label>Title</label><input type="text" data-field="title" value="'+escAttr(item.title)+'"></div>';
+      html += '<div class="field"><label>'+t.bodyLabel+'</label><textarea data-field="body" rows="4">'+escHtml(item.body)+'</textarea></div>';
     } else {
       html += '<div class="field"><label>Title</label><input type="text" data-field="title" value="'+escAttr(item.title)+'"></div>';
       html += '<div class="field"><label>'+t.bodyLabel+'</label><textarea data-field="body" rows="4">'+escHtml(item.body)+'</textarea></div>';
@@ -356,6 +397,10 @@ $('deckList').addEventListener('input', function(e){
   if(idx<0) return;
   state.deck[idx][field] = e.target.value;
   saveDeck();
+  if(field==='dokLevel'){
+    var stemsBox = card.querySelector('.dok-stems');
+    if(stemsBox) stemsBox.innerHTML = 'Stem ideas for '+DOK_LABELS[e.target.value]+':<ul>' + DOK_STEMS[e.target.value].map(function(s){ return '<li>'+escHtml(s)+'</li>'; }).join('') + '</ul>';
+  }
 });
 
 $('deckList').addEventListener('click', function(e){
@@ -412,9 +457,17 @@ function initGis(){
   return true;
 }
 
+function isPlausibleClientId(v){
+  return /^\d+-[a-zA-Z0-9]+\.apps\.googleusercontent\.com$/.test(v);
+}
+
 $('saveClientIdBtn').addEventListener('click', function(){
   var v = $('clientIdInput').value.trim();
   if(!v){ $('setupLog').textContent = 'Enter a Client ID first.'; return; }
+  if(!isPlausibleClientId(v)){
+    $('setupLog').textContent = 'That doesn\'t look like a Google OAuth Client ID — it should end in ".apps.googleusercontent.com" (copy it from Google Cloud Console → Credentials). Not saved.';
+    return;
+  }
   state.clientId = v;
   localStorage.setItem('gsg-client-id', v);
   var ok = initGis();
@@ -479,7 +532,11 @@ function buildRequests(deck){
           { layoutPlaceholder:{ type:'TITLE' }, objectId:tId },
           { layoutPlaceholder:{ type:'BODY' }, objectId:bId }
         ]}});
-      if(item.title) requests.push({ insertText:{ objectId:tId, text:item.title }});
+      var titleText = item.title || '';
+      if(t.layout==='HOT' && item.dokLevel){
+        titleText = '🧠 ' + DOK_LABELS[item.dokLevel] + (titleText ? ' — ' + titleText : '');
+      }
+      if(titleText) requests.push({ insertText:{ objectId:tId, text:titleText }});
       var bodyText = (item.body||'').split('\n').map(function(s){return s.trim();}).filter(Boolean).join('\n');
       if(bodyText){
         requests.push({ insertText:{ objectId:bId, text:bodyText }});
@@ -511,6 +568,23 @@ function apiFetch(url, token, body){
 
 $('generateBtn').addEventListener('click', function(){
   if(!state.deck.length){ showResult(false, 'Add at least one slide to your deck first.'); return; }
+
+  var emptySlides = [];
+  state.deck.forEach(function(item, i){
+    var t = tplById[item.templateId];
+    var hasContent = t.layout === 'TITLE'
+      ? ((item.title && item.title.trim()) || (item.subtitle && item.subtitle.trim()))
+      : ((item.title && item.title.trim()) || (item.body && item.body.trim()));
+    if(!hasContent) emptySlides.push(i + 1);
+  });
+  if(emptySlides.length){
+    var noun = emptySlides.length === 1 ? 'Slide' : 'Slides';
+    var verb = emptySlides.length === 1 ? 'has' : 'have';
+    var pronoun = emptySlides.length === 1 ? 'it' : 'they';
+    var proceed = confirm(noun + ' ' + emptySlides.join(', ') + ' ' + verb + ' no title or text — ' + pronoun + ' will be created blank in the real deck. Continue anyway?');
+    if(!proceed) return;
+  }
+
   var title = $('deckNameInput').value.trim() || 'Untitled Lesson Deck';
   var btn = $('generateBtn');
   btn.disabled = true; btn.textContent = 'Generating…';
@@ -590,7 +664,8 @@ function hubGetSelectedLesson(){
 
 function hubExtractSlideText(xmlDoc){
   var shapes = Array.prototype.slice.call(xmlDoc.getElementsByTagName('p:sp'));
-  var title = '', bodyLines = [];
+  var titleText = '';
+  var candidates = []; // non-title shapes with text: { lines, y }
   shapes.forEach(function(sp){
     var isTitle = false;
     var phEls = sp.getElementsByTagName('p:ph');
@@ -605,11 +680,38 @@ function hubExtractSlideText(xmlDoc){
       var runs = Array.prototype.slice.call(p.getElementsByTagName('a:t'));
       return runs.map(function(r){ return r.textContent; }).join('');
     }).filter(function(l){ return l.trim().length; });
-    if(isTitle){ title = lines.join(' '); }
-    else { lines.forEach(function(l){ bodyLines.push(l); }); }
+    if(!lines.length) return;
+    if(isTitle){ titleText = lines.join(' '); return; }
+    // Position is only used as a title-fallback tiebreak below: when a
+    // slide has no explicit title placeholder, the topmost shape on the
+    // slide is a far more reliable stand-in for "the title" than whichever
+    // shape happens to appear first in the XML — XML order is paint order,
+    // not layout order, and can put a page-number footer first.
+    var y = Infinity;
+    var offEls = sp.getElementsByTagName('a:off');
+    if(offEls.length){
+      var yAttr = offEls[0].getAttribute('y');
+      var yNum = yAttr === null ? NaN : Number(yAttr);
+      if(!isNaN(yNum)) y = yNum;
+    }
+    candidates.push({ lines: lines, y: y });
   });
-  if(!title && bodyLines.length){ title = bodyLines.shift(); }
-  return { title: title.trim(), body: bodyLines.join('\n').trim() };
+
+  var bodyLines = [];
+  if(titleText){
+    candidates.forEach(function(c){ c.lines.forEach(function(l){ bodyLines.push(l); }); });
+  } else if(candidates.length){
+    var topmost = candidates.reduce(function(best, c){ return c.y < best.y ? c : best; });
+    titleText = topmost.lines[0];
+    var usedTopmostFirstLine = false;
+    candidates.forEach(function(c){
+      c.lines.forEach(function(l){
+        if(c === topmost && !usedTopmostFirstLine){ usedTopmostFirstLine = true; return; }
+        bodyLines.push(l);
+      });
+    });
+  }
+  return { title: titleText.trim(), body: bodyLines.join('\n').trim() };
 }
 
 function hubGetOrderedSlideFiles(zip){
@@ -728,6 +830,10 @@ function hubInit(){
     return res.json();
   }).then(function(data){
     hubManifest = data;
+    if(hubManifest.generatedAt){
+      var genDate = new Date(hubManifest.generatedAt);
+      $('hubManifestFreshness').textContent = 'Math Hub data as of ' + genDate.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }) + '. If new units were added since then, re-run scripts/build-manifest.js.';
+    }
     hubPopulateSubjects();
     hubApplyPendingImport();
   }).catch(function(err){

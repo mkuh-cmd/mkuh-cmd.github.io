@@ -104,6 +104,12 @@
   .chip button{background:none;border:none;color:var(--red);font-weight:800;cursor:pointer;padding:0 4px;font-size:13px;}
   .week-add-row{display:flex;gap:6px;}
   .week-add-row select{flex:1;}
+  .rigor-select{margin-left:auto;font-size:11px;padding:4px 8px;width:auto;border-radius:20px;border:1px solid var(--border);color:var(--navy);font-weight:600;}
+  .rigor-badge{display:inline-block;color:#fff;font-size:11px;font-weight:700;border-radius:20px;padding:3px 10px;vertical-align:middle;}
+  .rigor-bar{display:flex;height:10px;border-radius:6px;overflow:hidden;margin:8px 0 6px;background:#e5e7eb;}
+  .rigor-legend{display:flex;flex-wrap:wrap;gap:12px;font-size:11.5px;color:var(--lightgray);margin-bottom:12px;}
+  .rigor-legend-item{display:flex;align-items:center;gap:5px;}
+  .rigor-legend-item .dot{width:9px;height:9px;border-radius:50%;display:inline-block;}
 
   footer{text-align:center;padding:24px 20px;color:var(--lightgray);font-size:12px;}
 </style>
@@ -126,6 +132,7 @@
   <div class="panel" id="setupPanel">
     <h2>Course &amp; schedule</h2>
     <div class="sub">Pick your course, set your school-year start date, and auto-fill the calendar in lesson order &mdash; then adjust any week by hand as your real pacing shifts.</div>
+    <div class="sub" id="manifestFreshness"></div>
     <div class="setup-row">
       <div class="field">
         <label for="subjectSelect">Course</label>
@@ -156,7 +163,8 @@
 
   <div class="panel">
     <h2>Full year calendar</h2>
-    <div class="sub">Click into any week to add or remove lessons.</div>
+    <div class="sub">Click into any week to add or remove lessons, and tag its rigor level so you can see your DOK mix across the year.</div>
+    <div id="rigorSummary"></div>
     <div class="week-list" id="weekList"></div>
   </div>
 
@@ -180,10 +188,20 @@ function escHtml(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;'); 
 // ---------- persistence ----------
 function planKey(subjectId){ return 'pacing-plan-' + subjectId; }
 
+// Depth-of-Knowledge reference for tagging each week's cognitive demand.
+// This is a planning aid, not an automatic judgment of the lesson content —
+// the teacher tags what the week actually asks of students.
+var DOK_LABELS = { '1':'DOK 1 · Recall', '2':'DOK 2 · Skill/Concept', '3':'DOK 3 · Strategic Thinking', '4':'DOK 4 · Extended Thinking' };
+var DOK_COLORS = { '1':'#94a3b8', '2':'#38bdf8', '3':'#7c3aed', '4':'#b91c1c' };
+
 function loadPlan(subjectId, totalLessons){
   var raw = localStorage.getItem(planKey(subjectId));
   if(raw){
-    try{ return JSON.parse(raw); }catch(e){}
+    try{
+      var parsed = JSON.parse(raw);
+      if(!parsed.rigor) parsed.rigor = {};
+      return parsed;
+    }catch(e){}
   }
   var today = new Date();
   var monday = new Date(today);
@@ -192,7 +210,7 @@ function loadPlan(subjectId, totalLessons){
   monday.setDate(monday.getDate() + diff);
   var iso = monday.toISOString().slice(0,10);
   var pace = Math.max(1, Math.round(totalLessons / 36));
-  return { startDate: iso, weekCount: 36, pace: pace, weeks: {} };
+  return { startDate: iso, weekCount: 36, pace: pace, weeks: {}, rigor: {} };
 }
 
 function savePlan(){
@@ -249,10 +267,22 @@ function lessonCardHtml(l, showLoadBtn){
     res + '</div>';
 }
 
+function rigorSelectHtml(w, current){
+  return '<select class="rigor-select" data-rigor-week="'+w+'">' +
+    '<option value=""'+(!current?' selected':'')+'>Tag rigor…</option>' +
+    ['1','2','3','4'].map(function(lv){ return '<option value="'+lv+'"'+(lv===current?' selected':'')+'>'+DOK_LABELS[lv]+'</option>'; }).join('') +
+    '</select>';
+}
+
+function rigorBadgeHtml(level){
+  if(!level) return '';
+  return '<span class="rigor-badge" style="background:'+DOK_COLORS[level]+'">'+DOK_LABELS[level]+'</span>';
+}
+
 function renderHero(){
   var wk = currentWeekNum();
   $('heroTitle').textContent = 'Week ' + wk;
-  $('heroRange').textContent = weekRange(wk);
+  $('heroRange').innerHTML = weekRange(wk) + ' ' + rigorBadgeHtml(plan.rigor[wk]);
   var orders = plan.weeks[wk] || [];
   if(!orders.length){
     $('heroLessons').innerHTML = '<div class="hero-empty">No lessons assigned to this week yet. Add some in the calendar below, or click "Auto-fill in lesson order" above.</div>';
@@ -270,7 +300,7 @@ function renderWeekList(){
   for(var w=1; w<=plan.weekCount; w++){
     var orders = plan.weeks[w] || [];
     html += '<div class="week-row'+(w===wk?' current':'')+'" data-week="'+w+'">' +
-      '<div class="week-row-head"><span class="week-num">Week '+w+'</span><span class="week-dates">'+weekRange(w)+'</span></div>' +
+      '<div class="week-row-head"><span class="week-num">Week '+w+'</span><span class="week-dates">'+weekRange(w)+'</span>' + rigorSelectHtml(w, plan.rigor[w]) + '</div>' +
       '<div class="week-chips">' + orders.map(function(o){
         var l = lessonByOrder(o);
         var label = l ? (l.ref+' — '+l.name) : ('#'+o);
@@ -287,9 +317,32 @@ function renderWeekList(){
   $('weekList').innerHTML = html;
 }
 
+function renderRigorSummary(){
+  var counts = { '1':0, '2':0, '3':0, '4':0 };
+  var tagged = 0;
+  for(var w=1; w<=plan.weekCount; w++){
+    var lv = plan.rigor[w];
+    if(lv && counts.hasOwnProperty(lv)){ counts[lv]++; tagged++; }
+  }
+  var untagged = plan.weekCount - tagged;
+  var el = $('rigorSummary');
+  if(!tagged){
+    el.innerHTML = '<div class="sub">No weeks tagged with a rigor level yet — tag weeks below to see your DOK mix across the year (are most weeks recall-only, or is strategic/extended thinking showing up regularly?).</div>';
+    return;
+  }
+  var segs = ['1','2','3','4'].map(function(lv){
+    return counts[lv] ? '<div style="flex:'+counts[lv]+';background:'+DOK_COLORS[lv]+'" title="'+DOK_LABELS[lv]+': '+counts[lv]+' weeks"></div>' : '';
+  }).join('') + (untagged ? '<div style="flex:'+untagged+';background:#e5e7eb" title="Untagged: '+untagged+' weeks"></div>' : '');
+  var legend = ['1','2','3','4'].map(function(lv){
+    return counts[lv] ? '<span class="rigor-legend-item"><span class="dot" style="background:'+DOK_COLORS[lv]+'"></span>'+DOK_LABELS[lv]+': '+counts[lv]+'</span>' : '';
+  }).join('') + (untagged ? '<span class="rigor-legend-item"><span class="dot" style="background:#e5e7eb"></span>Untagged: '+untagged+'</span>' : '');
+  el.innerHTML = '<div class="rigor-bar">'+segs+'</div><div class="rigor-legend">'+legend+'</div>';
+}
+
 function renderAll(){
   renderHero();
   renderWeekList();
+  renderRigorSummary();
 }
 
 // ---------- events ----------
@@ -304,14 +357,24 @@ $('weekList').addEventListener('click', function(e){
 });
 
 $('weekList').addEventListener('change', function(e){
-  var sel = e.target.closest('[data-week-select]');
-  if(!sel || !sel.value) return;
-  var w = sel.getAttribute('data-week-select');
-  var order = Number(sel.value);
-  if(!plan.weeks[w]) plan.weeks[w] = [];
-  if(plan.weeks[w].indexOf(order) === -1) plan.weeks[w].push(order);
-  savePlan();
-  renderAll();
+  var addSel = e.target.closest('[data-week-select]');
+  if(addSel && addSel.value){
+    var w = addSel.getAttribute('data-week-select');
+    var order = Number(addSel.value);
+    if(!plan.weeks[w]) plan.weeks[w] = [];
+    if(plan.weeks[w].indexOf(order) === -1) plan.weeks[w].push(order);
+    savePlan();
+    renderAll();
+    return;
+  }
+  var rigorSel = e.target.closest('[data-rigor-week]');
+  if(rigorSel){
+    var rw = rigorSel.getAttribute('data-rigor-week');
+    if(rigorSel.value) plan.rigor[rw] = rigorSel.value;
+    else delete plan.rigor[rw];
+    savePlan();
+    renderAll();
+  }
 });
 
 document.addEventListener('click', function(e){
@@ -356,6 +419,10 @@ $('subjectSelect').addEventListener('change', onSubjectChange);
 // ---------- init ----------
 fetch('ssa-math-hub-manifest.json').then(function(res){ return res.json(); }).then(function(data){
   manifest = data;
+  if(manifest.generatedAt){
+    var genDate = new Date(manifest.generatedAt);
+    $('manifestFreshness').textContent = 'Math Hub data as of ' + genDate.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }) + '. If new units were added since then, re-run scripts/build-manifest.js.';
+  }
   $('subjectSelect').innerHTML = manifest.subjects.map(function(s,i){
     return '<option value="'+i+'">'+escHtml(s.label)+'</option>';
   }).join('');
